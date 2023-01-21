@@ -1,0 +1,32 @@
+{
+  "name": "electron-pro",
+  "version": "0.0.1",
+  "description": "Electron快速开发框架",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.ts",
+  "scripts": {
+    "dev": "father dev",
+    "build": "father build",
+    "build:deps": "father prebundle",
+    "prepublishOnly": "father doctor && npm run build",
+    "electron:dev": "node index.js"
+  },
+  "keywords": [],
+  "authors": [
+    "2292735470@qq.com"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist",
+    "compiled"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@umijs/utils": "^4.0.47",
+    "electron": "^22.0.3",
+    "father": "^4.1.3",
+    "prettier": "^2.8.3"
+  }
+}
