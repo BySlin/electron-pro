@@ -2,8 +2,13 @@ import { App } from "electron-pro";
 
 import { BrowserWindow } from "electron";
 import * as path from "path";
+import { TestController } from "./controller";
+import { TestService } from "./services";
 
 const mainApp = new App();
+
+mainApp.registerController(TestController);
+mainApp.registerService(TestService);
 
 mainApp.bootstrap().then(() => {
   createWindow();
@@ -16,7 +21,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       contextIsolation: true,
-      preload: path.join(__dirname, "..", "preload", "index.js"),
+      preload: path.join(__dirname, "preload", "index.js"),
     },
   });
   if (isDevelopment) {
