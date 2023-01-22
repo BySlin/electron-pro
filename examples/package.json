@@ -9,7 +9,7 @@
     "build": "father build",
     "build:deps": "father prebundle",
     "prepublishOnly": "father doctor && npm run build",
-    "electron:dev": "cross-env NODE_ENV=development node index.js"
+    "electron:dev": "cross-env NODE_ENV=development MIDWAY_SERVER_ENV=local node index.js"
   },
   "keywords": [],
   "authors": [
