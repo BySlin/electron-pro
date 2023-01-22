@@ -1,3 +1,3 @@
-import { MidwayConfig } from "electron-pro";
+import { MidwayConfig } from "@midwayjs/core";
 
 export default {} as MidwayConfig;

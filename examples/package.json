@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "electron-pro": "0.0.2"
+    "electron-pro": "0.0.4"
   },
   "devDependencies": {
     "electron": "^22.0.3",
