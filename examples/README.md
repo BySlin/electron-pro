@@ -14,6 +14,21 @@ $ npm run dev
 $ npm run build
 ```
 
+## 开发
+
+```bash
+$ npm run dev
+$ npm run electron:dev
+```
+
+## 打包
+
+```bash
+$ npm run electron:build:win
+$ npm run electron:build:mac
+$ npm run electron:build:linux
+```
+
 ## Options
 
 TODO

@@ -6,8 +6,6 @@
   "scripts": {
     "dev": "father dev",
     "build": "father build",
-    "build:deps": "father prebundle",
-    "prepublishOnly": "npm run build",
     "electron:dev": "cross-env NODE_ENV=development MIDWAY_SERVER_ENV=local node dev.js",
     "electron:dir": "npm run build && cross-env NODE_ENV=production node build.js --dir",
     "electron:build:win": "npm run build && cross-env NODE_ENV=production node build.js --win",
@@ -19,13 +17,6 @@
     "2292735470@qq.com"
   ],
   "license": "MIT",
-  "files": [
-    "dist",
-    "compiled"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "electron-pro": "0.0.11"
   },

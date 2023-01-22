@@ -1,4 +1,4 @@
-# electron-pro
+# electron-pro Electron快速开发框架
 
 [![NPM version](https://img.shields.io/npm/v/electron-pro.svg?style=flat)](https://npmjs.org/package/electron-pro)
 [![NPM downloads](http://img.shields.io/npm/dm/electron-pro.svg?style=flat)](https://npmjs.org/package/electron-pro)
