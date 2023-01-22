@@ -90,7 +90,6 @@ export class IpcMainWorker {
               }
             }
 
-            console.log('1----------------', windowPropertyName, result);
             // 返回执行结果
             return result;
           },
