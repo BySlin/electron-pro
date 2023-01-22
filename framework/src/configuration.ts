@@ -8,8 +8,9 @@ import {
 } from '@midwayjs/core';
 
 import * as DefaultConfig from './config/config.default';
-import { EpConfig, getAllIpcHandleChannel } from './index';
-import { app, ipcMain } from 'electron';
+import { EpConfig } from './index';
+import { app } from 'electron';
+import { IpcMainWorker } from './IpcMainWorker';
 
 @Configuration({
   namespace: 'ep',
@@ -23,6 +24,8 @@ import { app, ipcMain } from 'electron';
 export class EpConfiguration implements ILifeCycle {
   @Inject()
   logger: ILogger;
+  @Inject()
+  ipcMainWorker: IpcMainWorker;
 
   async onConfigLoad(container: IMidwayContainer): Promise<any> {
     this.logger.info('[Electron-Pro] 配置加载完成');
@@ -40,36 +43,6 @@ export class EpConfiguration implements ILifeCycle {
 
   async onReady(container: IMidwayContainer) {
     this.logger.info('[Electron-Pro] 框架启动完成');
-
-    const allIpcHandle = getAllIpcHandleChannel();
-
-    for (const {
-      channelName,
-      methodName,
-      target,
-      once,
-      printLog,
-    } of allIpcHandle) {
-      ipcMain[once ? 'handleOnce' : 'handle'](
-        channelName,
-        async (e, ...data) => {
-          try {
-            if (printLog) {
-              this.logger.info(
-                `触发${channelName}${
-                  data?.length > 0 ? `,${JSON.stringify(data)}` : ''
-                }`,
-              );
-            }
-            const epController = await container.getAsync(target);
-            return await epController[methodName](...data);
-          } catch (error) {
-            this.logger.error(error);
-            // @ts-ignore
-            return { error: error.message };
-          }
-        },
-      );
-    }
+    this.ipcMainWorker.registerIpcHandle();
   }
 }

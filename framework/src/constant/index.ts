@@ -43,3 +43,8 @@ export const EP_SERVICE_DECORATOR_KEY = 'ep:service';
  * EpWindow装饰器key
  */
 export const EP_WINDOW_DECORATOR_KEY = 'ep:window';
+
+/**
+ * EpCurrentWindow装饰器key
+ */
+export const EP_CURRENT_WINDOW_DECORATOR_KEY = 'ep:current_window';

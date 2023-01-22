@@ -1,2 +1,2 @@
-export * from './IpcMainUtils';
+export * from './IpcUtils';
 export * from './BrowserWindowUtils';
