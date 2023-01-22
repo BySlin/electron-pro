@@ -31,8 +31,6 @@ import { contextBridge, ipcRenderer } from 'electron';
     const removeEventMethodName = `remove${eventMethodName}`;
     const removeAllEventMethodName = `removeAll${eventMethodName}`;
 
-    console.log(onEventName);
-
     api[windowName][onEventMethodName] = (callback: (...args: any[]) => void) =>
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
         onEventName,

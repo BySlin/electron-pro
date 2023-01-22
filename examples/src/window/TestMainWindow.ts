@@ -22,7 +22,6 @@ export class TestMainWindow {
 
   @EpSendRenderer({
     windowPropertyName: "currentWindow",
-    once: true,
   })
   async test() {
     return this.testService.test();
