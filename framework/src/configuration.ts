@@ -43,16 +43,24 @@ export class EpConfiguration implements ILifeCycle {
 
     const allIpcHandle = getAllIpcHandleChannel();
 
-    for (const { channelName, methodName, target, once } of allIpcHandle) {
+    for (const {
+      channelName,
+      methodName,
+      target,
+      once,
+      printLog,
+    } of allIpcHandle) {
       ipcMain[once ? 'handleOnce' : 'handle'](
         channelName,
         async (e, ...data) => {
           try {
-            this.logger.info(
-              `触发${channelName}${
-                data?.length > 0 ? `,${JSON.stringify(data)}` : ''
-              }`,
-            );
+            if (printLog) {
+              this.logger.info(
+                `触发${channelName}${
+                  data?.length > 0 ? `,${JSON.stringify(data)}` : ''
+                }`,
+              );
+            }
             const epController = await container.getAsync(target);
             return await epController[methodName](...data);
           } catch (error) {

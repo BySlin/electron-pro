@@ -15,6 +15,7 @@ export const getAllIpcHandleChannel = () => {
     methodName: string;
     channelName: string;
     once: boolean;
+    printLog: boolean;
   }[] = [];
 
   const epControllers = listModule(EP_CONTROLLER_DECORATOR_KEY);
@@ -31,7 +32,7 @@ export const getAllIpcHandleChannel = () => {
         target: epController,
         methodName: propertyName,
         channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}`,
-        once: metadata.once,
+        ...metadata,
       });
     }
   }
