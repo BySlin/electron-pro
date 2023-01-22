@@ -3,6 +3,7 @@ import { app, ipcMain, protocol } from 'electron';
 import { createProtocol } from './createProtocol';
 import { EPService, IPCController } from './interface';
 import { ServiceStorage } from './ServiceStorage';
+import { EpAppController } from './controller';
 
 export const isDevelopment = process.env.NODE_ENV === 'development';
 
@@ -27,6 +28,7 @@ export class App extends EventEmitter {
   constructor(options?: AppOptions) {
     super();
     this.options = { ...defaultOptions, ...options };
+    this.registerController(EpAppController);
   }
 
   /**

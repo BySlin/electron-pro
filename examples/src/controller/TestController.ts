@@ -1,5 +1,5 @@
 import { IPCController, IPCHandler, Inject } from "electron-pro";
-import { TestService } from "../services/TestService";
+import { TestService } from "../services";
 
 export class TestController extends IPCController {
   @Inject(TestService)

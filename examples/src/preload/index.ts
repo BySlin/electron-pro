@@ -1,10 +1,18 @@
 import { contextBridge, ipcRenderer } from "electron";
 
-const apiKey = "electron";
+(async () => {
+  const eventNames = (await ipcRenderer.invoke(
+    "EpAppController@allIpcEvent"
+  )) as string[];
 
-const api: any = {
-  versions: process.versions,
-  test: () => ipcRenderer.invoke("TestController:test"),
-};
+  const apiKey = "ep";
+  const api: any = {
+    versions: process.versions,
+  };
 
-contextBridge.exposeInMainWorld(apiKey, api);
+  for (const eventName of eventNames) {
+    api[eventName] = (...args: any[]) => ipcRenderer.invoke(eventName, args);
+  }
+
+  contextBridge.exposeInMainWorld(apiKey, api);
+})();
