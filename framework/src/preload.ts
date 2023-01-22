@@ -14,7 +14,7 @@ import { contextBridge, ipcRenderer } from 'electron';
       api[controllerName] = {};
     }
     api[controllerName][methodName] = (...args: any[]) =>
-      ipcRenderer.invoke(eventName, args);
+      ipcRenderer.invoke(eventName, ...args);
   }
   contextBridge.exposeInMainWorld(apiKey, api);
 })();

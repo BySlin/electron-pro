@@ -25,7 +25,7 @@ export class EpConfiguration implements ILifeCycle {
   logger: ILogger;
 
   async onConfigLoad(container: IMidwayContainer): Promise<any> {
-    this.logger.info('Electron-Pro 配置加载完成');
+    this.logger.info('[Electron-Pro] 配置加载完成');
     const configService = await container.getAsync(MidwayConfigService);
     const epConfig = configService.getConfiguration('ep') as EpConfig;
 
@@ -39,20 +39,29 @@ export class EpConfiguration implements ILifeCycle {
   }
 
   async onReady(container: IMidwayContainer) {
-    this.logger.info('Electron-Pro 框架启动完成');
+    this.logger.info('[Electron-Pro] 框架启动完成');
 
     const allIpcHandle = getAllIpcHandleChannel();
 
-    for (const { channelName, methodName, target } of allIpcHandle) {
-      ipcMain.handle(channelName, async (e, ...data) => {
-        try {
-          const epController = await container.getAsync(target);
-          return await epController[methodName](...data);
-        } catch (error) {
-          // @ts-ignore
-          return { error: error.message };
-        }
-      });
+    for (const { channelName, methodName, target, once } of allIpcHandle) {
+      ipcMain[once ? 'handle' : 'handleOnce'](
+        channelName,
+        async (e, ...data) => {
+          try {
+            this.logger.info(
+              `触发${channelName}${
+                data?.length > 0 ? `,${JSON.stringify(data)}` : ''
+              }`,
+            );
+            const epController = await container.getAsync(target);
+            return await epController[methodName](...data);
+          } catch (error) {
+            this.logger.error(error);
+            // @ts-ignore
+            return { error: error.message };
+          }
+        },
+      );
     }
   }
 }
