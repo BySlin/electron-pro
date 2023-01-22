@@ -56,13 +56,15 @@ export class App extends EventEmitter {
         });
       });
 
+      const _services = this.services;
+
       ServiceStorage.injectProperty
         .get(epService)
         ?.forEach(({ propertyKey, clz }) => {
           //依赖注入
           Object.defineProperty(service, propertyKey, {
             get(): any {
-              return this.services.get(clz);
+              return _services.get(clz);
             },
           });
         });
