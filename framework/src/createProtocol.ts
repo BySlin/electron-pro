@@ -9,7 +9,12 @@ export const createProtocol = (scheme: string) => {
     pathName = decodeURI(pathName); // Needed in case URL contains spaces
 
     const filePath = path.join(
-      isDevelopment ? process.cwd() : __dirname,
+      isDevelopment
+        ? process.cwd()
+        : path.join(
+            process.resourcesPath,
+            __dirname.includes('.asar') ? 'app.asar' : 'app',
+          ),
       pathName,
     );
     respond({ path: filePath });
