@@ -24,12 +24,14 @@ import { contextBridge, ipcRenderer } from 'electron';
     if (api[windowName] == undefined) {
       api[windowName] = {};
     }
-    const eventName = `${methodName
+    const eventMethodName = `${methodName
       .substring(0, 1)
       .toUpperCase()}${methodName.substring(1)}`;
-    const onEventMethodName = `on${eventName}`;
-    const removeEventMethodName = `remove${eventName}`;
-    const removeAllEventMethodName = `removeAll${eventName}`;
+    const onEventMethodName = `on${eventMethodName}`;
+    const removeEventMethodName = `remove${eventMethodName}`;
+    const removeAllEventMethodName = `removeAll${eventMethodName}`;
+
+    console.log(onEventName);
 
     api[windowName][onEventMethodName] = (callback: (...args: any[]) => void) =>
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](

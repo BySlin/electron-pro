@@ -64,7 +64,7 @@ export class IpcMainWorker {
     this.midwayDecoratorService.registerMethodHandler(
       EP_SEND_RENDERER_KEY,
       ({ target, metadata }) => {
-        const { windowPropertyName } = metadata as {
+        const { windowPropertyName, once } = metadata as {
           once: boolean;
           windowPropertyName: string;
         };
@@ -82,7 +82,9 @@ export class IpcMainWorker {
               ) {
                 const channel = `${getProviderName(
                   target,
-                )}${IPC_EVENT_SEPARATOR}${joinPoint.methodName}`;
+                )}${IPC_EVENT_SEPARATOR}${joinPoint.methodName}${
+                  once ? `${IPC_EVENT_SEPARATOR}once` : ''
+                }`;
 
                 (targetWindow as BrowserWindow).webContents.send(
                   channel,
