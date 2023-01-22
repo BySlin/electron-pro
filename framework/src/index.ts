@@ -9,6 +9,7 @@ export * from './constant';
 export * from './bootstrap';
 export * from './controller';
 export * from './utils';
+export * from './provide';
 export * from './interface';
 
 declare module '@midwayjs/core/dist/interface' {

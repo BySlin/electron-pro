@@ -10,7 +10,7 @@ import {
 import * as DefaultConfig from './config/config.default';
 import { EpConfig } from './index';
 import { app } from 'electron';
-import { IpcMainWorker } from './IpcMainWorker';
+import { IpcMainWorker } from './provide';
 
 @Configuration({
   namespace: 'ep',
@@ -44,5 +44,6 @@ export class EpConfiguration implements ILifeCycle {
   async onReady(container: IMidwayContainer) {
     this.logger.info('[Electron-Pro] 框架启动完成');
     this.ipcMainWorker.registerIpcHandle();
+    this.ipcMainWorker.registerIpcRendererSend();
   }
 }

@@ -1,5 +1,6 @@
 import {
   getCurrentApplicationContext,
+  getProviderName,
   ILogger,
   Inject,
   JoinPoint,
@@ -8,9 +9,9 @@ import {
   Scope,
   ScopeEnum,
 } from '@midwayjs/core';
-import { getAllIpcHandleChannel } from './utils';
-import { ipcMain } from 'electron';
-import { EP_SEND_RENDERER_KEY } from './constant';
+import { getAllIpcHandleChannel } from '../utils';
+import { BrowserWindow, ipcMain } from 'electron';
+import { EP_SEND_RENDERER_KEY, IPC_EVENT_SEPARATOR } from '../constant';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -18,7 +19,7 @@ export class IpcMainWorker {
   @Inject()
   logger: ILogger;
   @Inject()
-  decoratorService: MidwayDecoratorService;
+  midwayDecoratorService: MidwayDecoratorService;
 
   /**
    * 注册ipcHandle
@@ -60,14 +61,36 @@ export class IpcMainWorker {
 
   registerIpcRendererSend() {
     // 实现方法装饰器
-    this.decoratorService.registerMethodHandler(
+    this.midwayDecoratorService.registerMethodHandler(
       EP_SEND_RENDERER_KEY,
-      (options) => {
+      ({ target, metadata }) => {
+        const { windowPropertyName } = metadata as {
+          windowPropertyName: string;
+        };
+
         return {
           around: async (joinPoint: JoinPoint) => {
             // 执行原方法
             const result = await joinPoint.proceed(...joinPoint.args);
-            console.log('1----------------', result);
+
+            const targetWindow = joinPoint.target[windowPropertyName];
+            if (targetWindow) {
+              if (
+                targetWindow?.constructor?.name === 'BrowserWindow' ||
+                targetWindow?.constructor?.name === 'BrowserView'
+              ) {
+                const channel = `${getProviderName(
+                  target,
+                )}${IPC_EVENT_SEPARATOR}${joinPoint.methodName}`;
+
+                (targetWindow as BrowserWindow).webContents.send(
+                  channel,
+                  result,
+                );
+              }
+            }
+
+            console.log('1----------------', windowPropertyName, result);
             // 返回执行结果
             return result;
           },
