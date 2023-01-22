@@ -1,7 +1,7 @@
 const { fsExtra, lodash } = require("@umijs/utils");
 const path = require("path");
 const yargs = require("yargs");
-const { pathExistsSync } = require("@umijs/utils/compiled/fs-extra");
+const buildOptions = require("./buildOptions");
 
 /**
  * 打包
@@ -94,7 +94,7 @@ function buildDist() {
   require("electron-builder")
     .build(
       lodash.merge({
-        config: lodash.merge(defaultBuildConfig),
+        config: lodash.merge(defaultBuildConfig, buildDependencies),
         ...builderArgs,
       })
     )
