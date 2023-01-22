@@ -1,8 +1,7 @@
 import { EventEmitter } from 'events';
 import { app, ipcMain, protocol } from 'electron';
 import { createProtocol } from './createProtocol';
-import { IPCController } from './ipc';
-import { EPService } from './interface';
+import { EPService, IPCController } from './interface';
 import { ServiceStorage } from './ServiceStorage';
 
 export const isDevelopment = process.env.NODE_ENV === 'development';
