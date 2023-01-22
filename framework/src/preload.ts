@@ -31,21 +31,24 @@ import { contextBridge, ipcRenderer } from 'electron';
     const removeEventMethodName = `remove${eventMethodName}`;
     const removeAllEventMethodName = `removeAll${eventMethodName}`;
 
-    api[windowName][onEventMethodName] = (callback: (...args: any[]) => void) =>
+    api[windowName][onEventMethodName] = (
+      callback: (...args: any[]) => void,
+    ) => {
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
         onEventName,
         callback,
       );
+    };
 
     api[windowName][removeEventMethodName] = (
       callback: (...args: any[]) => void,
     ) => {
-      console.log(onEventName, callback);
       ipcRenderer.removeListener(onEventName, callback);
     };
 
-    api[windowName][removeAllEventMethodName] = () =>
+    api[windowName][removeAllEventMethodName] = () => {
       ipcRenderer.removeAllListeners(onEventName);
+    };
   }
   contextBridge.exposeInMainWorld(apiKey, api);
 })();
