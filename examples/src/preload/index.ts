@@ -4,15 +4,17 @@ import { contextBridge, ipcRenderer } from "electron";
   const eventNames = (await ipcRenderer.invoke(
     "EpAppController@allIpcEvent"
   )) as string[];
-
   const apiKey = "ep";
   const api: any = {
     versions: process.versions,
   };
-
   for (const eventName of eventNames) {
-    api[eventName] = (...args: any[]) => ipcRenderer.invoke(eventName, args);
+    const [controllerName, methodName] = eventName.split("@");
+    if (api[controllerName] == undefined) {
+      api[controllerName] = {};
+    }
+    api[controllerName][methodName] = (...args: any[]) =>
+      ipcRenderer.invoke(eventName, args);
   }
-
   contextBridge.exposeInMainWorld(apiKey, api);
 })();
