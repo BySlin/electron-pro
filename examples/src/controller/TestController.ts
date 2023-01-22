@@ -1,9 +1,10 @@
-import { EpController, EpHandler, EpInject } from "electron-pro";
+import { EpController, EpHandler } from "electron-pro";
+import { Inject } from "@midwayjs/core";
 import { TestService } from "../services";
 
 @EpController()
 export class TestController {
-  @EpInject()
+  @Inject()
   testService: TestService;
 
   @EpHandler()

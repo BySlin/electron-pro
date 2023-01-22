@@ -1,7 +1,7 @@
-import { EpService, EPService } from "electron-pro";
+import { EpService } from "electron-pro";
 
 @EpService()
-export class TestService extends EPService {
+export class TestService {
   test() {
     return "Hello Electron-Pro";
   }
