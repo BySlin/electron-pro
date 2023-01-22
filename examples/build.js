@@ -54,6 +54,11 @@ function buildDist() {
       ))?.version;
     }
   }
+
+  if (!fsExtra.pathExistsSync(absOutputDir)) {
+    fsExtra.mkdirSync(absOutputDir);
+  }
+
   const dest = path.join(absOutputDir, "bundled");
 
   if (!fsExtra.pathExistsSync(dest)) {
