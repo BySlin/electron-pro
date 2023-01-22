@@ -1,8 +1,8 @@
-import { createWindow, EpController } from "electron-pro";
+import { createWindow, EpWindow } from "electron-pro";
 import { Inject, Autoload, Init } from "@midwayjs/core";
 import { TestService } from "../services/TestService";
 
-@EpController()
+@EpWindow()
 @Autoload()
 export class TestMainWindow {
   @Inject()
