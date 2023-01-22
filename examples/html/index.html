@@ -9,14 +9,17 @@
 <br/>
 <button onclick="ep.testController.test().then(console.log)">测试与主进程通讯</button>
 <br/>
-<button onclick="onMainEvent(this)">监听主进程返回</button>
+<button id="onMainEvent" onclick="onMainEvent()">监听主进程返回</button>
 </body>
 <script>
-  function onMainEvent(target) {
-    ep.testMainWindow.test(message => {
-      console.log(message)
-      target.innerHTML = `监听主进程返回 ${message}`
-    })
+  const testCallback = message => {
+    console.log(message)
+    document.getElementById('onMainEvent').innerHTML = `监听主进程返回 ${message}`
+  };
+
+  function onMainEvent() {
+    ep.testMainWindow.removeTest(testCallback);
+    ep.testMainWindow.onTest(testCallback)
   }
 </script>
 </html>

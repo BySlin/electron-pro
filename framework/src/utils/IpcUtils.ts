@@ -63,6 +63,7 @@ export const getAllIpcRendererSendChannel = () => {
     methodName: string;
     channelName: string;
     windowPropertyName: string;
+    once: boolean;
   }[] = [];
 
   const epWindows = [...listModule(EP_WINDOW_DECORATOR_KEY)];
@@ -79,7 +80,9 @@ export const getAllIpcRendererSendChannel = () => {
         result.push({
           target: epWindow,
           methodName: propertyName,
-          channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}`,
+          channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}${
+            metadata.once ? `${IPC_EVENT_SEPARATOR}once` : ''
+          }`,
           ...metadata,
         });
       }

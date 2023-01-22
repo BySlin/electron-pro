@@ -20,7 +20,9 @@ export class TestMainWindow {
     }, 1000);
   }
 
-  @EpSendRenderer("currentWindow")
+  @EpSendRenderer({
+    windowPropertyName: "currentWindow",
+  })
   async test() {
     return this.testService.test();
   }

@@ -28,14 +28,21 @@ import { contextBridge, ipcRenderer } from 'electron';
       .substring(0, 1)
       .toUpperCase()}${methodName.substring(1)}`;
     const onEventMethodName = `on${eventName}`;
-    const offEventMethodName = `off${eventName}`;
+    const removeEventMethodName = `remove${eventName}`;
+    const removeAllEventMethodName = `removeAll${eventName}`;
 
     api[windowName][onEventMethodName] = (callback: (...args: any[]) => void) =>
-      ipcRenderer.on(onEventName, (e, ...args) => callback(...args));
+      ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
+        onEventName,
+        (e, ...args) => callback(...args),
+      );
 
-    api[windowName][offEventMethodName] = (
+    api[windowName][removeEventMethodName] = (
       callback: (...args: any[]) => void,
-    ) => ipcRenderer.off(onEventName, callback);
+    ) => ipcRenderer.removeListener(onEventName, callback);
+
+    api[windowName][removeAllEventMethodName] = () =>
+      ipcRenderer.removeAllListeners(onEventName);
   }
   contextBridge.exposeInMainWorld(apiKey, api);
 })();

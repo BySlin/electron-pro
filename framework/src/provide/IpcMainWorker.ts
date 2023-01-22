@@ -65,6 +65,7 @@ export class IpcMainWorker {
       EP_SEND_RENDERER_KEY,
       ({ target, metadata }) => {
         const { windowPropertyName } = metadata as {
+          once: boolean;
           windowPropertyName: string;
         };
 
