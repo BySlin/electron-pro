@@ -1,12 +1,7 @@
-import { IPCController } from '../interface';
-import { IPCHandler } from '../decorator';
-import { GET_IPC_ALL_EVENT_NAME } from '../constant';
+import { EpController, EpHandler } from '../decorator';
 
-export class EpAppController extends IPCController {
-  @IPCHandler()
-  async allIpcEvent() {
-    return [...this.app.serviceEventMap.keys()].filter(
-      (s) => s !== GET_IPC_ALL_EVENT_NAME,
-    );
-  }
+@EpController()
+export class EpAppController {
+  @EpHandler()
+  async allIpcEvent() {}
 }

@@ -1,8 +1,7 @@
 import { protocol } from 'electron';
 import { URL } from 'url';
+import { isDevelopment } from './constant';
 import * as path from 'path';
-import { isDevelopment } from './App';
-import * as process from 'process';
 
 export const createProtocol = (scheme: string) => {
   protocol.registerFileProtocol(scheme, (request, respond) => {

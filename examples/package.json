@@ -23,8 +23,13 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {
+    "@midwayjs/core": "^3.9.0",
+    "@midwayjs/logger": "^2.17.0",
+    "electron-pro": "0.0.1"
+  },
   "devDependencies": {
-    "father": "^4.1.3",
-    "electron": "^22.0.3"
+    "electron": "^22.0.3",
+    "father": "^4.1.3"
   }
 }

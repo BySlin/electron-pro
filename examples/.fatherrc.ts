@@ -1,6 +1,10 @@
-import { defineConfig } from 'father';
+import { defineConfig } from "father";
 
 export default defineConfig({
-  cjs: {},
-  prebundle: {deps:[]},
+  cjs: {
+    output: "dist",
+  },
+  prebundle: {
+    deps: [],
+  },
 });

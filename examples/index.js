@@ -36,7 +36,7 @@ const runDev = () => {
 
     spawnProcess = spawn(String(electronPath), [
       `--inspect=5858`,
-      path.join(process.cwd(), "dist", "cjs", "index.js"),
+      path.join(process.cwd(), "dist", "index.js"),
     ]);
     spawnProcess.stdout.on("data", (data) => {
       const log = filterText(data.toString());

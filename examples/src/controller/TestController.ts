@@ -1,11 +1,12 @@
-import { IPCController, IPCHandler, Inject } from "electron-pro";
+import { EpController, EpHandler, EpInject } from "electron-pro";
 import { TestService } from "../services";
 
-export class TestController extends IPCController {
-  @Inject(TestService)
-  testService!: TestService;
+@EpController()
+export class TestController {
+  @EpInject()
+  testService: TestService;
 
-  @IPCHandler()
+  @EpHandler()
   async test() {
     return this.testService.test();
   }

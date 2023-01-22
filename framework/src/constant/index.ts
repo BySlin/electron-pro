@@ -3,7 +3,7 @@ import * as path from 'path';
 /**
  * 是否开发环境
  */
-const isDevelopment = process.env.NODE_ENV === 'development';
+export const isDevelopment = process.env.NODE_ENV === 'development';
 /**
  * 事件分隔符
  */

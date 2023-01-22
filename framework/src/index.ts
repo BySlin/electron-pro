@@ -1,6 +1,10 @@
-export * from './App';
+export { EpConfiguration as Configuration } from './configuration';
+
 export * from './createProtocol';
 export * from './interface';
 export * from './ServiceStorage';
 export * from './decorator';
 export * from './constant';
+export * from './bootstrap';
+export * from './controller';
+export * from './interface';
