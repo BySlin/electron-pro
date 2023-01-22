@@ -69,7 +69,6 @@ export const getAllIpcRendererSendChannel = () => {
   const epWindows = [...listModule(EP_WINDOW_DECORATOR_KEY)];
 
   for (const epWindow of epWindows) {
-    const providerName = getProviderName(epWindow);
     const classMetadataArray = getClassMetadata(
       INJECT_CUSTOM_METHOD,
       epWindow,
@@ -80,13 +79,31 @@ export const getAllIpcRendererSendChannel = () => {
         result.push({
           target: epWindow,
           methodName: propertyName,
-          channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}${
-            metadata.once ? `${IPC_EVENT_SEPARATOR}once` : ''
-          }`,
+          channelName: getIpcRendererSendChannelName(
+            epWindow,
+            propertyName,
+            metadata,
+          ),
           ...metadata,
         });
       }
     }
   }
   return result;
+};
+
+/**
+ * 拼接ipcRenderer send回调名称
+ * @param target
+ * @param propertyName
+ * @param metadata
+ */
+export const getIpcRendererSendChannelName = (
+  target: any,
+  propertyName: string,
+  metadata: any,
+) => {
+  return `${getProviderName(target)}${IPC_EVENT_SEPARATOR}${propertyName}${
+    metadata.once ? `${IPC_EVENT_SEPARATOR}once` : ''
+  }`;
 };

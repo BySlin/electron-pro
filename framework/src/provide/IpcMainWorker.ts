@@ -1,6 +1,5 @@
 import {
   getCurrentApplicationContext,
-  getProviderName,
   ILogger,
   Inject,
   JoinPoint,
@@ -9,9 +8,12 @@ import {
   Scope,
   ScopeEnum,
 } from '@midwayjs/core';
-import { getAllIpcHandleChannel } from '../utils';
+import {
+  getAllIpcHandleChannel,
+  getIpcRendererSendChannelName,
+} from '../utils';
 import { BrowserWindow, ipcMain } from 'electron';
-import { EP_SEND_RENDERER_KEY, IPC_EVENT_SEPARATOR } from '../constant';
+import { EP_SEND_RENDERER_KEY } from '../constant';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -64,7 +66,7 @@ export class IpcMainWorker {
     this.midwayDecoratorService.registerMethodHandler(
       EP_SEND_RENDERER_KEY,
       ({ target, metadata }) => {
-        const { windowPropertyName, once } = metadata as {
+        const { windowPropertyName } = metadata as {
           once: boolean;
           windowPropertyName: string;
         };
@@ -80,14 +82,12 @@ export class IpcMainWorker {
                 targetWindow?.constructor?.name === 'BrowserWindow' ||
                 targetWindow?.constructor?.name === 'BrowserView'
               ) {
-                const channel = `${getProviderName(
-                  target,
-                )}${IPC_EVENT_SEPARATOR}${joinPoint.methodName}${
-                  once ? `${IPC_EVENT_SEPARATOR}once` : ''
-                }`;
-
                 (targetWindow as BrowserWindow).webContents.send(
-                  channel,
+                  getIpcRendererSendChannelName(
+                    target,
+                    joinPoint.methodName,
+                    metadata,
+                  ),
                   result,
                 );
               }
