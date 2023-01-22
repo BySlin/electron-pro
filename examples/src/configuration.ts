@@ -29,6 +29,6 @@ function createWindow() {
   if (isDevelopment) {
     mainWindow.loadURL("app://../../html/index.html");
   } else {
-    mainWindow.loadURL("app://./index.html");
+    mainWindow.loadURL("app://./html/index.html");
   }
 }

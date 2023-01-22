@@ -61,6 +61,7 @@ function buildDist() {
   }
 
   fsExtra.ensureDirSync(dest);
+  fsExtra.ensureDirSync(path.join(process.cwd(), "win-unpacked"));
 
   fsExtra.writeFileSync(
     `${absOutputDir}/bundled/package.json`,
@@ -71,7 +72,7 @@ function buildDist() {
     overwrite: true,
   });
 
-  fsExtra.copySync(path.join(process.cwd(), "html"), dest, {
+  fsExtra.copySync(path.join(process.cwd(), "html"), path.join(dest, "html"), {
     overwrite: true,
   });
 
@@ -82,6 +83,7 @@ function buildDist() {
     },
     files: ["**"],
     extends: null,
+    asar: false,
   };
 
   // 打包electron

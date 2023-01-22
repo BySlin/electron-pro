@@ -1,11 +1,13 @@
 import { Bootstrap } from '@midwayjs/bootstrap';
 import { app, protocol } from 'electron';
 import { createProtocol } from './createProtocol';
+import { isDevelopment } from './constant';
+import * as path from 'path';
 
 /**
  * 程序入口
  */
-export const runApp = async () => {
+export const runApp = async (baseDir?: string) => {
   //注册自定义协议
   protocol.registerSchemesAsPrivileged([
     {
@@ -22,5 +24,12 @@ export const runApp = async () => {
   //创建自定义协议
   createProtocol('app');
 
-  return await Bootstrap.run();
+  const appDir = isDevelopment ? process.cwd() : process.resourcesPath;
+  return await Bootstrap.configure({
+    appDir: appDir,
+    baseDir:
+      baseDir ?? isDevelopment
+        ? path.join(appDir, 'dist')
+        : path.join(appDir, __dirname.includes('.asar') ? 'app.asar' : 'app'),
+  }).run();
 };

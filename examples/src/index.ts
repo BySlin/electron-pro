@@ -10,4 +10,6 @@ import { runApp } from "electron-pro";
 //   createWindow();
 // });
 
+process.env["MIDWAY_SERVER_ENV"] = "local";
+
 runApp();
