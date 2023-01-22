@@ -38,3 +38,8 @@ export const EP_CONTROLLER_DECORATOR_KEY = 'ep:controller';
  * EpService装饰器key
  */
 export const EP_SERVICE_DECORATOR_KEY = 'ep:service';
+
+/**
+ * EpWindow装饰器key
+ */
+export const EP_WINDOW_DECORATOR_KEY = 'ep:window';
