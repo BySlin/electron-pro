@@ -5,8 +5,18 @@
     <title>Electron-Pro-Test</title>
 </head>
 <body>
-Electron-Pro测试
-
+<h1>Electron-Pro测试</h1>
+<br/>
 <button onclick="ep.testController.test().then(console.log)">测试与主进程通讯</button>
+<br/>
+<button onclick="onMainEvent(this)">监听主进程返回</button>
 </body>
+<script>
+  function onMainEvent(target) {
+    ep.testMainWindow.test(message => {
+      console.log(message)
+      target.innerHTML = `监听主进程返回 ${message}`
+    })
+  }
+</script>
 </html>

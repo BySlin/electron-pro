@@ -17,7 +17,7 @@ export class TestMainWindow {
 
     setInterval(() => {
       this.test();
-    }, 5000);
+    }, 1000);
   }
 
   @EpSendRenderer("currentWindow")

@@ -24,8 +24,18 @@ import { contextBridge, ipcRenderer } from 'electron';
     if (api[windowName] == undefined) {
       api[windowName] = {};
     }
-    api[windowName][methodName] = (callback: (...args: any[]) => void) =>
+    const eventName = `${methodName
+      .substring(0, 1)
+      .toUpperCase()}${methodName.substring(1)}`;
+    const onEventMethodName = `on${eventName}`;
+    const offEventMethodName = `off${eventName}`;
+
+    api[windowName][onEventMethodName] = (callback: (...args: any[]) => void) =>
       ipcRenderer.on(onEventName, (e, ...args) => callback(...args));
+
+    api[windowName][offEventMethodName] = (
+      callback: (...args: any[]) => void,
+    ) => ipcRenderer.off(onEventName, callback);
   }
   contextBridge.exposeInMainWorld(apiKey, api);
 })();
