@@ -24,8 +24,8 @@ import { contextBridge, ipcRenderer } from 'electron';
     if (api[windowName] == undefined) {
       api[windowName] = {};
     }
-    api[windowName][methodName] = (callback: () => void) =>
-      ipcRenderer.on(onEventName, callback);
+    api[windowName][methodName] = (callback: (...args: any[]) => void) =>
+      ipcRenderer.on(onEventName, (e, ...args) => callback(...args));
   }
   contextBridge.exposeInMainWorld(apiKey, api);
 })();
