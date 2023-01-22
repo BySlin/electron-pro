@@ -10,7 +10,7 @@ import { Configuration, ILifeCycle } from "@midwayjs/core";
 })
 export class ContainerLifeCycle implements ILifeCycle {
   async onReady() {
-    console.log("onReady");
+    console.log("启动完成");
     createWindow();
   }
 }

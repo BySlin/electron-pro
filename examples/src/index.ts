@@ -1,6 +1,4 @@
-import { App, isDevelopment, PRELOAD_JS_PATH, runApp } from "electron-pro";
-
-import { BrowserWindow } from "electron";
+import { runApp } from "electron-pro";
 // import { TestController } from "./controller";
 // import { TestService } from "./services";
 
