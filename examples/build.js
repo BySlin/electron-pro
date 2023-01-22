@@ -83,7 +83,6 @@ function buildDist() {
     },
     files: ["**"],
     extends: null,
-    asar: false,
   };
 
   // 打包electron

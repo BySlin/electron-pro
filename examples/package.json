@@ -24,7 +24,7 @@
     "access": "public"
   },
   "dependencies": {
-    "electron-pro": "0.0.10"
+    "electron-pro": "0.0.11"
   },
   "devDependencies": {
     "@umijs/utils": "^4.0.47",
