@@ -10,16 +10,25 @@
 <button onclick="ep.testController.test().then(console.log)">测试与主进程通讯</button>
 <br/>
 <button id="onMainEvent" onclick="onMainEvent()">监听主进程返回</button>
+<button onclick="removeMainEvent()">移除主进程监听</button>
 </body>
 <script>
-  const testCallback = message => {
-    console.log(message)
-    document.getElementById('onMainEvent').innerHTML = `监听主进程返回 ${message}`
-  };
+  let testCallback = undefined;
 
   function onMainEvent() {
-    ep.testMainWindow.removeTest(testCallback);
-    ep.testMainWindow.onTest(testCallback)
+    removeMainEvent();
+    testCallback = function (e, message) {
+      console.log(message);
+      document.getElementById('onMainEvent').innerHTML = `监听主进程返回 ${message}`;
+    }
+    ep.testMainWindow.onTest(testCallback);
+  }
+
+  function removeMainEvent() {
+    if (testCallback) {
+      ep.testMainWindow.removeTest(testCallback);
+      testCallback = undefined;
+    }
   }
 </script>
 </html>
