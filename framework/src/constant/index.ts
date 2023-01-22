@@ -23,10 +23,17 @@ export const PRELOAD_JS_PATH = path.join(__dirname, '..', 'preload.js');
  * EpHandler装饰器key
  */
 export const EP_HANDLER_DECORATOR_KEY = 'ep:ep_handler';
+
+/**
+ * EpSendRenderer装饰器key
+ */
+export const EP_SEND_RENDERER_KEY = 'ep:ep_send_renderer';
+
 /**
  * EpController装饰器key
  */
 export const EP_CONTROLLER_DECORATOR_KEY = 'ep:controller';
+
 /**
  * EpService装饰器key
  */
