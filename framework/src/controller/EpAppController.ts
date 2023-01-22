@@ -1,7 +1,10 @@
 import { EpController, EpHandler } from '../decorator';
+import { getAllIpcHandleChannel } from '../utils';
 
 @EpController()
 export class EpAppController {
   @EpHandler()
-  async allIpcEvent() {}
+  async allIpcHandleChannelName() {
+    return getAllIpcHandleChannel().map((v) => v.channelName);
+  }
 }

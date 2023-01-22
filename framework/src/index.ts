@@ -6,4 +6,5 @@ export * from './decorator';
 export * from './constant';
 export * from './bootstrap';
 export * from './controller';
+export * from './utils';
 export * from './interface';

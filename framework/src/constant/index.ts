@@ -12,9 +12,22 @@ export const IPC_EVENT_SEPARATOR = '@';
 /**
  * 获取所有ipcEvent事件
  */
-export const GET_IPC_ALL_EVENT_NAME = 'EpAppController@allIpcEvent';
+export const GET_IPC_ALL_EVENT_NAME = 'epAppController@allIpcHandleChannelName';
 
 /**
  * preloadjs路径
  */
 export const PRELOAD_JS_PATH = path.join(__dirname, '..', 'preload.js');
+
+/**
+ * EpHandler装饰器key
+ */
+export const EP_HANDLER_DECORATOR_KEY = 'ep:ep_handler';
+/**
+ * EpController装饰器key
+ */
+export const EP_CONTROLLER_DECORATOR_KEY = 'ep:controller';
+/**
+ * EpService装饰器key
+ */
+export const EP_SERVICE_DECORATOR_KEY = 'ep:service';
