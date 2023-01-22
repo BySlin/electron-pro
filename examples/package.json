@@ -9,7 +9,10 @@
     "build:deps": "father prebundle",
     "prepublishOnly": "npm run build",
     "electron:dev": "cross-env NODE_ENV=development MIDWAY_SERVER_ENV=local node dev.js",
-    "electron:dir": "npm run build && cross-env NODE_ENV=production node build.js --dir"
+    "electron:dir": "npm run build && cross-env NODE_ENV=production node build.js --dir",
+    "electron:build:win": "npm run build && cross-env NODE_ENV=production node build.js --win",
+    "electron:build:mac": "npm run build && cross-env NODE_ENV=production node build.js --mac",
+    "electron:build:linux": "npm run build && cross-env NODE_ENV=production node build.js --linux"
   },
   "keywords": [],
   "authors": [

@@ -94,7 +94,7 @@ function buildDist() {
   require("electron-builder")
     .build(
       lodash.merge({
-        config: lodash.merge(defaultBuildConfig, buildDependencies),
+        config: lodash.merge(defaultBuildConfig, buildOptions),
         ...builderArgs,
       })
     )
