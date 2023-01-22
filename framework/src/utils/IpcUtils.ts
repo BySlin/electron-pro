@@ -50,3 +50,37 @@ export const getAllIpcHandleChannel = () => {
 
   return result;
 };
+
+/**
+ * 获取所有ipcHandle channel通道名称
+ */
+export const getAllIpcRendererSendChannel = () => {
+  const result: {
+    target: any;
+    methodName: string;
+    channelName: string;
+    windowPropertyName: string;
+  }[] = [];
+
+  const epWindows = [...listModule(EP_WINDOW_DECORATOR_KEY)];
+
+  for (const epWindow of epWindows) {
+    const providerName = getProviderName(epWindow);
+    const classMetadataArray = getClassMetadata(
+      INJECT_CUSTOM_METHOD,
+      epWindow,
+    ) as { propertyName: string; metadata: any }[];
+
+    if (classMetadataArray) {
+      for (const { propertyName, metadata } of classMetadataArray) {
+        result.push({
+          target: epWindow,
+          methodName: propertyName,
+          channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}`,
+          ...metadata,
+        });
+      }
+    }
+  }
+  return result;
+};
