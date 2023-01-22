@@ -46,7 +46,8 @@ export class EpConfiguration implements ILifeCycle {
     for (const { channelName, methodName, target } of allIpcHandle) {
       ipcMain.handle(channelName, async (e, ...data) => {
         try {
-          return await (await container.getAsync(target))[methodName](...data);
+          const epController = await container.getAsync(target);
+          return await epController[methodName](...data);
         } catch (error) {
           // @ts-ignore
           return { error: error.message };
