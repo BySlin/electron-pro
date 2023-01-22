@@ -44,7 +44,7 @@ export class EpConfiguration implements ILifeCycle {
     const allIpcHandle = getAllIpcHandleChannel();
 
     for (const { channelName, methodName, target, once } of allIpcHandle) {
-      ipcMain[once ? 'handle' : 'handleOnce'](
+      ipcMain[once ? 'handleOnce' : 'handle'](
         channelName,
         async (e, ...data) => {
           try {
