@@ -9,8 +9,8 @@ import {
   ScopeEnum,
 } from '@midwayjs/core';
 import { EP_MAIN_WINDOW_DECORATOR_KEY } from '../constant';
-import { BaseWindow } from '../window';
 import { openWindow } from '../utils';
+import { app, BrowserWindow } from 'electron';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -21,18 +21,24 @@ export class MainWindowWorker {
 
   @Init()
   async init() {
-    const epMainWindowModules = listModule(EP_MAIN_WINDOW_DECORATOR_KEY);
-    if (epMainWindowModules) {
-      for (const epMainWindowModule of epMainWindowModules) {
-        await this.openMainWindow(epMainWindowModule);
+    await this.openMainWindow();
+
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        this.openMainWindow();
       }
-    }
+    });
   }
 
   /**
    * 打开主窗口
    */
-  async openMainWindow(epMainWindowModule: typeof BaseWindow) {
-    await openWindow(epMainWindowModule);
+  async openMainWindow() {
+    const epMainWindowModules = listModule(EP_MAIN_WINDOW_DECORATOR_KEY);
+    if (epMainWindowModules) {
+      for (const epMainWindowModule of epMainWindowModules) {
+        await openWindow(epMainWindowModule);
+      }
+    }
   }
 }
