@@ -66,18 +66,19 @@ export class BaseWindow {
   }
 
   /**
+   * 创建窗口之前
+   */
+  onBeforeCreate() {}
+
+  /**
    * 初始化窗口
    */
-  async onCreate(): Promise<number> {
-    return this.create();
-  }
+  onCreate(webContentsId: number) {}
 
   /**
    * 窗口关闭
    */
-  onClose(webContentsId?: number) {
-    this.close(webContentsId);
-  }
+  onClose(webContentsId?: number) {}
 
   /**
    * 关闭所有窗口
@@ -89,7 +90,9 @@ export class BaseWindow {
   /**
    * 开始创建窗口
    */
-  private async create(): Promise<number> {
+  async create(): Promise<number> {
+    this.onBeforeCreate();
+
     let item: BrowserWindow;
     if (this.multiWindow) {
       item = await createWindow(this.url, this.options);
@@ -111,6 +114,8 @@ export class BaseWindow {
       `,
       true,
     );
+
+    this.onCreate(item.webContents.id);
     return item.webContents.id;
   }
 
@@ -118,7 +123,7 @@ export class BaseWindow {
    * 关闭窗口
    * @private
    */
-  private close(webContentsId?: number) {
+  close(webContentsId?: number) {
     if (this.multiWindow) {
       const index = this.multiWindows.findIndex(
         (w) => w.webContents.id === webContentsId,
@@ -127,11 +132,15 @@ export class BaseWindow {
         const browserWindow = this.multiWindows[index];
         browserWindow.close();
         this.multiWindows.splice(index, 1);
+        this.onClose(webContentsId);
       }
     } else {
-      this.currentWindow.close();
-      this.currentWindow = undefined;
-      this.initialized = false;
+      if (this.currentWindow) {
+        this.currentWindow.close();
+        this.currentWindow = undefined;
+        this.initialized = false;
+        this.onClose();
+      }
     }
   }
 
@@ -139,14 +148,20 @@ export class BaseWindow {
    * 关闭所有窗口
    * @private
    */
-  private closeAll() {
+  closeAll() {
     if (this.multiWindow) {
-      this.multiWindows.forEach((w) => w.close());
-      this.multiWindows = [];
+      if (this.multiWindows.length > 0) {
+        this.multiWindows.forEach((w) => w.close());
+        this.multiWindows = [];
+        this.onCloseAll();
+      }
     } else {
-      this.currentWindow?.close();
-      this.currentWindow = undefined;
-      this.initialized = false;
+      if (this.currentWindow) {
+        this.currentWindow.close();
+        this.currentWindow = undefined;
+        this.initialized = false;
+        this.onCloseAll();
+      }
     }
   }
 

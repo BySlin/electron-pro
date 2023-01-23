@@ -15,11 +15,10 @@ export class TestMainWindow extends BaseWindow {
     }, 1000);
   }
 
-  onCreate() {
+  onBeforeCreate() {
     this.initParams({
       url: "app://./html/index.html",
     });
-    return super.onCreate();
   }
 
   @EpSendRenderer()

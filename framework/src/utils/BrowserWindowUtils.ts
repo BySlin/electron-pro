@@ -42,7 +42,7 @@ export const openWindow = async (
     epWindowModule as any,
   )) as BaseWindow;
 
-  return await epWindow.onCreate();
+  return await epWindow.create();
 };
 
 /**
@@ -58,7 +58,7 @@ export const closeWindow = async (
     epWindowModule as any,
   )) as BaseWindow;
 
-  epWindow.onClose(webContentsId);
+  epWindow.close(webContentsId);
 };
 
 /**
@@ -72,5 +72,5 @@ export const closeAllWindow = async (
     epWindowModule as any,
   )) as BaseWindow;
 
-  epWindow.onCloseAll();
+  epWindow.closeAll();
 };
