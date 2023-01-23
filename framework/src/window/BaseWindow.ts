@@ -108,6 +108,14 @@ export class BaseWindow {
       }
     }
 
+    // item.once('close', () => {
+    //   console.log('close');
+    // });
+    item.once('closed', () => {
+      // console.log('closed');
+      this.onClose(this.multiWindow ? item.webContents.id : undefined);
+    });
+
     await item.webContents.executeJavaScript(
       `
       window.epWindowName = '${getProviderName(this)}';
