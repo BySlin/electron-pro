@@ -206,11 +206,11 @@ export class BaseWindow {
     }
   }
 
-  show() {
+  show(webContentsId?: number) {
     this.currentWindow.show();
   }
 
-  hide() {
+  hide(webContentsId?: number) {
     this.currentWindow.hide();
   }
 }

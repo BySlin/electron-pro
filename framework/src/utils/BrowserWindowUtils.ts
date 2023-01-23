@@ -12,6 +12,7 @@ export const createWindow = async (
   url: string,
   options: BrowserWindowConstructorOptions = {},
 ) => {
+  const defaultShow = options.show == undefined;
   options.show = options.show ?? false;
   options.webPreferences = options.webPreferences ?? {};
   options.webPreferences.contextIsolation =
@@ -22,7 +23,7 @@ export const createWindow = async (
   const win = new BrowserWindow(options);
   await win.loadURL(url);
 
-  if (!options.show) {
+  if (!defaultShow) {
     win.once('ready-to-show', () => {
       win.show();
     });
