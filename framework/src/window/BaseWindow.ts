@@ -174,7 +174,11 @@ export class BaseWindow {
   closeAll() {
     if (this.multiWindow) {
       if (this.multiWindows.length > 0) {
-        this.multiWindows.forEach((w) => w.close());
+        this.multiWindows.forEach((w) => {
+          if (!w.isDestroyed()) {
+            w.close();
+          }
+        });
         this.onCloseAll();
       }
     } else {
