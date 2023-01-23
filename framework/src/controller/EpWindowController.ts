@@ -5,7 +5,7 @@ import { closeAllWindow, closeWindow, openWindow } from '../utils';
 export class EpWindowController {
   @EpHandler()
   async openWindow(windowName: string) {
-    await openWindow(windowName);
+    return await openWindow(windowName);
   }
 
   @EpHandler()
