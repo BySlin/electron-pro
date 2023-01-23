@@ -14,8 +14,9 @@ import {
   getAllIpcHandleChannel,
   getIpcRendererSendChannelName,
 } from '../utils';
-import { BrowserWindow, ipcMain } from 'electron';
+import { ipcMain } from 'electron';
 import { EP_SEND_RENDERER_KEY } from '../constant';
+import { BaseWindow } from '../window';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
@@ -78,31 +79,26 @@ export class IpcMainWorker {
     this.midwayDecoratorService.registerMethodHandler(
       EP_SEND_RENDERER_KEY,
       ({ target, metadata }) => {
-        const { windowPropertyName } = metadata as {
-          once: boolean;
-          windowPropertyName: string;
-        };
-
         return {
           around: async (joinPoint: JoinPoint) => {
             // 执行原方法
             const result = await joinPoint.proceed(...joinPoint.args);
 
-            const targetWindow = joinPoint.target[windowPropertyName];
-            if (targetWindow) {
-              if (
-                targetWindow?.constructor?.name === 'BrowserWindow' ||
-                targetWindow?.constructor?.name === 'BrowserView'
-              ) {
-                (targetWindow as BrowserWindow).webContents.send(
-                  getIpcRendererSendChannelName(
-                    target,
-                    joinPoint.methodName,
-                    metadata,
-                  ),
-                  result,
-                );
-              }
+            const targetWindow = joinPoint.target;
+            //判断是否继承BaseWindow
+            if (BaseWindow.prototype.isPrototypeOf(targetWindow)) {
+              const currentWindow = (
+                targetWindow as BaseWindow
+              ).getCurrentWindow();
+
+              currentWindow.webContents.send(
+                getIpcRendererSendChannelName(
+                  target,
+                  joinPoint.methodName,
+                  metadata,
+                ),
+                result,
+              );
             }
 
             // 返回执行结果

@@ -20,9 +20,7 @@ export class TestMainWindow extends BaseWindow {
     super.onCreate();
   }
 
-  @EpSendRenderer({
-    windowPropertyName: "currentWindow",
-  })
+  @EpSendRenderer()
   async test() {
     return this.testService.test();
   }

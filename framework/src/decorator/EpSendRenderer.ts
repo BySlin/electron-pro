@@ -4,10 +4,7 @@ import { EP_SEND_RENDERER_KEY } from '../constant';
 /**
  * send ipcRenderer in
  */
-export function EpSendRenderer(options: {
-  once?: boolean;
-  windowPropertyName: string;
-}): MethodDecorator {
+export function EpSendRenderer(options?: { once?: boolean }): MethodDecorator {
   options = { once: false, ...options };
 
   return createCustomMethodDecorator(
