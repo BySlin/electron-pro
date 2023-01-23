@@ -100,6 +100,7 @@ export class BaseWindow {
     } else {
       if (this.initialized) {
         this.currentWindow.focus();
+        return this.currentWindow.webContents.id;
       } else {
         item = await createWindow(this.url, this.options);
         this.currentWindow = item;
