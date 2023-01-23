@@ -135,14 +135,12 @@ export class BaseWindow {
     });
 
     item.once('closed', () => {
-      // console.log('closed');
       if (this.multiWindow) {
-        const index = this.multiWindows.findIndex(
-          (w) => w.webContents.id === webContentsId,
-        );
-        if (index != -1) {
-          this.multiWindows.splice(index, 1);
-        }
+        this.multiWindows.forEach((value, index) => {
+          if (value.isDestroyed()) {
+            this.multiWindows.splice(index, 1);
+          }
+        });
       } else {
         if (this.currentWindow) {
           this.id = undefined;
@@ -177,7 +175,6 @@ export class BaseWindow {
     if (this.multiWindow) {
       if (this.multiWindows.length > 0) {
         this.multiWindows.forEach((w) => w.close());
-        this.multiWindows = [];
         this.onCloseAll();
       }
     } else {
