@@ -69,6 +69,13 @@ export class BaseWindow {
   }
 
   /**
+   * 关闭所有窗口
+   */
+  onCloseAll() {
+    this.closeAll();
+  }
+
+  /**
    * 开始创建窗口
    */
   private async create(): Promise<number> {
@@ -89,7 +96,7 @@ export class BaseWindow {
     await item.webContents.executeJavaScript(
       `
       window.epWindowName = '${getProviderName(this)}';
-      window.epWebContentId = '${item.webContents.id}';
+      window.epWebContentsId = ${item.webContents.id};
       `,
       true,
     );
@@ -110,6 +117,21 @@ export class BaseWindow {
         browserWindow.close();
         this.multiWindows.splice(index, 1);
       }
+    } else {
+      this.currentWindow.close();
+      this.currentWindow = undefined;
+      this.initialized = false;
+    }
+  }
+
+  /**
+   * 关闭所有窗口
+   * @private
+   */
+  private closeAll() {
+    if (this.multiWindow) {
+      this.multiWindows.forEach((w) => w.close());
+      this.multiWindows = [];
     } else {
       this.currentWindow.close();
       this.currentWindow = undefined;

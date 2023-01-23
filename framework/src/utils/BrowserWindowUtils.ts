@@ -60,3 +60,17 @@ export const closeWindow = async (
 
   epWindow.onClose(webContentsId);
 };
+
+/**
+ * 关闭所有窗口
+ * @param epWindowModule
+ */
+export const closeAllWindow = async (
+  epWindowModule: typeof BaseWindow | string,
+) => {
+  const epWindow = (await getCurrentApplicationContext().getAsync(
+    epWindowModule as any,
+  )) as BaseWindow;
+
+  epWindow.onCloseAll();
+};

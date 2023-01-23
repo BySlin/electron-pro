@@ -3,10 +3,11 @@ import { Autoload } from "@midwayjs/core";
 
 @EpWindow()
 @Autoload()
-export class TestWindow extends BaseWindow {
+export class TestMultiWindow extends BaseWindow {
   onCreate() {
     this.initParams({
-      url: "app://./html/test.html",
+      url: "app://./html/testMulti.html",
+      multiWindow: true,
     });
     return super.onCreate();
   }

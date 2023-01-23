@@ -1,5 +1,5 @@
 import { EpController, EpHandler } from '../decorator';
-import { closeWindow, openWindow } from '../utils';
+import { closeAllWindow, closeWindow, openWindow } from '../utils';
 
 @EpController()
 export class EpWindowController {
@@ -11,5 +11,10 @@ export class EpWindowController {
   @EpHandler()
   async closeWindow(windowName: string, webContentsId?: number) {
     await closeWindow(windowName, webContentsId);
+  }
+
+  @EpHandler()
+  async closeAllWindow(windowName: string) {
+    await closeAllWindow(windowName);
   }
 }
