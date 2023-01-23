@@ -16,9 +16,13 @@ export const createWindow = (
 
   const win = new BrowserWindow(options);
   win.loadURL(url);
-  win.once('ready-to-show', () => {
-    win.show();
-  });
+
+  if (!options.show) {
+    win.once('ready-to-show', () => {
+      win.show();
+    });
+  }
+
   return win;
 };
 
