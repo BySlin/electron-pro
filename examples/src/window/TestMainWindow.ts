@@ -1,9 +1,4 @@
-import {
-  BaseWindow,
-  EpMainWindow,
-  EpSendRenderer,
-  showWindow,
-} from "electron-pro";
+import { BaseWindow, EpMainWindow, EpSendRenderer } from "electron-pro";
 import { Autoload, Init, Inject } from "@midwayjs/core";
 import { TestService } from "../services/TestService";
 
@@ -16,7 +11,7 @@ export class TestMainWindow extends BaseWindow {
   @Init()
   async init() {
     setInterval(() => {
-      showWindow(this.getCurrentWindow().webContents.id);
+      this.test();
     }, 1000);
   }
 
