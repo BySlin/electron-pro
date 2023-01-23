@@ -1,11 +1,14 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { createWindow } from '../utils';
+import { getProviderName } from '@midwayjs/core';
 
 export class BaseWindow {
   private currentWindow: BrowserWindow;
   private url: string;
   private options: BrowserWindowConstructorOptions;
   private multiWindow: boolean = false;
+  private multiWindows: BrowserWindow[] = [];
+
   private initialized = false;
 
   setUrl(url: string) {
@@ -54,38 +57,64 @@ export class BaseWindow {
   /**
    * 初始化窗口
    */
-  onCreate() {
-    this.create();
+  async onCreate(): Promise<number> {
+    return this.create();
   }
 
   /**
    * 窗口关闭
    */
-  onClose() {
-    this.close();
+  onClose(webContentsId?: number) {
+    this.close(webContentsId);
   }
 
   /**
    * 开始创建窗口
    */
-  private create() {
-    if (this.initialized) {
-      this.currentWindow.focus();
-      return;
+  private async create(): Promise<number> {
+    let item: BrowserWindow;
+    if (this.multiWindow) {
+      item = await createWindow(this.url, this.options);
+      this.multiWindows.push(item);
+    } else {
+      if (this.initialized) {
+        this.currentWindow.focus();
+      } else {
+        item = await createWindow(this.url, this.options);
+        this.currentWindow = item;
+        this.initialized = true;
+      }
     }
 
-    this.currentWindow = createWindow(this.url, this.options);
-    this.initialized = true;
+    await item.webContents.executeJavaScript(
+      `
+      window.epWindowName = '${getProviderName(this)}';
+      window.epWebContentId = '${item.webContents.id}';
+      `,
+      true,
+    );
+    return item.webContents.id;
   }
 
   /**
    * 关闭窗口
    * @private
    */
-  private close() {
-    this.currentWindow.close();
-    this.currentWindow = undefined;
-    this.initialized = false;
+  private close(webContentsId?: number) {
+    if (this.multiWindow) {
+      const index = this.multiWindows.findIndex(
+        (w) => w.webContents.id === webContentsId,
+      );
+      if (index != -1) {
+        const browserWindow = this.multiWindows[index];
+        browserWindow.close();
+        this.multiWindows.splice(index, 1);
+      }
+    } else {
+      this.currentWindow.close();
+      this.currentWindow = undefined;
+      this.initialized = false;
+    }
   }
 
   show() {

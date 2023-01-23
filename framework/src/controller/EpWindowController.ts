@@ -5,11 +5,11 @@ import { closeWindow, openWindow } from '../utils';
 export class EpWindowController {
   @EpHandler()
   async openWindow(windowName: string) {
-    openWindow(windowName);
+    await openWindow(windowName);
   }
 
   @EpHandler()
-  async closeWindow(windowName: string) {
-    closeWindow(windowName);
+  async closeWindow(windowName: string, webContentsId?: number) {
+    await closeWindow(windowName, webContentsId);
   }
 }

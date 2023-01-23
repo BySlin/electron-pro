@@ -7,7 +7,8 @@ export class TestWindow extends BaseWindow {
   onCreate() {
     this.initParams({
       url: "app://./html/test.html",
+      multiWindow: true,
     });
-    super.onCreate();
+    return super.onCreate();
   }
 }

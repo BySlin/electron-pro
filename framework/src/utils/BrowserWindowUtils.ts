@@ -8,7 +8,7 @@ import { getCurrentApplicationContext } from '@midwayjs/core';
  * @param url
  * @param options
  */
-export const createWindow = (
+export const createWindow = async (
   url: string,
   options: BrowserWindowConstructorOptions = {},
 ) => {
@@ -20,7 +20,7 @@ export const createWindow = (
     options.webPreferences.preload ?? PRELOAD_JS_PATH;
 
   const win = new BrowserWindow(options);
-  win.loadURL(url);
+  await win.loadURL(url);
 
   if (!options.show) {
     win.once('ready-to-show', () => {
@@ -35,22 +35,28 @@ export const createWindow = (
  * 打开窗口
  * @param epWindowModule
  */
-export const openWindow = (epWindowModule: typeof BaseWindow | string) => {
-  getCurrentApplicationContext()
-    .getAsync(epWindowModule as any)
-    .then((epWindow: BaseWindow) => {
-      epWindow.onCreate();
-    });
+export const openWindow = async (
+  epWindowModule: typeof BaseWindow | string,
+) => {
+  const epWindow = (await getCurrentApplicationContext().getAsync(
+    epWindowModule as any,
+  )) as BaseWindow;
+
+  return await epWindow.onCreate();
 };
 
 /**
  * 关闭窗口
  * @param epWindowModule
+ * @param webContentsId webContentsId
  */
-export const closeWindow = (epWindowModule: typeof BaseWindow | string) => {
-  getCurrentApplicationContext()
-    .getAsync(epWindowModule as any)
-    .then((epWindow: BaseWindow) => {
-      epWindow.onClose();
-    });
+export const closeWindow = async (
+  epWindowModule: typeof BaseWindow | string,
+  webContentsId?: number,
+) => {
+  const epWindow = (await getCurrentApplicationContext().getAsync(
+    epWindowModule as any,
+  )) as BaseWindow;
+
+  epWindow.onClose(webContentsId);
 };
