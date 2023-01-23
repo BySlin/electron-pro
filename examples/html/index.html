@@ -6,17 +6,18 @@
 </head>
 <body>
 <h1>Electron-Pro测试</h1>
-<br/>
-<button onclick="ep.test.test().then(console.log)">测试与主进程通讯</button>
-<br/>
+<button onclick="ep.test.test().then(alert)">测试与主进程通讯</button>
+<br/><br/>
 <button id="onMainEvent" onclick="onMainEvent(this)">监听主进程返回</button>
-<br/>
+<br/><br/>
 <button onclick="removeMainEvent()">移除主进程监听</button>
-<br/>
+<br/><br/>
 <button onclick="ep.epWindow.openWindow('testWindow')">打开新窗口</button>
-<br/>
+<br/><br/>
+<button onclick="ep.epWindow.closeWindow('testWindow')">关闭新窗口</button>
+<br/><br/>
 <button onclick="ep.epWindow.openWindow('testMultiWindow')">打开新窗口(多窗口模式)</button>
-<br/>
+<br/><br/>
 <button onclick="ep.epWindow.closeAllWindow('testMultiWindow')">关闭所有窗口(多窗口模式)</button>
 </body>
 <script>
