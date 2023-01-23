@@ -3,6 +3,11 @@ import { PRELOAD_JS_PATH } from '../constant';
 import { BaseWindow } from '../window';
 import { getCurrentApplicationContext } from '@midwayjs/core';
 
+/**
+ * 创建window
+ * @param url
+ * @param options
+ */
 export const createWindow = (
   url: string,
   options: BrowserWindowConstructorOptions = {},

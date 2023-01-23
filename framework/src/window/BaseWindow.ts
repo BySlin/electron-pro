@@ -5,6 +5,7 @@ export class BaseWindow {
   private currentWindow: BrowserWindow;
   private url: string;
   private options: BrowserWindowConstructorOptions;
+  private initialized = false;
 
   setUrl(url: string) {
     this.url = url;
@@ -47,10 +48,28 @@ export class BaseWindow {
    * 开始创建窗口
    */
   private create() {
+    if (this.initialized) {
+      this.currentWindow.focus();
+      return;
+    }
+
     this.currentWindow = createWindow(this.url, this.options);
+    this.initialized = true;
   }
 
+  /**
+   * 关闭窗口
+   * @private
+   */
   private close() {
     this.currentWindow.close();
+  }
+
+  show() {
+    this.currentWindow.show();
+  }
+
+  hide() {
+    this.currentWindow.hide();
   }
 }
