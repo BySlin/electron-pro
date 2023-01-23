@@ -53,7 +53,7 @@ export class IpcMainWorker {
             if (printLog) {
               this.logger.info(
                 `触发${channelName}${
-                  data?.length > 0 ? `,${JSON.stringify(data)}` : ''
+                  data?.length > 0 ? `，参数：${JSON.stringify(data)}` : ''
                 }`,
               );
             }
