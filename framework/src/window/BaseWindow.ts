@@ -63,6 +63,8 @@ export class BaseWindow {
    */
   private close() {
     this.currentWindow.close();
+    this.currentWindow = undefined;
+    this.initialized = false;
   }
 
   show() {
