@@ -88,6 +88,25 @@ export class BaseWindow {
   }
 
   /**
+   * 仅多窗口模式支持
+   * @param webContentsId
+   */
+  getWindowByWebContentsId(webContentsId: number): BrowserWindow | undefined {
+    if (!this.multiWindow) {
+      throw new Error('仅多窗口模式下支持');
+    } else {
+      const index = this.multiWindows.findIndex(
+        (w) => w.webContents.id === webContentsId,
+      );
+      if (index != -1) {
+        return this.multiWindows[index];
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
    * 开始创建窗口
    */
   async create(): Promise<number> {
