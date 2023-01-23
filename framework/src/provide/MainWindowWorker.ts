@@ -20,11 +20,11 @@ export class MainWindowWorker {
   logger: ILogger;
 
   @Init()
-  init() {
+  async init() {
     const epMainWindowModules = listModule(EP_MAIN_WINDOW_DECORATOR_KEY);
     if (epMainWindowModules) {
       for (const epMainWindowModule of epMainWindowModules) {
-        this.openMainWindow(epMainWindowModule);
+        await this.openMainWindow(epMainWindowModule);
       }
     }
   }
@@ -32,7 +32,7 @@ export class MainWindowWorker {
   /**
    * 打开主窗口
    */
-  openMainWindow(epMainWindowModule: typeof BaseWindow) {
-    openWindow(epMainWindowModule);
+  async openMainWindow(epMainWindowModule: typeof BaseWindow) {
+    await openWindow(epMainWindowModule);
   }
 }

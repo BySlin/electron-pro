@@ -27,6 +27,10 @@ export class BaseWindow {
     return this.multiWindow;
   }
 
+  getMultiWindows() {
+    return this.multiWindows;
+  }
+
   /**
    * 初始化参数
    * @param params
