@@ -68,7 +68,7 @@ export class BaseWindow {
   /**
    * 创建窗口之前
    */
-  onBeforeCreate() {}
+  onInit() {}
 
   /**
    * 初始化窗口
@@ -79,6 +79,13 @@ export class BaseWindow {
    * 窗口关闭
    */
   onClose(webContentsId?: number) {}
+
+  /**
+   * 窗口关闭
+   */
+  onClosed(webContentsId?: number) {}
+
+  onAlwaysTopChanged(isAlwaysOnTop: boolean, webContentsId?: number) {}
 
   /**
    * 关闭所有窗口
@@ -110,7 +117,7 @@ export class BaseWindow {
    * 开始创建窗口
    */
   async create(): Promise<number> {
-    this.onBeforeCreate();
+    this.onInit();
 
     let item: BrowserWindow;
     if (this.multiWindow) {
@@ -128,14 +135,20 @@ export class BaseWindow {
     }
 
     const webContentsId = item.webContents.id;
-    // item.once('close', () => {
-    //   console.log('close');
-    // });
+
+    item.on('closed', () => {
+      // console.log('close');
+      this.onClose(this.multiWindow ? webContentsId : undefined);
+    });
 
     item.once('closed', () => {
       // console.log('closed');
-      this.onClose(this.multiWindow ? webContentsId : undefined);
+      this.onClosed(this.multiWindow ? webContentsId : undefined);
     });
+
+    item.on('always-on-top-changed', (e, isAlwaysOnTop) =>
+      this.onAlwaysTopChanged(isAlwaysOnTop, webContentsId),
+    );
 
     await item.webContents.executeJavaScript(
       `
@@ -162,14 +175,12 @@ export class BaseWindow {
         const browserWindow = this.multiWindows[index];
         browserWindow.close();
         this.multiWindows.splice(index, 1);
-        this.onClose(webContentsId);
       }
     } else {
       if (this.currentWindow) {
         this.currentWindow.close();
         this.currentWindow = undefined;
         this.initialized = false;
-        this.onClose();
       }
     }
   }

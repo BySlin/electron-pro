@@ -15,7 +15,7 @@ export class TestMainWindow extends BaseWindow {
     }, 1000);
   }
 
-  onBeforeCreate() {
+  onInit() {
     this.initParams({
       url: "app://./html/index.html",
     });
