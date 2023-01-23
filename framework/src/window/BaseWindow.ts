@@ -174,12 +174,20 @@ export class BaseWindow {
   closeAll() {
     if (this.multiWindow) {
       if (this.multiWindows.length > 0) {
+        const promiseCloseWindows = [];
+
         this.multiWindows.forEach((w) => {
-          if (!w.isDestroyed()) {
-            w.close();
-          }
+          promiseCloseWindows.push(
+            new Promise<void>((resolve) => {
+              w.close();
+              resolve();
+            }),
+          );
         });
-        this.onCloseAll();
+
+        Promise.all(promiseCloseWindows).then(() => {
+          this.onCloseAll();
+        });
       }
     } else {
       this.onlyMultiError();
