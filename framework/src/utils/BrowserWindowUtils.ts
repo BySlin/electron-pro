@@ -67,7 +67,7 @@ export const closeWindow = async (
  * 关闭所有窗口
  * @param epWindowModule
  */
-export const closeAllWindow = async (
+export const closeAllByWindowName = async (
   epWindowModule: typeof BaseWindow | string,
 ) => {
   const epWindow = (await getCurrentApplicationContext().getAsync(
