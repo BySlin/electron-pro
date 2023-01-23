@@ -10,7 +10,10 @@
 <button onclick="ep.test.test().then(console.log)">测试与主进程通讯</button>
 <br/>
 <button id="onMainEvent" onclick="onMainEvent(this)">监听主进程返回</button>
+<br/>
 <button onclick="removeMainEvent()">移除主进程监听</button>
+<br/>
+<button onclick="ep.epWindow.openWindow('testWindow')">打开新窗口</button>
 </body>
 <script>
   function onMainEvent(target) {
