@@ -91,14 +91,16 @@ export class IpcMainWorker {
                 targetWindow as BaseWindow
               ).getCurrentWindow();
 
-              currentWindow.webContents.send(
-                getIpcRendererSendChannelName(
-                  target,
-                  joinPoint.methodName,
-                  metadata,
-                ),
-                result,
-              );
+              if (currentWindow) {
+                currentWindow.webContents.send(
+                  getIpcRendererSendChannelName(
+                    target,
+                    joinPoint.methodName,
+                    metadata,
+                  ),
+                  result,
+                );
+              }
             }
 
             // 返回执行结果
