@@ -96,14 +96,12 @@ export class BaseWindow {
    */
   onClosed(webContentsId: number) {}
 
-  onAlwaysTopChanged(isAlwaysOnTop: boolean, webContentsId?: number) {}
-
   /**
    * 关闭所有窗口
    */
-  onCloseAll() {
-    this.closeAll();
-  }
+  onCloseAll() {}
+
+  onAlwaysTopChanged(isAlwaysOnTop: boolean, webContentsId?: number) {}
 
   /**
    * 开始创建窗口
@@ -176,14 +174,14 @@ export class BaseWindow {
       if (this.multiWindows.length > 0) {
         const promiseCloseWindows = [];
 
-        this.multiWindows.forEach((w) => {
+        for (const w of this.multiWindows) {
           promiseCloseWindows.push(
             new Promise<void>((resolve) => {
               w.close();
               resolve();
             }),
           );
-        });
+        }
 
         Promise.all(promiseCloseWindows).then(() => {
           this.onCloseAll();
