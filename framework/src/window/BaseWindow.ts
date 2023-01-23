@@ -5,6 +5,7 @@ export class BaseWindow {
   private currentWindow: BrowserWindow;
   private url: string;
   private options: BrowserWindowConstructorOptions;
+  private multiWindow: boolean = false;
   private initialized = false;
 
   setUrl(url: string) {
@@ -15,12 +16,32 @@ export class BaseWindow {
     return this.url;
   }
 
-  setOptions(options: BrowserWindowConstructorOptions) {
-    this.options = options;
-  }
-
   getOptions() {
     return this.options;
+  }
+
+  getMultiWindow() {
+    return this.multiWindow;
+  }
+
+  /**
+   * 初始化参数
+   * @param params
+   * @protected
+   */
+  protected initParams(params: {
+    url: string;
+    options?: BrowserWindowConstructorOptions;
+    multiWindow?: boolean;
+  }) {
+    const { url, options, multiWindow } = {
+      options: {},
+      multiWindow: false,
+      ...params,
+    };
+    this.url = url;
+    this.options = options;
+    this.multiWindow = multiWindow;
   }
 
   /**

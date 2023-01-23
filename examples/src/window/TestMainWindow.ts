@@ -16,7 +16,9 @@ export class TestMainWindow extends BaseWindow {
   }
 
   onCreate() {
-    this.setUrl("app://./html/index.html");
+    this.initParams({
+      url: "app://./html/index.html",
+    });
     super.onCreate();
   }
 

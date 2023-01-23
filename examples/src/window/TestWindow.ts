@@ -5,7 +5,9 @@ import { Autoload } from "@midwayjs/core";
 @Autoload()
 export class TestWindow extends BaseWindow {
   onCreate() {
-    this.setUrl("app://./html/test.html");
+    this.initParams({
+      url: "app://./html/test.html",
+    });
     super.onCreate();
   }
 }
