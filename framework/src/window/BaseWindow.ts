@@ -108,24 +108,26 @@ export class BaseWindow {
       }
     }
 
+    const webContentsId = item.webContents.id;
     // item.once('close', () => {
     //   console.log('close');
     // });
+
     item.once('closed', () => {
       // console.log('closed');
-      this.onClose(this.multiWindow ? item.webContents.id : undefined);
+      this.onClose(this.multiWindow ? webContentsId : undefined);
     });
 
     await item.webContents.executeJavaScript(
       `
       window.epWindowName = '${getProviderName(this)}';
-      window.epWebContentsId = ${item.webContents.id};
+      window.epWebContentsId = ${webContentsId};
       `,
       true,
     );
 
-    this.onCreate(item.webContents.id);
-    return item.webContents.id;
+    this.onCreate(webContentsId);
+    return webContentsId;
   }
 
   /**
