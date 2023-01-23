@@ -26,10 +26,10 @@ export const createWindow = (
  * 打开窗口
  * @param epWindowModule
  */
-export const openWindow = (epWindowModule: typeof BaseWindow) => {
+export const openWindow = (epWindowModule: typeof BaseWindow | string) => {
   getCurrentApplicationContext()
-    .getAsync(epWindowModule)
-    .then((epWindow) => {
+    .getAsync(epWindowModule as any)
+    .then((epWindow: BaseWindow) => {
       epWindow.onCreate();
     });
 };
@@ -38,10 +38,10 @@ export const openWindow = (epWindowModule: typeof BaseWindow) => {
  * 关闭窗口
  * @param epWindowModule
  */
-export const closeWindow = (epWindowModule: typeof BaseWindow) => {
+export const closeWindow = (epWindowModule: typeof BaseWindow | string) => {
   getCurrentApplicationContext()
-    .getAsync(epWindowModule)
-    .then((epWindow) => {
+    .getAsync(epWindowModule as any)
+    .then((epWindow: BaseWindow) => {
       epWindow.onClose();
     });
 };

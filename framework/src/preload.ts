@@ -13,10 +13,14 @@ import { contextBridge, ipcRenderer } from 'electron';
   };
   for (const eventName of eventNames) {
     const [controllerName, methodName] = eventName.split('@');
-    if (api[controllerName] == undefined) {
-      api[controllerName] = {};
+
+    const newControllerName = controllerName.replace('Controller', '');
+
+    if (api[newControllerName] == undefined) {
+      api[newControllerName] = {};
     }
-    api[controllerName][methodName] = (...args: any[]) =>
+
+    api[newControllerName][methodName] = (...args: any[]) =>
       ipcRenderer.invoke(eventName, ...args);
   }
   for (const onEventName of onEventNames) {

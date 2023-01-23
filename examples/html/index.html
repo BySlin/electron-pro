@@ -7,14 +7,12 @@
 <body>
 <h1>Electron-Pro测试</h1>
 <br/>
-<button onclick="ep.testController.test().then(console.log)">测试与主进程通讯</button>
+<button onclick="ep.test.test().then(console.log)">测试与主进程通讯</button>
 <br/>
 <button id="onMainEvent" onclick="onMainEvent(this)">监听主进程返回</button>
 <button onclick="removeMainEvent()">移除主进程监听</button>
 </body>
 <script>
-  let testCallback = undefined;
-
   function onMainEvent(target) {
     removeMainEvent();
     ep.testMainWindow.onTest((e, message) => {
