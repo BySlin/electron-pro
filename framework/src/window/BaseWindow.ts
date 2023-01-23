@@ -133,7 +133,7 @@ export class BaseWindow {
       this.multiWindows.forEach((w) => w.close());
       this.multiWindows = [];
     } else {
-      this.currentWindow.close();
+      this.currentWindow?.close();
       this.currentWindow = undefined;
       this.initialized = false;
     }
