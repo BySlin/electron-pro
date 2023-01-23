@@ -15,8 +15,8 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeWindow(windowName: string, webContentsId?: number) {
-    await closeWindow(windowName, webContentsId);
+  async closeWindow(webContentsId: number) {
+    closeWindow(webContentsId);
   }
 
   @EpHandler()

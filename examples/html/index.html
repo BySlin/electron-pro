@@ -40,5 +40,17 @@
   function removeMainEvent() {
     ep.testMainWindow.removeAllTest();
   }
+
+  let newWindowId;
+
+  function openWindow() {
+    ep.epWindow.openWindow('testWindow').then(id => {
+      newWindowId = id;
+    });
+  }
+
+  function closeWindow() {
+    ep.epWindow.closeWindow(newWindowId);
+  }
 </script>
 </html>

@@ -34,6 +34,14 @@ export const createWindow = async (
 };
 
 /**
+ * 根据id查找window
+ * @param webContentsId
+ */
+export const findWindowById = (webContentsId: number) => {
+  return BrowserWindow.fromId(webContentsId);
+};
+
+/**
  * 打开窗口
  * @param epWindowModule
  */
@@ -45,22 +53,6 @@ export const openWindow = async (
   )) as BaseWindow;
 
   return await epWindow.create();
-};
-
-/**
- * 关闭窗口
- * @param epWindowModule
- * @param webContentsId webContentsId
- */
-export const closeWindow = async (
-  epWindowModule: typeof BaseWindow | string,
-  webContentsId?: number,
-) => {
-  const epWindow = (await getCurrentApplicationContext().getAsync(
-    epWindowModule as any,
-  )) as BaseWindow;
-
-  epWindow.close(webContentsId);
 };
 
 /**
@@ -77,14 +69,26 @@ export const closeAllByWindowName = async (
   epWindow.closeAll();
 };
 
-export const findWindowByWebContentsId = (webContentsId: number) => {
-  return BrowserWindow.fromId(webContentsId);
+/**
+ * 关闭窗口
+ * @param webContentsId webContentsId
+ */
+export const closeWindow = (webContentsId: number) => {
+  findWindowById(webContentsId)?.close();
 };
 
+/**
+ * 显示window
+ * @param webContentsId
+ */
 export const showWindow = (webContentsId: number) => {
-  BrowserWindow.fromId(webContentsId)?.show();
+  findWindowById(webContentsId)?.show();
 };
 
+/**
+ * 隐藏window
+ * @param webContentsId
+ */
 export const hideWindow = (webContentsId: number) => {
-  BrowserWindow.fromId(webContentsId)?.hide();
+  findWindowById(webContentsId)?.hide();
 };
