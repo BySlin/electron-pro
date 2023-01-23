@@ -7,6 +7,7 @@ import {
 import {
   EP_CONTROLLER_DECORATOR_KEY,
   EP_HANDLER_DECORATOR_KEY,
+  EP_MAIN_WINDOW_DECORATOR_KEY,
   EP_SERVICE_DECORATOR_KEY,
   EP_WINDOW_DECORATOR_KEY,
   IPC_EVENT_SEPARATOR,
@@ -28,6 +29,7 @@ export const getAllIpcHandleChannel = () => {
     ...listModule(EP_CONTROLLER_DECORATOR_KEY),
     ...listModule(EP_SERVICE_DECORATOR_KEY),
     ...listModule(EP_WINDOW_DECORATOR_KEY),
+    ...listModule(EP_MAIN_WINDOW_DECORATOR_KEY),
   ];
 
   for (const epController of epControllers) {
@@ -66,7 +68,10 @@ export const getAllIpcRendererSendChannel = () => {
     once: boolean;
   }[] = [];
 
-  const epWindows = [...listModule(EP_WINDOW_DECORATOR_KEY)];
+  const epWindows = [
+    ...listModule(EP_WINDOW_DECORATOR_KEY),
+    ...listModule(EP_MAIN_WINDOW_DECORATOR_KEY),
+  ];
 
   for (const epWindow of epWindows) {
     const classMetadataArray = getClassMetadata(

@@ -1,5 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { PRELOAD_JS_PATH } from '../constant';
+import { BaseWindow } from '../window';
+import { getCurrentApplicationContext } from '@midwayjs/core';
 
 export const createWindow = (
   url: string,
@@ -18,4 +20,28 @@ export const createWindow = (
     win.show();
   });
   return win;
+};
+
+/**
+ * 打开窗口
+ * @param epWindowModule
+ */
+export const openWindow = (epWindowModule: typeof BaseWindow) => {
+  getCurrentApplicationContext()
+    .getAsync(epWindowModule)
+    .then((epWindow) => {
+      epWindow.onCreate();
+    });
+};
+
+/**
+ * 关闭窗口
+ * @param epWindowModule
+ */
+export const closeWindow = (epWindowModule: typeof BaseWindow) => {
+  getCurrentApplicationContext()
+    .getAsync(epWindowModule)
+    .then((epWindow) => {
+      epWindow.onClose();
+    });
 };

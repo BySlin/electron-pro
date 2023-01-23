@@ -27,11 +27,15 @@ export class EpConfiguration implements ILifeCycle {
   @Inject()
   ipcMainWorker: IpcMainWorker;
 
+  /**
+   * 配置文件加载完成
+   * @param container
+   */
   async onConfigLoad(container: IMidwayContainer): Promise<any> {
     this.logger.info('[Electron-Pro] 配置加载完成');
+
     const configService = await container.getAsync(MidwayConfigService);
     const epConfig = configService.getConfiguration('ep') as EpConfig;
-
     if (epConfig.singletonProcess) {
       // 控制单例进程
       const isSingle = app.requestSingleInstanceLock();
@@ -41,9 +45,11 @@ export class EpConfiguration implements ILifeCycle {
     }
   }
 
+  /**
+   * 服务加载完成
+   * @param container
+   */
   async onReady(container: IMidwayContainer) {
     this.logger.info('[Electron-Pro] 框架启动完成');
-    this.ipcMainWorker.registerIpcHandle();
-    this.ipcMainWorker.registerIpcRendererSend();
   }
 }

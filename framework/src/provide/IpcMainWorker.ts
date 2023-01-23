@@ -1,6 +1,8 @@
 import {
+  Autoload,
   getCurrentApplicationContext,
   ILogger,
+  Init,
   Inject,
   JoinPoint,
   MidwayDecoratorService,
@@ -17,11 +19,18 @@ import { EP_SEND_RENDERER_KEY } from '../constant';
 
 @Provide()
 @Scope(ScopeEnum.Singleton)
+@Autoload()
 export class IpcMainWorker {
   @Inject()
   logger: ILogger;
   @Inject()
   midwayDecoratorService: MidwayDecoratorService;
+
+  @Init()
+  init() {
+    this.registerIpcHandle();
+    this.registerIpcRendererSend();
+  }
 
   /**
    * 注册ipcHandle
@@ -61,6 +70,9 @@ export class IpcMainWorker {
     }
   }
 
+  /**
+   * 注册ipcRenderer send 返回装饰器
+   */
   registerIpcRendererSend() {
     // 实现方法装饰器
     this.midwayDecoratorService.registerMethodHandler(

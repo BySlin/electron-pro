@@ -1,23 +1,23 @@
-import { createWindow, EpSendRenderer, EpWindow } from "electron-pro";
+import { BaseWindow, EpMainWindow, EpSendRenderer } from "electron-pro";
 import { Autoload, Init, Inject } from "@midwayjs/core";
 import { TestService } from "../services/TestService";
-import { BrowserWindow } from "electron";
 
-@EpWindow()
+@EpMainWindow()
 @Autoload()
-export class TestMainWindow {
+export class TestMainWindow extends BaseWindow {
   @Inject()
   testService: TestService;
 
-  currentWindow: BrowserWindow;
-
   @Init()
   async init() {
-    this.currentWindow = createWindow("app://./html/index.html");
-
     setInterval(() => {
       this.test();
     }, 1000);
+  }
+
+  onCreate() {
+    this.setUrl("app://./html/index.html");
+    super.onCreate();
   }
 
   @EpSendRenderer({
