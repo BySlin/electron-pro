@@ -66,7 +66,7 @@ export const closeAllByWindowName = async (
     epWindowModule as any,
   )) as BaseWindow;
 
-  epWindow.closeAll();
+  return epWindow.closeAll();
 };
 
 /**

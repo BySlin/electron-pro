@@ -21,7 +21,7 @@ export class EpWindowController {
 
   @EpHandler()
   async closeAllByWindowName(windowName: string) {
-    await closeAllByWindowName(windowName);
+    return await closeAllByWindowName(windowName);
   }
 
   @EpHandler()

@@ -171,10 +171,12 @@ export class BaseWindow {
    */
   closeAll() {
     if (this.multiWindow) {
+      const result: number[] = [];
       if (this.multiWindows.length > 0) {
         const promiseCloseWindows = [];
 
         for (const w of this.multiWindows) {
+          result.push(w.webContents.id);
           promiseCloseWindows.push(
             new Promise<void>((resolve) => {
               w.close();
@@ -187,6 +189,8 @@ export class BaseWindow {
           this.onCloseAll();
         });
       }
+
+      return result;
     } else {
       this.onlyMultiError();
     }
