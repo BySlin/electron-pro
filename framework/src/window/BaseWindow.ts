@@ -10,11 +10,12 @@ export class BaseWindow {
   private multiWindows: BrowserWindow[] = [];
 
   private initialized = false;
+  private id: number;
 
   async setUrl(url: string) {
     this.url = url;
     if (this.multiWindow) {
-      throw new Error('多窗口模式下不支持');
+      this.onlyNoMultiError();
     } else {
       if (this.currentWindow) {
         await this.currentWindow.loadURL(this.url);
@@ -36,6 +37,13 @@ export class BaseWindow {
 
   getMultiWindows() {
     return this.multiWindows;
+  }
+
+  getId() {
+    if (this.multiWindow) {
+      this.onlyNoMultiError();
+    }
+    return this.id;
   }
 
   /**
@@ -62,6 +70,9 @@ export class BaseWindow {
    * 获取当前window
    */
   getCurrentWindow() {
+    if (this.multiWindow) {
+      this.onlyNoMultiError();
+    }
     return this.currentWindow;
   }
 
@@ -126,9 +137,10 @@ export class BaseWindow {
     } else {
       if (this.initialized) {
         this.currentWindow.focus();
-        return this.currentWindow.webContents.id;
+        return this.id;
       } else {
         item = await createWindow(this.url, this.options);
+        this.id = item.webContents.id;
         this.currentWindow = item;
         this.initialized = true;
       }
@@ -197,20 +209,15 @@ export class BaseWindow {
         this.onCloseAll();
       }
     } else {
-      if (this.currentWindow) {
-        this.currentWindow.close();
-        this.currentWindow = undefined;
-        this.initialized = false;
-        this.onCloseAll();
-      }
+      this.onlyMultiError();
     }
   }
 
-  show(webContentsId?: number) {
-    this.currentWindow.show();
+  private onlyMultiError() {
+    throw new Error('仅多窗口模式下支持');
   }
 
-  hide(webContentsId?: number) {
-    this.currentWindow.hide();
+  private onlyNoMultiError() {
+    throw new Error('仅非多窗口模式下支持');
   }
 }

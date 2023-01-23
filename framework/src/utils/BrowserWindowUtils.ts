@@ -76,3 +76,15 @@ export const closeAllWindow = async (
 
   epWindow.closeAll();
 };
+
+export const findWindowByWebContentsId = (webContentsId: number) => {
+  return BrowserWindow.fromId(webContentsId);
+};
+
+export const showWindow = (webContentsId: number) => {
+  BrowserWindow.fromId(webContentsId)?.show();
+};
+
+export const hideWindow = (webContentsId: number) => {
+  BrowserWindow.fromId(webContentsId)?.hide();
+};
