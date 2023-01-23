@@ -10,7 +10,7 @@ import {
 @EpController()
 export class EpWindowController {
   @EpHandler()
-  async openWindow(windowName: string) {
+  async openWindow(windowName: string): Promise<number> {
     return await openWindow(windowName);
   }
 
@@ -20,7 +20,7 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeAllByWindowName(windowName: string) {
+  async closeAllByWindowName(windowName: string): Promise<number[]> {
     return await closeAllByWindowName(windowName);
   }
 
