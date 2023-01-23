@@ -13,6 +13,13 @@ export class BaseWindow {
 
   setUrl(url: string) {
     this.url = url;
+    if (this.multiWindow) {
+      throw new Error('多窗口模式下不支持');
+    } else {
+      if (this.currentWindow) {
+        this.currentWindow.loadURL(this.url);
+      }
+    }
   }
 
   getUrl() {
