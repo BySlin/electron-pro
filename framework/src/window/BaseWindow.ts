@@ -89,12 +89,12 @@ export class BaseWindow {
   /**
    * 窗口关闭
    */
-  onClose(webContentsId?: number) {}
+  onClose(webContentsId: number) {}
 
   /**
    * 窗口关闭
    */
-  onClosed(webContentsId?: number) {}
+  onClosed(webContentsId: number) {}
 
   onAlwaysTopChanged(isAlwaysOnTop: boolean, webContentsId?: number) {}
 
@@ -103,25 +103,6 @@ export class BaseWindow {
    */
   onCloseAll() {
     this.closeAll();
-  }
-
-  /**
-   * 仅多窗口模式支持
-   * @param webContentsId
-   */
-  getWindowByWebContentsId(webContentsId: number): BrowserWindow | undefined {
-    if (!this.multiWindow) {
-      throw new Error('仅多窗口模式下支持');
-    } else {
-      const index = this.multiWindows.findIndex(
-        (w) => w.webContents.id === webContentsId,
-      );
-      if (index != -1) {
-        return this.multiWindows[index];
-      }
-    }
-
-    return undefined;
   }
 
   /**
@@ -150,12 +131,26 @@ export class BaseWindow {
 
     item.on('closed', () => {
       // console.log('close');
-      this.onClose(this.multiWindow ? webContentsId : undefined);
+      this.onClose(webContentsId);
     });
 
     item.once('closed', () => {
       // console.log('closed');
-      this.onClosed(this.multiWindow ? webContentsId : undefined);
+      if (this.multiWindow) {
+        const index = this.multiWindows.findIndex(
+          (w) => w.webContents.id === webContentsId,
+        );
+        if (index != -1) {
+          this.multiWindows.splice(index, 1);
+        }
+      } else {
+        if (this.currentWindow) {
+          this.id = undefined;
+          this.currentWindow = undefined;
+          this.initialized = false;
+        }
+      }
+      this.onClosed(webContentsId);
     });
 
     item.on('always-on-top-changed', (e, isAlwaysOnTop) =>
@@ -172,29 +167,6 @@ export class BaseWindow {
 
     this.onCreate(webContentsId);
     return webContentsId;
-  }
-
-  /**
-   * 关闭窗口
-   * @private
-   */
-  close(webContentsId?: number) {
-    if (this.multiWindow) {
-      const index = this.multiWindows.findIndex(
-        (w) => w.webContents.id === webContentsId,
-      );
-      if (index != -1) {
-        const browserWindow = this.multiWindows[index];
-        browserWindow.close();
-        this.multiWindows.splice(index, 1);
-      }
-    } else {
-      if (this.currentWindow) {
-        this.currentWindow.close();
-        this.currentWindow = undefined;
-        this.initialized = false;
-      }
-    }
   }
 
   /**
