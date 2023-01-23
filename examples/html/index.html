@@ -12,7 +12,7 @@
 <br/><br/>
 <button onclick="removeMainEvent()">移除主进程监听</button>
 <br/><br/>
-<button onclick="ep.epWindow.openWindow('testWindow').then(id=>alert(`新窗口id:${id}`))">打开新窗口</button>
+<button onclick="ep.epWindow.openWindow('testWindow').then(id=>console.log(`新窗口id:${id}`))">打开新窗口</button>
 <br/><br/>
 <button onclick="ep.epWindow.closeWindow('testWindow')">关闭新窗口</button>
 <br/><br/>
