@@ -84,24 +84,24 @@ export class BaseWindow {
   /**
    * 初始化窗口
    */
-  onCreate(webContentsId: number) {}
+  onCreate(id: number) {}
 
   /**
    * 窗口关闭
    */
-  onClose(webContentsId: number) {}
+  onClose(id: number) {}
 
   /**
    * 窗口关闭
    */
-  onClosed(webContentsId: number) {}
+  onClosed(id: number) {}
 
   /**
    * 关闭所有窗口
    */
   onCloseAll() {}
 
-  onAlwaysTopChanged(isAlwaysOnTop: boolean, webContentsId?: number) {}
+  onAlwaysTopChanged(isAlwaysOnTop: boolean, id?: number) {}
 
   /**
    * 开始创建窗口
@@ -119,16 +119,16 @@ export class BaseWindow {
         return this.id;
       } else {
         item = await createWindow(this.url, this.options);
-        this.id = item.webContents.id;
+        this.id = item.id;
         this.currentWindow = item;
         this.initialized = true;
       }
     }
 
-    const webContentsId = item.webContents.id;
+    const id = item.id;
 
     item.on('close', () => {
-      this.onClose(webContentsId);
+      this.onClose(id);
     });
 
     item.once('closed', () => {
@@ -145,11 +145,11 @@ export class BaseWindow {
           this.initialized = false;
         }
       }
-      this.onClosed(webContentsId);
+      this.onClosed(id);
     });
 
     item.on('always-on-top-changed', (e, isAlwaysOnTop) =>
-      this.onAlwaysTopChanged(isAlwaysOnTop, webContentsId),
+      this.onAlwaysTopChanged(isAlwaysOnTop, id),
     );
 
     // Windows Or Linux Only
@@ -195,13 +195,13 @@ export class BaseWindow {
     await item.webContents.executeJavaScript(
       `
       window.epWindowName = '${getProviderName(this)}';
-      window.epWebContentsId = ${webContentsId};
+      window.epWindowId = ${id};
       `,
       true,
     );
 
-    this.onCreate(webContentsId);
-    return webContentsId;
+    this.onCreate(id);
+    return id;
   }
 
   /**
@@ -215,7 +215,7 @@ export class BaseWindow {
         const promiseCloseWindows = [];
 
         for (const w of this.multiWindows) {
-          result.push(w.webContents.id);
+          result.push(w.id);
           promiseCloseWindows.push(
             new Promise<void>((resolve) => {
               w.close();

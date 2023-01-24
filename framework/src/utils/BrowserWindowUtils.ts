@@ -35,10 +35,10 @@ export const createWindow = async (
 
 /**
  * 根据id查找window
- * @param webContentsId
+ * @param id windowId
  */
-export const findWindowById = (webContentsId: number) => {
-  return BrowserWindow.fromId(webContentsId);
+export const findWindowById = (id: number) => {
+  return BrowserWindow.fromId(id);
 };
 
 /**
@@ -71,24 +71,24 @@ export const closeAllByWindowName = async (
 
 /**
  * 关闭窗口
- * @param webContentsId webContentsId
+ * @param id id
  */
-export const closeWindow = (webContentsId: number) => {
-  findWindowById(webContentsId)?.close();
+export const closeWindow = (id: number) => {
+  findWindowById(id)?.close();
 };
 
 /**
  * 显示window
- * @param webContentsId
+ * @param id
  */
-export const showWindow = (webContentsId: number) => {
-  findWindowById(webContentsId)?.show();
+export const showWindow = (id: number) => {
+  findWindowById(id)?.show();
 };
 
 /**
  * 隐藏window
- * @param webContentsId
+ * @param id
  */
-export const hideWindow = (webContentsId: number) => {
-  findWindowById(webContentsId)?.hide();
+export const hideWindow = (id: number) => {
+  findWindowById(id)?.hide();
 };
