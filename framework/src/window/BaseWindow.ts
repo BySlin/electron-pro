@@ -6,20 +6,13 @@ export class BaseWindow {
   private currentWindow: BrowserWindow;
   private url: string;
   private options: BrowserWindowConstructorOptions;
-  private multiWindow: boolean = false;
-  private multiWindows: BrowserWindow[] = [];
 
-  private initialized = false;
   private id: number;
 
   async setUrl(url: string) {
     this.url = url;
-    if (this.multiWindow) {
-      this.onlyNoMultiError();
-    } else {
-      if (this.currentWindow) {
-        await this.currentWindow.loadURL(this.url);
-      }
+    if (this.currentWindow) {
+      await this.currentWindow.loadURL(this.url);
     }
   }
 
@@ -31,18 +24,7 @@ export class BaseWindow {
     return this.options;
   }
 
-  getMultiWindow() {
-    return this.multiWindow;
-  }
-
-  getMultiWindows() {
-    return this.multiWindows;
-  }
-
   getId() {
-    if (this.multiWindow) {
-      this.onlyNoMultiError();
-    }
     return this.id;
   }
 
@@ -54,25 +36,20 @@ export class BaseWindow {
   protected initParams(params: {
     url: string;
     options?: BrowserWindowConstructorOptions;
-    multiWindow?: boolean;
   }) {
-    const { url, options, multiWindow } = {
+    const { url, options } = {
       options: {},
-      multiWindow: false,
       ...params,
     };
     this.url = url;
     this.options = options;
-    this.multiWindow = multiWindow;
+    // this.multiWindow = multiWindow;
   }
 
   /**
    * 获取当前window
    */
   getCurrentWindow() {
-    if (this.multiWindow) {
-      this.onlyNoMultiError();
-    }
     return this.currentWindow;
   }
 
@@ -96,11 +73,6 @@ export class BaseWindow {
    */
   onClosed(id: number) {}
 
-  /**
-   * 关闭所有窗口
-   */
-  onCloseAll() {}
-
   onAlwaysTopChanged(isAlwaysOnTop: boolean, id?: number) {}
 
   /**
@@ -109,21 +81,9 @@ export class BaseWindow {
   async create(): Promise<number> {
     this.onInit();
 
-    let item: BrowserWindow;
-    if (this.multiWindow) {
-      item = await createWindow(this.url, this.options);
-      this.multiWindows.push(item);
-    } else {
-      if (this.initialized) {
-        this.currentWindow.focus();
-        return this.id;
-      } else {
-        item = await createWindow(this.url, this.options);
-        this.id = item.id;
-        this.currentWindow = item;
-        this.initialized = true;
-      }
-    }
+    const item = await createWindow(this.url, this.options);
+    this.id = item.id;
+    this.currentWindow = item;
 
     const id = item.id;
 
@@ -132,18 +92,9 @@ export class BaseWindow {
     });
 
     item.once('closed', () => {
-      if (this.multiWindow) {
-        this.multiWindows.forEach((value, index) => {
-          if (value.isDestroyed()) {
-            this.multiWindows.splice(index, 1);
-          }
-        });
-      } else {
-        if (this.currentWindow) {
-          this.id = undefined;
-          this.currentWindow = undefined;
-          this.initialized = false;
-        }
+      if (this.currentWindow) {
+        this.id = undefined;
+        this.currentWindow = undefined;
       }
       this.onClosed(id);
     });
@@ -202,48 +153,5 @@ export class BaseWindow {
 
     this.onCreate(id);
     return id;
-  }
-
-  /**
-   * 关闭所有窗口
-   * @private
-   */
-  closeAll() {
-    if (this.multiWindow) {
-      const result: number[] = [];
-      if (this.multiWindows.length > 0) {
-        const promiseCloseWindows = [];
-
-        for (const w of this.multiWindows) {
-          result.push(w.id);
-          promiseCloseWindows.push(
-            new Promise<void>((resolve) => {
-              w.close();
-              resolve();
-            }),
-          );
-        }
-
-        Promise.all(promiseCloseWindows).then(() => {
-          this.onCloseAll();
-        });
-      }
-
-      return result;
-    } else {
-      if (this.currentWindow) {
-        this.currentWindow.close();
-        this.onCloseAll();
-      }
-    }
-  }
-
-  //@ts-ignore
-  private onlyMultiError() {
-    throw new Error('仅多窗口模式下支持');
-  }
-
-  private onlyNoMultiError() {
-    throw new Error('仅非多窗口模式下支持');
   }
 }

@@ -48,3 +48,8 @@ export const EP_WINDOW_DECORATOR_KEY = 'ep:window';
  * EpMainWindow装饰器key
  */
 export const EP_MAIN_WINDOW_DECORATOR_KEY = 'ep:main_window';
+
+/**
+ * EpMultiWindow装饰器key
+ */
+export const EP_MULTI_WINDOW_DECORATOR_KEY = 'ep:multi_window';

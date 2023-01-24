@@ -1,13 +1,12 @@
-import { BaseWindow, EpWindow } from "electron-pro";
+import { BaseMultiWindow, EpMultiWindow } from "electron-pro";
 import { Autoload } from "@midwayjs/core";
 
-@EpWindow()
+@EpMultiWindow()
 @Autoload()
-export class TestMultiWindow extends BaseWindow {
+export class TestMultiWindow extends BaseMultiWindow {
   onInit() {
     this.initParams({
       url: "app://./html/testMulti.html",
-      multiWindow: true,
     });
   }
 }

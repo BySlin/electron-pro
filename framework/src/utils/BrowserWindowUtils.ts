@@ -1,7 +1,11 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { PRELOAD_JS_PATH } from '../constant';
-import { BaseWindow } from '../window';
-import { getCurrentApplicationContext } from '@midwayjs/core';
+import { EP_MULTI_WINDOW_DECORATOR_KEY, PRELOAD_JS_PATH } from '../constant';
+import { BaseMultiWindow, BaseWindow } from '../window';
+import {
+  getCurrentApplicationContext,
+  getProviderName,
+  listModule,
+} from '@midwayjs/core';
 
 /**
  * 创建window
@@ -57,16 +61,26 @@ export const openWindow = async (
 
 /**
  * 关闭所有窗口
- * @param epWindowModule
+ * @param epMultiWindowModule
  */
 export const closeAllByWindowName = async (
-  epWindowModule: typeof BaseWindow | string,
+  epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
-  const epWindow = (await getCurrentApplicationContext().getAsync(
-    epWindowModule as any,
-  )) as BaseWindow;
+  const epWindowModules = listModule(
+    EP_MULTI_WINDOW_DECORATOR_KEY,
+    (module) => {
+      return typeof epMultiWindowModule === 'string'
+        ? getProviderName(module) === epMultiWindowModule
+        : module === epMultiWindowModule;
+    },
+  );
 
-  return epWindow.closeAll();
+  if (epWindowModules && epWindowModules.length > 0) {
+    for (const epWindowModule of epWindowModules) {
+      const baseMultiModule = epWindowModule as typeof BaseMultiWindow;
+      baseMultiModule.closeAll();
+    }
+  }
 };
 
 /**

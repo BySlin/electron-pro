@@ -87,21 +87,16 @@ export class IpcMainWorker {
             const targetWindow = joinPoint.target;
             //判断是否继承BaseWindow
             if (BaseWindow.prototype.isPrototypeOf(targetWindow)) {
-              const bWindow = targetWindow as BaseWindow;
+              const baseWindow = targetWindow as BaseWindow;
               const channelName = getIpcRendererSendChannelName(
                 target,
                 joinPoint.methodName,
                 metadata,
               );
-              if (bWindow.getMultiWindow()) {
-                bWindow
-                  .getMultiWindows()
-                  .forEach((w) => w.webContents.send(channelName, result));
-              } else {
-                const currentWindow = bWindow.getCurrentWindow();
-                if (currentWindow) {
-                  currentWindow.webContents.send(channelName, result);
-                }
+
+              const currentWindow = baseWindow.getCurrentWindow();
+              if (currentWindow) {
+                currentWindow.webContents.send(channelName, result);
               }
             }
 
