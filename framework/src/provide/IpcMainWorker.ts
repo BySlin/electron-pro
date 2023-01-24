@@ -15,7 +15,7 @@ import {
   getIpcRendererSendChannelName,
 } from '../utils';
 import { ipcMain } from 'electron';
-import { EP_SEND_RENDERER_KEY } from '../constant';
+import { EP_SEND_TO_RENDERER_KEY } from '../constant';
 import { BaseWindow } from '../window';
 
 @Provide()
@@ -77,7 +77,7 @@ export class IpcMainWorker {
   registerIpcRendererSend() {
     // 实现方法装饰器
     this.midwayDecoratorService.registerMethodHandler(
-      EP_SEND_RENDERER_KEY,
+      EP_SEND_TO_RENDERER_KEY,
       ({ target, metadata }) => {
         return {
           around: async (joinPoint: JoinPoint) => {

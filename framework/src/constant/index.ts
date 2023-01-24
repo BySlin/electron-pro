@@ -27,7 +27,7 @@ export const EP_HANDLER_DECORATOR_KEY = 'ep:ep_handler';
 /**
  * EpSendRenderer装饰器key
  */
-export const EP_SEND_RENDERER_KEY = 'ep:ep_send_renderer';
+export const EP_SEND_TO_RENDERER_KEY = 'ep:ep_send_to_renderer';
 
 /**
  * EpController装饰器key
