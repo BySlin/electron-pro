@@ -43,7 +43,6 @@ export class BaseWindow {
     };
     this.url = url;
     this.options = options;
-    // this.multiWindow = multiWindow;
   }
 
   /**
@@ -79,8 +78,12 @@ export class BaseWindow {
    * 开始创建窗口
    */
   async create(): Promise<number> {
-    this.onInit();
+    if (this.currentWindow != undefined) {
+      this.currentWindow.focus();
+      return;
+    }
 
+    this.onInit();
     const item = await createWindow(this.url, this.options);
     this.id = item.id;
     this.currentWindow = item;
