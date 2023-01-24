@@ -127,7 +127,7 @@ export class BaseWindow {
 
     const webContentsId = item.webContents.id;
 
-    item.on('closed', () => {
+    item.on('close', () => {
       // console.log('close');
       this.onClose(webContentsId);
     });
