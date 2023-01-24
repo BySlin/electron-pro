@@ -231,10 +231,13 @@ export class BaseWindow {
 
       return result;
     } else {
-      this.onlyMultiError();
+      if (this.currentWindow) {
+        this.currentWindow.close();
+      }
     }
   }
 
+  //@ts-ignore
   private onlyMultiError() {
     throw new Error('仅多窗口模式下支持');
   }
