@@ -80,7 +80,7 @@ export class BaseWindow {
   async create(): Promise<number> {
     if (this.currentWindow != undefined) {
       this.currentWindow.focus();
-      return;
+      return this.id;
     }
 
     this.onInit();
