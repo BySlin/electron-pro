@@ -55,6 +55,8 @@ function buildDist() {
     }
   }
 
+  fsExtra.ensureDirSync(absOutputDir);
+
   if (!fsExtra.pathExistsSync(absOutputDir)) {
     fsExtra.mkdirSync(absOutputDir);
   }
