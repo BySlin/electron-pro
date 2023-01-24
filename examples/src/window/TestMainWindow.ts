@@ -1,4 +1,4 @@
-import { BaseWindow, EpMainWindow, EpSendRenderer } from "electron-pro";
+import { BaseWindow, EpMainWindow, EpSendToRenderer } from "electron-pro";
 import { Autoload, Init, Inject } from "@midwayjs/core";
 import { TestService } from "../services/TestService";
 
@@ -21,7 +21,7 @@ export class TestMainWindow extends BaseWindow {
     });
   }
 
-  @EpSendRenderer()
+  @EpSendToRenderer()
   async test() {
     return this.testService.test();
   }

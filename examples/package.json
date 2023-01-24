@@ -18,7 +18,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "electron-pro": "0.0.20"
+    "electron-pro": "0.0.21"
   },
   "devDependencies": {
     "@umijs/utils": "^4.0.47",
