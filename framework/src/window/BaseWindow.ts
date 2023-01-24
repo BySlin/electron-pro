@@ -233,6 +233,7 @@ export class BaseWindow {
     } else {
       if (this.currentWindow) {
         this.currentWindow.close();
+        this.onCloseAll();
       }
     }
   }
