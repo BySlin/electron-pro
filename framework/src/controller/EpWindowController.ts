@@ -15,8 +15,9 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeWindow(webContentsId: number) {
-    closeWindow(webContentsId);
+  async closeWindow(id: number) {
+    this.checkWindowId(id);
+    closeWindow(id);
   }
 
   @EpHandler()
@@ -25,12 +26,23 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async showWindow(webContentsId: number) {
-    showWindow(webContentsId);
+  async showWindow(id: number) {
+    showWindow(id);
   }
 
   @EpHandler()
-  async hideWindow(webContentsId: number) {
-    hideWindow(webContentsId);
+  async hideWindow(id: number) {
+    hideWindow(id);
+  }
+
+  /**
+   * 校验窗口id
+   * @param id 窗口id
+   * @private
+   */
+  private checkWindowId(id: number) {
+    if (id == undefined) {
+      throw new Error('窗口id不能为空');
+    }
   }
 }
