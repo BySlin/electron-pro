@@ -46,6 +46,25 @@ export const findWindowById = (id: number) => {
 };
 
 /**
+ * 查找多窗口类型
+ * @param epMultiWindowModule
+ */
+export const findMultiWindowModule = (
+  epMultiWindowModule: typeof BaseMultiWindow | string,
+): typeof BaseMultiWindow | undefined => {
+  const epWindowModules = listModule(
+    EP_MULTI_WINDOW_DECORATOR_KEY,
+    (module) => {
+      return typeof epMultiWindowModule === 'string'
+        ? getProviderName(module) === epMultiWindowModule
+        : module === epMultiWindowModule;
+    },
+  ) as (typeof BaseMultiWindow)[];
+
+  return epWindowModules[0];
+};
+
+/**
  * 打开窗口
  * @param epWindowModule
  */
@@ -66,21 +85,17 @@ export const openWindow = async (
 export const closeAllByWindowName = async (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
-  const epWindowModules = listModule(
-    EP_MULTI_WINDOW_DECORATOR_KEY,
-    (module) => {
-      return typeof epMultiWindowModule === 'string'
-        ? getProviderName(module) === epMultiWindowModule
-        : module === epMultiWindowModule;
-    },
-  );
+  findMultiWindowModule(epMultiWindowModule)?.closeAll();
+};
 
-  if (epWindowModules && epWindowModules.length > 0) {
-    for (const epWindowModule of epWindowModules) {
-      const baseMultiModule = epWindowModule as typeof BaseMultiWindow;
-      baseMultiModule.closeAll();
-    }
-  }
+/**
+ * 关闭所有窗口
+ * @param epMultiWindowModule
+ */
+export const getWindowIdsByWindowName = async (
+  epMultiWindowModule: typeof BaseMultiWindow | string,
+) => {
+  return findMultiWindowModule(epMultiWindowModule)?.getWindowIds();
 };
 
 /**

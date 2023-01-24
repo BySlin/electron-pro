@@ -5,6 +5,7 @@ import {
   openWindow,
   showWindow,
   hideWindow,
+  getWindowIdsByWindowName,
 } from '../utils';
 
 @EpController()
@@ -21,8 +22,13 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeAllByWindowName(windowName: string): Promise<number[]> {
-    return await closeAllByWindowName(windowName);
+  async closeAllByWindowName(windowName: string): Promise<void> {
+    await closeAllByWindowName(windowName);
+  }
+
+  @EpHandler()
+  async getWindowIdsByWindowName(windowName: string): Promise<number[]> {
+    return [...(await getWindowIdsByWindowName(windowName))];
   }
 
   @EpHandler()
