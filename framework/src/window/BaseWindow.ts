@@ -128,7 +128,6 @@ export class BaseWindow {
     const webContentsId = item.webContents.id;
 
     item.on('close', () => {
-      // console.log('close');
       this.onClose(webContentsId);
     });
 
@@ -152,6 +151,46 @@ export class BaseWindow {
     item.on('always-on-top-changed', (e, isAlwaysOnTop) =>
       this.onAlwaysTopChanged(isAlwaysOnTop, webContentsId),
     );
+
+    // Windows Or Linux Only
+    item.on('app-command', (e, command) => {});
+
+    //MacOS only
+    item.on('new-window-for-tab', () => {});
+    item.on('sheet-begin', () => {});
+    item.on('sheet-end', () => {});
+    item.on('swipe', (e, direction) => {});
+
+    //Windows Only
+    item.on('system-context-menu', (e, point) => {});
+    item.on('session-end', () => {});
+
+    //Windows Mac Only
+    item.on('will-resize', (e, newBounds) => {});
+    item.on('will-move', (e, newBounds) => {});
+    item.on('resized', () => {});
+    item.on('moved', () => {});
+
+    //Common
+    item.on('blur', () => {});
+    item.on('enter-full-screen', () => {});
+    item.on('enter-html-full-screen', () => {});
+    item.on('focus', () => {});
+    item.on('hide', () => {});
+    item.on('leave-full-screen', () => {});
+    item.on('leave-html-full-screen', () => {});
+    item.on('maximize', () => {});
+    item.on('minimize', () => {});
+    item.on('move', () => {});
+    item.on('page-title-updated', (e, title, explicitSet) => {});
+    item.on('ready-to-show', () => {});
+    item.on('resize', () => {});
+    item.on('responsive', () => {});
+    item.on('restore', () => {});
+    item.on('rotate-gesture', (e, rotation) => {});
+    item.on('show', () => {});
+    item.on('unmaximize', () => {});
+    item.on('unresponsive', () => {});
 
     await item.webContents.executeJavaScript(
       `
