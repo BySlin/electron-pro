@@ -72,8 +72,6 @@ export class BaseWindow {
    */
   onClosed(id: number) {}
 
-  onAlwaysTopChanged(isAlwaysOnTop: boolean, id?: number) {}
-
   /**
    * 开始创建窗口
    */
@@ -102,9 +100,7 @@ export class BaseWindow {
       this.onClosed(id);
     });
 
-    item.on('always-on-top-changed', (e, isAlwaysOnTop) =>
-      this.onAlwaysTopChanged(isAlwaysOnTop, id),
-    );
+    item.on('always-on-top-changed', (e, isAlwaysOnTop) => {});
 
     // Windows Or Linux Only
     item.on('app-command', (e, command) => {});
