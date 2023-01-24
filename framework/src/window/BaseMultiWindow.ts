@@ -29,5 +29,6 @@ export class BaseMultiWindow extends BaseWindow {
         closeWindow(windowId);
       }
     }
+    return BaseMultiWindow.windowIds;
   }
 }

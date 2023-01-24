@@ -22,22 +22,24 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeAllByWindowName(windowName: string): Promise<void> {
-    await closeAllByWindowName(windowName);
+  async closeAllByWindowName(windowName: string): Promise<number[]> {
+    return [...closeAllByWindowName(windowName)];
   }
 
   @EpHandler()
   async getWindowIdsByWindowName(windowName: string): Promise<number[]> {
-    return [...(await getWindowIdsByWindowName(windowName))];
+    return [...getWindowIdsByWindowName(windowName)];
   }
 
   @EpHandler()
   async showWindow(id: number) {
+    this.checkWindowId(id);
     showWindow(id);
   }
 
   @EpHandler()
   async hideWindow(id: number) {
+    this.checkWindowId(id);
     hideWindow(id);
   }
 

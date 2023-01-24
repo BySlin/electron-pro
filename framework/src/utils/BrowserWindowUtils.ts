@@ -82,17 +82,17 @@ export const openWindow = async (
  * 关闭所有窗口
  * @param epMultiWindowModule
  */
-export const closeAllByWindowName = async (
+export const closeAllByWindowName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
-  findMultiWindowModule(epMultiWindowModule)?.closeAll();
+  return findMultiWindowModule(epMultiWindowModule)?.closeAll();
 };
 
 /**
  * 关闭所有窗口
  * @param epMultiWindowModule
  */
-export const getWindowIdsByWindowName = async (
+export const getWindowIdsByWindowName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
   return findMultiWindowModule(epMultiWindowModule)?.getWindowIds();
