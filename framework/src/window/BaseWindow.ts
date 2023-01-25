@@ -6,8 +6,16 @@ export class BaseWindow {
   private _currentWindow: BrowserWindow;
   private _url: string;
   private _options: BrowserWindowConstructorOptions = {};
-
+  private _params: any;
   private _id: number;
+
+  set params(params: any) {
+    this._params = params;
+  }
+
+  get params() {
+    return this._params;
+  }
 
   get url() {
     return this._url;
@@ -15,6 +23,10 @@ export class BaseWindow {
 
   get id() {
     return this._id;
+  }
+
+  get options() {
+    return this._options;
   }
 
   /**
