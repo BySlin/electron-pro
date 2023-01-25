@@ -90,17 +90,17 @@ export class BaseWindow {
   /**
    * 初始化窗口
    */
-  onCreate(id: number) {}
+  onCreate() {}
 
   /**
    * 窗口关闭
    */
-  onClose(id: number) {}
+  onClose() {}
 
   /**
    * 窗口关闭
    */
-  onClosed(id: number) {}
+  onClosed() {}
 
   /**
    * 开始创建窗口
@@ -119,11 +119,11 @@ export class BaseWindow {
     this._currentWindow = item;
 
     item.on('close', () => {
-      this.onClose(this._id);
+      this.onClose();
     });
 
     item.once('closed', () => {
-      this.onClosed(this._id);
+      this.onClosed();
       if (this._currentWindow) {
         this._id = undefined;
         this._currentWindow = undefined;
@@ -192,7 +192,7 @@ export class BaseWindow {
     });
 
     await this.loadUrl();
-    this.onCreate(this._id);
+    this.onCreate();
     return this._id;
   }
 

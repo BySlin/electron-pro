@@ -9,4 +9,9 @@ export class TestMultiWindow extends BaseMultiWindow {
       url: "app://./html/testMulti.html",
     });
   }
+
+  onCreate() {
+    super.onCreate();
+    this.currentWindow?.webContents.openDevTools();
+  }
 }

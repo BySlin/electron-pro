@@ -8,15 +8,14 @@ export class BaseMultiWindow extends BaseWindow {
     return BaseMultiWindow.windowIds;
   }
 
-  onCreate(id: number) {
-    super.onCreate(id);
-    BaseMultiWindow.windowIds.add(id);
+  onCreate() {
+    super.onCreate();
+    BaseMultiWindow.windowIds.add(this.id);
   }
 
-  onClosed(id: number) {
-    super.onClosed(id);
-
-    BaseMultiWindow.windowIds.delete(id);
+  onClosed() {
+    super.onClosed();
+    BaseMultiWindow.windowIds.delete(this.id);
   }
 
   /**

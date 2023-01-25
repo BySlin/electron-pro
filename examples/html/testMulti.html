@@ -10,4 +10,11 @@
 <br/>
 <button onclick="ep.epWindow.close()">关闭窗口</button>
 </body>
+<script>
+  window.onEpReady = () => {
+    window.ep.onEpMessage((e, message) => {
+      console.log(e, message);
+    })
+  }
+</script>
 </html>
