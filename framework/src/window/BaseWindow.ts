@@ -9,10 +9,6 @@ export class BaseWindow {
   private _params: any;
   private _id: number;
 
-  set params(params: any) {
-    this._params = params;
-  }
-
   get params() {
     return this._params;
   }
@@ -76,12 +72,13 @@ export class BaseWindow {
   /**
    * 开始创建窗口
    */
-  async create(): Promise<number> {
+  async create(params: any): Promise<number> {
     if (this._currentWindow != undefined) {
       this._currentWindow.focus();
       return this._id;
     }
 
+    this._params = params;
     this.onInit();
 
     const item = await createWindow(this._options);
