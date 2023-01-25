@@ -75,7 +75,6 @@ export class BaseWindow {
     const item = await createWindow(this._options);
     this._id = item.id;
     this._currentWindow = item;
-    this.loadUrl(this._url);
 
     item.on('close', () => {
       this.onClose(this._id);
@@ -131,6 +130,8 @@ export class BaseWindow {
     item.on('unmaximize', () => {});
     item.on('unresponsive', () => {});
 
+    await this.loadUrl();
+
     this.onCreate(this._id);
     return this._id;
   }
@@ -139,8 +140,10 @@ export class BaseWindow {
    * 加载url
    * @param url
    */
-  async loadUrl(url: string) {
-    this._url = url;
+  async loadUrl(url?: string) {
+    if (url) {
+      this._url = url;
+    }
     if (this._currentWindow && this._url != null) {
       await this._currentWindow.loadURL(this._url);
       await this.injectParams();
