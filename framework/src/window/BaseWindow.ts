@@ -3,27 +3,25 @@ import { createWindow } from '../utils';
 import { getProviderName } from '@midwayjs/core';
 
 export class BaseWindow {
-  private currentWindow: BrowserWindow;
-  private url: string;
-  private options: BrowserWindowConstructorOptions;
+  private _currentWindow: BrowserWindow;
+  private _url: string;
+  private _options: BrowserWindowConstructorOptions = {};
 
-  private id: number;
+  private _id: number;
 
-  setUrl(url: string) {
-    this.url = url;
-    this.loadUrl();
+  get url() {
+    return this._url;
   }
 
-  getUrl() {
-    return this.url;
+  get id() {
+    return this._id;
   }
 
-  getOptions() {
-    return this.options;
-  }
-
-  getId() {
-    return this.id;
+  /**
+   * 获取当前window
+   */
+  get currentWindow() {
+    return this._currentWindow;
   }
 
   /**
@@ -31,7 +29,7 @@ export class BaseWindow {
    * @param params
    * @protected
    */
-  protected initParams(params: {
+  protected initParams(params?: {
     url?: string;
     options?: BrowserWindowConstructorOptions;
   }) {
@@ -39,15 +37,8 @@ export class BaseWindow {
       options: {},
       ...params,
     };
-    this.url = url;
-    this.options = options;
-  }
-
-  /**
-   * 获取当前window
-   */
-  getCurrentWindow() {
-    return this.currentWindow;
+    this._url = url;
+    this._options = options;
   }
 
   /**
@@ -74,27 +65,27 @@ export class BaseWindow {
    * 开始创建窗口
    */
   async create(): Promise<number> {
-    if (this.currentWindow != undefined) {
-      this.currentWindow.focus();
-      return this.id;
+    if (this._currentWindow != undefined) {
+      this._currentWindow.focus();
+      return this._id;
     }
 
     this.onInit();
 
-    const item = await createWindow(this.options);
-    this.id = item.id;
-    this.currentWindow = item;
-    this.loadUrl();
+    const item = await createWindow(this._options);
+    this._id = item.id;
+    this._currentWindow = item;
+    this.loadUrl(this._url);
 
     item.on('close', () => {
-      this.onClose(this.id);
+      this.onClose(this._id);
     });
 
     item.once('closed', () => {
-      this.onClosed(this.id);
-      if (this.currentWindow) {
-        this.id = undefined;
-        this.currentWindow = undefined;
+      this.onClosed(this._id);
+      if (this._currentWindow) {
+        this._id = undefined;
+        this._currentWindow = undefined;
       }
     });
 
@@ -140,24 +131,32 @@ export class BaseWindow {
     item.on('unmaximize', () => {});
     item.on('unresponsive', () => {});
 
-    this.onCreate(this.id);
-    return this.id;
+    this.onCreate(this._id);
+    return this._id;
   }
 
-  private loadUrl() {
-    if (this.currentWindow && this.url != null) {
-      this.currentWindow.loadURL(this.url).then(async () => {
-        await this.injectParams();
-      });
+  /**
+   * 加载url
+   * @param url
+   */
+  async loadUrl(url: string) {
+    this._url = url;
+    if (this._currentWindow && this._url != null) {
+      await this._currentWindow.loadURL(this._url);
+      await this.injectParams();
     }
   }
 
+  /**
+   * 注入参数
+   * @private
+   */
   private async injectParams() {
-    if (this.currentWindow) {
-      await this.currentWindow.webContents.executeJavaScript(
+    if (this._currentWindow) {
+      await this._currentWindow.webContents.executeJavaScript(
         `
       window.epWindowName = '${getProviderName(this)}';
-      window.epWindowId = ${this.getId()};
+      window.epWindowId = ${this._id};
       `,
         true,
       );

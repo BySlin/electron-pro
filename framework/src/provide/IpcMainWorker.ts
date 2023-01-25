@@ -94,7 +94,7 @@ export class IpcMainWorker {
                 metadata,
               );
 
-              const currentWindow = baseWindow.getCurrentWindow();
+              const currentWindow = baseWindow.currentWindow;
               if (currentWindow) {
                 currentWindow.webContents.send(channelName, result);
               }
