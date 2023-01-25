@@ -9,7 +9,9 @@ import {
   getMultiIdsByName,
   getWindow,
   findMultiWindowModule,
+  findWindowById,
 } from '../utils';
+import { EP_MESSAGE_EVENT_NAME } from '../constant';
 
 @EpController()
 export class EpWindowController {
@@ -70,7 +72,7 @@ export class EpWindowController {
    */
   @EpHandler()
   async closeMultiByName(_, windowName: string): Promise<number[]> {
-    return [...(closeMultiByName(windowName) || [])];
+    return [...closeMultiByName(windowName)];
   }
 
   /**
@@ -80,7 +82,7 @@ export class EpWindowController {
    */
   @EpHandler()
   async getMultiIdsByName(_, windowName: string): Promise<number[]> {
-    return [...(getMultiIdsByName(windowName) || [])];
+    return [...getMultiIdsByName(windowName)];
   }
 
   /**
@@ -106,13 +108,31 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async sendByName(_, windowName: string) {}
+  async sendByName(_, windowName: string, params: any) {
+    const multiWindow = findMultiWindowModule(windowName);
+    if (multiWindow != null) {
+      throw new Error('多窗口模式不可用');
+    }
+
+    (await getWindow(windowName)).currentWindow?.webContents.send(
+      EP_MESSAGE_EVENT_NAME,
+      params,
+    );
+  }
 
   @EpHandler()
-  async sendById(_, id: string) {}
+  async sendById(_, id: number, params: any) {
+    this.checkWindowId(id);
+    findWindowById(id)?.webContents.send(EP_MESSAGE_EVENT_NAME, params);
+  }
 
   @EpHandler()
-  async sendMultiByName(_, windowName: string) {}
+  async sendMultiByName(_, windowName: string, params: any) {
+    const multiIds = getMultiIdsByName(windowName);
+    for (const id of multiIds) {
+      findWindowById(id)?.webContents.send(EP_MESSAGE_EVENT_NAME, params);
+    }
+  }
 
   /**
    * 校验窗口id

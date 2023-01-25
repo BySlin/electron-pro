@@ -86,7 +86,9 @@ export const getWindow = async (
 export const closeMultiByName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
-  return findMultiWindowModule(epMultiWindowModule)?.closeAll();
+  return (
+    findMultiWindowModule(epMultiWindowModule)?.closeAll() ?? new Set<number>()
+  );
 };
 
 /**
@@ -96,7 +98,10 @@ export const closeMultiByName = (
 export const getMultiIdsByName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
-  return findMultiWindowModule(epMultiWindowModule)?.getWindowIds();
+  return (
+    findMultiWindowModule(epMultiWindowModule)?.getWindowIds() ??
+    new Set<number>()
+  );
 };
 
 /**

@@ -14,6 +14,11 @@ import { contextBridge, ipcRenderer } from 'electron';
   const apiKey = 'ep';
   const api: any = {
     ...epParams,
+    onEpMessage: (listener: (...args: any[]) => void) => {
+      const channel = 'epMessage';
+      ipcRenderer.removeAllListeners(channel);
+      ipcRenderer.on(channel, (e, ...args: any[]) => listener(...args));
+    },
     versions: process.versions,
     ipcRenderer,
   };

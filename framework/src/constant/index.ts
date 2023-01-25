@@ -25,6 +25,11 @@ export const EP_PARAMS_EVENT_NAME = 'epParams';
 export const EP_READY_EVENT_NAME = 'epReady';
 
 /**
+ *窗口通讯
+ */
+export const EP_MESSAGE_EVENT_NAME = 'epMessage';
+
+/**
  * preloadjs路径
  */
 export const PRELOAD_JS_PATH = path.join(__dirname, '..', 'preload.js');
