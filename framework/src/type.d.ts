@@ -6,4 +6,9 @@ interface Window {
     versions: Record<string, string>;
     ipcRenderer: import('electron').IpcRenderer;
   };
+
+  /**
+   * ep参数加载完成
+   */
+  onEpReady: () => void;
 }

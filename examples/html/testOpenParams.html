@@ -7,11 +7,10 @@
 <body>
 <h1>Electron-Pro测试</h1>
 <h2>参数测试</h2>
-<br/>
 <pre id="pre"></pre>
 </body>
 <script>
-  window.onload = () => {
+  window.onEpReady = () => {
     document.getElementById('pre').innerHTML = JSON.stringify(ep.epOpenParams);
   }
 </script>

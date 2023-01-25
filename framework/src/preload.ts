@@ -4,15 +4,16 @@ import { contextBridge, ipcRenderer } from 'electron';
   const eventNames = (await ipcRenderer.invoke(
     'epAppController@allIpcHandleChannelName',
   )) as string[];
+
   const onEventNames = (await ipcRenderer.invoke(
     'epAppController@allIpcSendToRendererChannelName',
   )) as string[];
 
+  const epParams = await ipcRenderer.invoke('epParams');
+
   const apiKey = 'ep';
   const api: any = {
-    epWindowName: await ipcRenderer.invoke('epWindowName'),
-    epWindowId: await ipcRenderer.invoke('epWindowId'),
-    epOpenParams: await ipcRenderer.invoke('epOpenParams'),
+    ...epParams,
     versions: process.versions,
     ipcRenderer,
   };
@@ -54,4 +55,6 @@ import { contextBridge, ipcRenderer } from 'electron';
     };
   }
   contextBridge.exposeInMainWorld(apiKey, api);
+
+  ipcRenderer.send('epReady');
 })();
