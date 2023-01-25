@@ -22,7 +22,7 @@ export class BaseWindow {
    * Electron 窗口启动参数
    * @private
    */
-  private _openParams: any;
+  private _openParams: Record<string, any>;
   /**
    * 窗口id
    * @private
@@ -104,7 +104,7 @@ export class BaseWindow {
   /**
    * 开始创建窗口
    */
-  async create(openParams?: any): Promise<number> {
+  async create(openParams?: Record<string, any>): Promise<number> {
     if (this._currentWindow != undefined) {
       this._currentWindow.focus();
       return this._id;
