@@ -16,10 +16,13 @@
 <br/><br/>
 <button onclick="closeWindow()">关闭新窗口</button>
 <br/><br/>
-<button onclick="ep.epWindow.openWindow('testMultiWindow').then(id=>console.log(`新窗口id(多窗口模式):${id}`))">打开新窗口(多窗口模式)
+<button onclick="ep.epWindow.openWindow('testMultiWindow').then(id=>console.log(`新窗口id(多窗口模式):${id}`))">
+    打开新窗口(多窗口模式)
 </button>
 <br/><br/>
-<button onclick="ep.epWindow.closeAllByWindowName('testMultiWindow').then(ids=>console.log(`关闭的窗口id(多窗口模式):${JSON.stringify(ids)}`))">关闭所有窗口(多窗口模式)</button>
+<button onclick="ep.epWindow.closeAllByWindowName('testMultiWindow').then(ids=>console.log(`关闭的窗口id(多窗口模式):${JSON.stringify(ids)}`))">
+    关闭所有窗口(多窗口模式)
+</button>
 </body>
 <script>
   // window.onbeforeunload = (e) => {
@@ -31,14 +34,13 @@
   //   e.returnValue = false
   // }
   function onMainEvent(target) {
-    removeMainEvent();
-    ep.testMainWindow.onTest((e, message) => {
+    ep.testMainWindow.onTest((message) => {
       target.innerHTML = `监听主进程返回 ${message}`;
     });
   }
 
   function removeMainEvent() {
-    ep.testMainWindow.removeAllTest();
+    ep.testMainWindow.removeTest();
   }
 
   let newWindowId;

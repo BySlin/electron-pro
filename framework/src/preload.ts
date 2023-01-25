@@ -38,6 +38,7 @@ import { contextBridge, ipcRenderer } from 'electron';
     api[windowName][onEventMethodName] = (
       listener: (...args: any[]) => void,
     ) => {
+      ipcRenderer.removeAllListeners(onEventName);
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
         onEventName,
         (e, ...args: any[]) => listener(...args),
