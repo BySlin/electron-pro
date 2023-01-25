@@ -40,7 +40,7 @@ import { contextBridge, ipcRenderer } from 'electron';
     ) => {
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
         onEventName,
-        listener,
+        (e, ...args: any[]) => listener(...args),
       );
     };
 
