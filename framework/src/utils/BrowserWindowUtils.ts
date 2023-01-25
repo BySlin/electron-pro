@@ -62,14 +62,16 @@ export const openWindow = async (
   openParams?: Record<string, any>,
 ) => {
   const epWindow = await getWindow(epWindowModule);
-  return await epWindow.create(openParams);
+  return await epWindow?.create(openParams);
 };
 
 /**
  * 获取某个window
  * @param epWindowModule
  */
-export const getWindow = async (epWindowModule: typeof BaseWindow | string) => {
+export const getWindow = async (
+  epWindowModule: typeof BaseWindow | string,
+): Promise<BaseWindow | undefined> => {
   const epWindow = (await getCurrentApplicationContext().getAsync(
     epWindowModule as any,
   )) as BaseWindow;

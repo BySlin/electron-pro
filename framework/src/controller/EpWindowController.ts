@@ -7,10 +7,19 @@ import {
   showWindow,
   hideWindow,
   getMultiIdsByName,
+  getWindow,
+  findMultiWindowModule,
 } from '../utils';
 
 @EpController()
 export class EpWindowController {
+  /**
+   * 打开窗口
+   * @param _
+   * @param windowName 窗口名称
+   * @param openParams 窗口启动参数
+   * @return 窗口id
+   */
   @EpHandler()
   async open(
     _,
@@ -20,35 +29,78 @@ export class EpWindowController {
     return await openWindow(windowName, openParams);
   }
 
+  /**
+   * 关闭当前窗口
+   */
   @EpHandler()
   async close(e: IpcMainInvokeEvent) {
     BrowserWindow.fromWebContents(e.sender)?.close();
   }
 
+  /**
+   * 根据id关闭窗口
+   * @param _
+   * @param id 窗口id
+   */
   @EpHandler()
   async closeById(_, id: number) {
     this.checkWindowId(id);
     closeWindow(id);
   }
 
+  /**
+   * 根据窗口名称关闭窗口
+   * @param _
+   * @param windowName 窗口名称
+   */
+  @EpHandler()
+  async closeByName(_, windowName: string) {
+    const multiWindow = findMultiWindowModule(windowName);
+    if (multiWindow != null) {
+      throw new Error('多窗口模式不可用');
+    }
+
+    (await getWindow(windowName))?.currentWindow?.close();
+  }
+
+  /**
+   * 关闭多窗口的所有已打开的窗口
+   * @param _
+   * @param windowName 窗口名称
+   */
   @EpHandler()
   async closeMultiByName(_, windowName: string): Promise<number[]> {
-    return [...closeMultiByName(windowName)];
+    return [...(closeMultiByName(windowName) || [])];
   }
 
+  /**
+   * 关闭多窗口的所有已打开的窗口ids
+   * @param _
+   * @param windowName 窗口名称
+   */
   @EpHandler()
   async getMultiIdsByName(_, windowName: string): Promise<number[]> {
-    return [...getMultiIdsByName(windowName)];
+    return [...(getMultiIdsByName(windowName) || [])];
   }
 
+  /**
+   * 根据id显示窗口
+   * @param _
+   * @param id 窗口id
+   */
   @EpHandler()
-  async showWindow(_, id: number) {
+  async showById(_, id: number) {
     this.checkWindowId(id);
     showWindow(id);
   }
 
+  /**
+   * 根据id隐藏窗口
+   * @param _
+   * @param id 窗口id
+   */
   @EpHandler()
-  async hideWindow(_, id: number) {
+  async hideById(_, id: number) {
     this.checkWindowId(id);
     hideWindow(id);
   }
