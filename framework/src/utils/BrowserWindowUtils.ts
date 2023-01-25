@@ -9,32 +9,20 @@ import {
 
 /**
  * 创建window
- * @param url
  * @param options
  */
 export const createWindow = async (
-  url: string,
   options: BrowserWindowConstructorOptions = {},
 ) => {
-  const defaultShowIsNull = typeof options.show === 'undefined';
-
-  options.show = options.show ?? false;
   options.webPreferences = options.webPreferences ?? {};
+
   options.webPreferences.contextIsolation =
     options.webPreferences.contextIsolation ?? true;
+
   options.webPreferences.preload =
     options.webPreferences.preload ?? PRELOAD_JS_PATH;
 
-  const win = new BrowserWindow(options);
-  await win.loadURL(url);
-
-  if (defaultShowIsNull) {
-    win.once('ready-to-show', () => {
-      win.show();
-    });
-  }
-
-  return win;
+  return new BrowserWindow(options);
 };
 
 /**

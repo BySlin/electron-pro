@@ -9,11 +9,9 @@ export class BaseWindow {
 
   private id: number;
 
-  async setUrl(url: string) {
+  setUrl(url: string) {
     this.url = url;
-    if (this.currentWindow) {
-      await this.currentWindow.loadURL(this.url);
-    }
+    this.loadUrl();
   }
 
   getUrl() {
@@ -34,7 +32,7 @@ export class BaseWindow {
    * @protected
    */
   protected initParams(params: {
-    url: string;
+    url?: string;
     options?: BrowserWindowConstructorOptions;
   }) {
     const { url, options } = {
@@ -82,22 +80,22 @@ export class BaseWindow {
     }
 
     this.onInit();
-    const item = await createWindow(this.url, this.options);
+
+    const item = await createWindow(this.options);
     this.id = item.id;
     this.currentWindow = item;
-
-    const id = item.id;
+    this.loadUrl();
 
     item.on('close', () => {
-      this.onClose(id);
+      this.onClose(this.id);
     });
 
     item.once('closed', () => {
+      this.onClosed(this.id);
       if (this.currentWindow) {
         this.id = undefined;
         this.currentWindow = undefined;
       }
-      this.onClosed(id);
     });
 
     item.on('always-on-top-changed', (e, isAlwaysOnTop) => {});
@@ -142,15 +140,27 @@ export class BaseWindow {
     item.on('unmaximize', () => {});
     item.on('unresponsive', () => {});
 
-    await item.webContents.executeJavaScript(
-      `
-      window.epWindowName = '${getProviderName(this)}';
-      window.epWindowId = ${id};
-      `,
-      true,
-    );
+    this.onCreate(this.id);
+    return this.id;
+  }
 
-    this.onCreate(id);
-    return id;
+  private loadUrl() {
+    if (this.currentWindow) {
+      this.currentWindow.loadURL(this.url).then(async () => {
+        await this.injectParams();
+      });
+    }
+  }
+
+  private async injectParams() {
+    if (this.currentWindow) {
+      await this.currentWindow.webContents.executeJavaScript(
+        `
+      window.epWindowName = '${getProviderName(this)}';
+      window.epWindowId = ${this.getId()};
+      `,
+        true,
+      );
+    }
   }
 }
