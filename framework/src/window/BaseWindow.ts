@@ -172,7 +172,7 @@ export class BaseWindow {
     item.on('unresponsive', () => {});
 
     //此ipc仅响应此webContents的ipc消息
-    item.webContents.ipc.handle('epParams', async () => {
+    item.webContents.ipc.handleOnce('epParams', async () => {
       return {
         epWindowName: getProviderName(this),
         epWindowId: this._id,
