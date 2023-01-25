@@ -59,7 +59,7 @@ export const findMultiWindowModule = (
  */
 export const openWindow = async (
   epWindowModule: typeof BaseWindow | string,
-  openParams: Record<string, any>,
+  openParams?: Record<string, any>,
 ) => {
   const epWindow = (await getCurrentApplicationContext().getAsync(
     epWindowModule as any,

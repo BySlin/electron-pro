@@ -11,8 +11,11 @@ import {
 @EpController()
 export class EpWindowController {
   @EpHandler()
-  async openWindow(windowName: string): Promise<number> {
-    return await openWindow(windowName);
+  async openWindow(
+    windowName: string,
+    openParams?: Record<string, any>,
+  ): Promise<number> {
+    return await openWindow(windowName, openParams);
   }
 
   @EpHandler()

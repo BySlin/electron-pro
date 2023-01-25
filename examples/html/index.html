@@ -23,6 +23,11 @@
 <button onclick="ep.epWindow.closeAllByWindowName('testMultiWindow').then(ids=>console.log(`关闭的窗口id(多窗口模式):${JSON.stringify(ids)}`))">
     关闭所有窗口(多窗口模式)
 </button>
+
+<br/><br/>
+<button onclick="ep.epWindow.openWindow('testMultiWindow',{a:1})">
+    测试参数传递
+</button>
 </body>
 <script>
   // window.onbeforeunload = (e) => {

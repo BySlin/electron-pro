@@ -201,6 +201,9 @@ export class BaseWindow {
         `
       window.epWindowName = '${getProviderName(this)}';
       window.epWindowId = ${this._id};
+      window.epOpenParams = JSON.parse(\`${JSON.stringify(
+        this._openParams || {},
+      )}\`);
       `,
         true,
       );
