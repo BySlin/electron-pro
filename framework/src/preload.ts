@@ -12,9 +12,9 @@ import { contextBridge, ipcRenderer } from 'electron';
     versions: process.versions,
     ipcRenderer,
   };
+
   for (const eventName of eventNames) {
     const [controllerName, methodName] = eventName.split('@');
-
     const newControllerName = controllerName.replace('Controller', '');
 
     if (api[newControllerName] == undefined) {
@@ -34,7 +34,6 @@ import { contextBridge, ipcRenderer } from 'electron';
       .toUpperCase()}${methodName.substring(1)}`;
     const onEventMethodName = `on${eventMethodName}`;
     const removeEventMethodName = `remove${eventMethodName}`;
-    const removeAllEventMethodName = `removeAll${eventMethodName}`;
 
     api[windowName][onEventMethodName] = (
       listener: (...args: any[]) => void,
@@ -45,13 +44,7 @@ import { contextBridge, ipcRenderer } from 'electron';
       );
     };
 
-    api[windowName][removeEventMethodName] = (
-      listener: (...args: any[]) => void,
-    ) => {
-      ipcRenderer.removeListener(onEventName, listener);
-    };
-
-    api[windowName][removeAllEventMethodName] = () => {
+    api[windowName][removeEventMethodName] = () => {
       ipcRenderer.removeAllListeners(onEventName);
     };
   }
