@@ -1,6 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { createWindow } from '../utils';
 import { getProviderName } from '@midwayjs/core';
+import { EP_PARAMS_EVENT_NAME, EP_READY_EVENT_NAME } from '../constant';
 
 export class BaseWindow {
   /**
@@ -172,7 +173,7 @@ export class BaseWindow {
     // item.on('unresponsive', () => {});
 
     //此ipc仅响应此webContents的ipc消息
-    item.webContents.ipc.handle('epParams', () => {
+    item.webContents.ipc.handle(EP_PARAMS_EVENT_NAME, () => {
       return {
         epWindowName: getProviderName(this),
         epWindowId: this._id,
@@ -181,7 +182,7 @@ export class BaseWindow {
     });
 
     //此ipc仅响应此webContents的ipc消息
-    item.webContents.ipc.on('epReady', async () => {
+    item.webContents.ipc.on(EP_READY_EVENT_NAME, async () => {
       await item.webContents.executeJavaScript(
         `
         window.isEpReady = true;

@@ -15,6 +15,16 @@ export const IPC_EVENT_SEPARATOR = '@';
 export const GET_IPC_ALL_EVENT_NAME = 'epAppController@allIpcHandleChannelName';
 
 /**
+ * 获取窗口参数
+ */
+export const EP_PARAMS_EVENT_NAME = 'epParams';
+
+/**
+ *设置窗口状态
+ */
+export const EP_READY_EVENT_NAME = 'epReady';
+
+/**
  * preloadjs路径
  */
 export const PRELOAD_JS_PATH = path.join(__dirname, '..', 'preload.js');
