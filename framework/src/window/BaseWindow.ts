@@ -183,7 +183,10 @@ export class BaseWindow {
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.on('epReady', async () => {
       await item.webContents.executeJavaScript(
-        `window.onEpReady && window.onEpReady();`,
+        `
+        window.isEpReady = true;
+        window.onEpReady && window.onEpReady();
+        `,
       );
     });
 
