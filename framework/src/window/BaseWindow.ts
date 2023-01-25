@@ -144,7 +144,7 @@ export class BaseWindow {
     if (url) {
       this._url = url;
     }
-    if (this._currentWindow && this._url != null) {
+    if (this._currentWindow && this._url) {
       await this._currentWindow.loadURL(this._url);
       await this.injectParams();
     }
