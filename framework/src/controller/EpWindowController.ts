@@ -108,6 +108,12 @@ export class EpWindowController {
     hideWindow(id);
   }
 
+  /**
+   * 窗口通讯，按窗口名称发送消息
+   * @param e
+   * @param windowName 窗口名称
+   * @param params 参数
+   */
   @EpHandler()
   async sendByName(e: IpcMainInvokeEvent, windowName: string, params: any) {
     const multiWindow = findMultiWindowModule(windowName);
@@ -130,6 +136,12 @@ export class EpWindowController {
     }
   }
 
+  /**
+   * 窗口通讯，按窗口id发送消息
+   * @param e
+   * @param id 窗口id
+   * @param params 参数
+   */
   @EpHandler()
   async sendById(e: IpcMainInvokeEvent, id: number, params: any) {
     this.checkWindowId(id);
@@ -148,6 +160,12 @@ export class EpWindowController {
     }
   }
 
+  /**
+   * 窗口通讯，按窗口名称给多窗口的所有窗口发送消息
+   * @param e
+   * @param windowName 窗口名称
+   * @param params 参数
+   */
   @EpHandler()
   async sendMultiByName(
     e: IpcMainInvokeEvent,
