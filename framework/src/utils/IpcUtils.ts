@@ -59,7 +59,7 @@ export const getAllIpcHandleChannel = () => {
 /**
  * 获取所有ipcHandle channel通道名称
  */
-export const getAllIpcRendererSendChannel = () => {
+export const allIpcSendToRendererChannelName = () => {
   const result: {
     target: any;
     methodName: string;
@@ -84,7 +84,7 @@ export const getAllIpcRendererSendChannel = () => {
         result.push({
           target: epWindow,
           methodName: propertyName,
-          channelName: getIpcRendererSendChannelName(
+          channelName: getIpcSendToRendererChannelName(
             epWindow,
             propertyName,
             metadata,
@@ -103,7 +103,7 @@ export const getAllIpcRendererSendChannel = () => {
  * @param propertyName
  * @param metadata
  */
-export const getIpcRendererSendChannelName = (
+export const getIpcSendToRendererChannelName = (
   target: any,
   propertyName: string,
   metadata: any,

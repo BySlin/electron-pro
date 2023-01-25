@@ -1,5 +1,8 @@
 import { EpController, EpHandler } from '../decorator';
-import { getAllIpcHandleChannel, getAllIpcRendererSendChannel } from '../utils';
+import {
+  getAllIpcHandleChannel,
+  allIpcSendToRendererChannelName,
+} from '../utils';
 
 @EpController()
 export class EpAppController {
@@ -9,7 +12,7 @@ export class EpAppController {
   }
 
   @EpHandler()
-  async allIpcRendererSendChannel() {
-    return getAllIpcRendererSendChannel().map((v) => v.channelName);
+  async allIpcSendToRendererChannelName() {
+    return allIpcSendToRendererChannelName().map((v) => v.channelName);
   }
 }

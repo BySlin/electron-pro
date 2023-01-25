@@ -12,7 +12,7 @@ import {
 } from '@midwayjs/core';
 import {
   getAllIpcHandleChannel,
-  getIpcRendererSendChannelName,
+  getIpcSendToRendererChannelName,
 } from '../utils';
 import { ipcMain } from 'electron';
 import { EP_SEND_TO_RENDERER_KEY } from '../constant';
@@ -88,7 +88,7 @@ export class IpcMainWorker {
             //判断是否继承BaseWindow
             if (BaseWindow.prototype.isPrototypeOf(targetWindow)) {
               const baseWindow = targetWindow as BaseWindow;
-              const channelName = getIpcRendererSendChannelName(
+              const channelName = getIpcSendToRendererChannelName(
                 target,
                 joinPoint.methodName,
                 metadata,
