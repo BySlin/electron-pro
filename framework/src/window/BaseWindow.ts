@@ -129,47 +129,47 @@ export class BaseWindow {
       }
     });
 
-    item.on('always-on-top-changed', (e, isAlwaysOnTop) => {});
+    // item.on('always-on-top-changed', (e, isAlwaysOnTop) => {});
 
     // Windows Or Linux Only
-    item.on('app-command', (e, command) => {});
+    // item.on('app-command', (e, command) => {});
 
-    //MacOS only
-    item.on('new-window-for-tab', () => {});
-    item.on('sheet-begin', () => {});
-    item.on('sheet-end', () => {});
-    item.on('swipe', (e, direction) => {});
+    // MacOS only
+    // item.on('new-window-for-tab', () => {});
+    // item.on('sheet-begin', () => {});
+    // item.on('sheet-end', () => {});
+    // item.on('swipe', (e, direction) => {});
 
-    //Windows Only
-    item.on('system-context-menu', (e, point) => {});
-    item.on('session-end', () => {});
+    // Windows Only
+    // item.on('system-context-menu', (e, point) => {});
+    // item.on('session-end', () => {});
 
-    //Windows Mac Only
-    item.on('will-resize', (e, newBounds) => {});
-    item.on('will-move', (e, newBounds) => {});
-    item.on('resized', () => {});
-    item.on('moved', () => {});
+    // Windows Mac Only
+    // item.on('will-resize', (e, newBounds) => {});
+    // item.on('will-move', (e, newBounds) => {});
+    // item.on('resized', () => {});
+    // item.on('moved', () => {});
 
-    //Common
-    item.on('blur', () => {});
-    item.on('enter-full-screen', () => {});
-    item.on('enter-html-full-screen', () => {});
-    item.on('focus', () => {});
-    item.on('hide', () => {});
-    item.on('leave-full-screen', () => {});
-    item.on('leave-html-full-screen', () => {});
-    item.on('maximize', () => {});
-    item.on('minimize', () => {});
-    item.on('move', () => {});
-    item.on('page-title-updated', (e, title, explicitSet) => {});
-    item.on('ready-to-show', () => {});
-    item.on('resize', () => {});
-    item.on('responsive', () => {});
-    item.on('restore', () => {});
-    item.on('rotate-gesture', (e, rotation) => {});
-    item.on('show', () => {});
-    item.on('unmaximize', () => {});
-    item.on('unresponsive', () => {});
+    // Common
+    // item.on('blur', () => {});
+    // item.on('enter-full-screen', () => {});
+    // item.on('enter-html-full-screen', () => {});
+    // item.on('focus', () => {});
+    // item.on('hide', () => {});
+    // item.on('leave-full-screen', () => {});
+    // item.on('leave-html-full-screen', () => {});
+    // item.on('maximize', () => {});
+    // item.on('minimize', () => {});
+    // item.on('move', () => {});
+    // item.on('page-title-updated', (e, title, explicitSet) => {});
+    // item.on('ready-to-show', () => {});
+    // item.on('resize', () => {});
+    // item.on('responsive', () => {});
+    // item.on('restore', () => {});
+    // item.on('rotate-gesture', (e, rotation) => {});
+    // item.on('show', () => {});
+    // item.on('unmaximize', () => {});
+    // item.on('unresponsive', () => {});
 
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.handle('epParams', () => {
