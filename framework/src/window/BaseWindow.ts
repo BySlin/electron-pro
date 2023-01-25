@@ -145,7 +145,7 @@ export class BaseWindow {
   }
 
   private loadUrl() {
-    if (this.currentWindow) {
+    if (this.currentWindow && this.url != null) {
       this.currentWindow.loadURL(this.url).then(async () => {
         await this.injectParams();
       });
