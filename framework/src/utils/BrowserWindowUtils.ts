@@ -54,16 +54,18 @@ export const findMultiWindowModule = (
 
 /**
  * 打开窗口
- * @param epWindowModule
+ * @param epWindowModule 模块名称或类型
+ * @param openParams 参数
  */
 export const openWindow = async (
   epWindowModule: typeof BaseWindow | string,
+  openParams: any,
 ) => {
   const epWindow = (await getCurrentApplicationContext().getAsync(
     epWindowModule as any,
   )) as BaseWindow;
 
-  return await epWindow.create();
+  return await epWindow.create(openParams);
 };
 
 /**

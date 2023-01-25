@@ -3,24 +3,56 @@ import { createWindow } from '../utils';
 import { getProviderName } from '@midwayjs/core';
 
 export class BaseWindow {
+  /**
+   * Electron窗口
+   * @private
+   */
   private _currentWindow: BrowserWindow;
+  /**
+   * Electron加载的Url
+   * @private
+   */
   private _url: string;
+  /**
+   * Electron参数
+   * @private
+   */
   private _options: BrowserWindowConstructorOptions = {};
-  private _params: any;
+  /**
+   * Electron 窗口启动参数
+   * @private
+   */
+  private _openParams: any;
+  /**
+   * 窗口id
+   * @private
+   */
   private _id: number;
 
-  get params() {
-    return this._params;
+  /**
+   * 窗口启动参数
+   */
+  get openParams() {
+    return this._openParams;
   }
 
+  /**
+   * Electron加载的Url
+   */
   get url() {
     return this._url;
   }
 
+  /**
+   * 窗口id
+   */
   get id() {
     return this._id;
   }
 
+  /**
+   * Electron参数
+   */
   get options() {
     return this._options;
   }
@@ -72,13 +104,13 @@ export class BaseWindow {
   /**
    * 开始创建窗口
    */
-  async create(params: any): Promise<number> {
+  async create(openParams?: any): Promise<number> {
     if (this._currentWindow != undefined) {
       this._currentWindow.focus();
       return this._id;
     }
 
-    this._params = params;
+    this._openParams = openParams;
     this.onInit();
 
     const item = await createWindow(this._options);
