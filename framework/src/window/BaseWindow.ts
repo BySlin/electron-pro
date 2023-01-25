@@ -172,7 +172,7 @@ export class BaseWindow {
     item.on('unresponsive', () => {});
 
     //此ipc仅响应此webContents的ipc消息
-    item.webContents.ipc.handleOnce('epParams', async () => {
+    item.webContents.ipc.handle('epParams', async () => {
       return {
         epWindowName: getProviderName(this),
         epWindowId: this._id,
@@ -181,7 +181,7 @@ export class BaseWindow {
     });
 
     //此ipc仅响应此webContents的ipc消息
-    item.webContents.ipc.once('epReady', async () => {
+    item.webContents.ipc.on('epReady', async () => {
       await item.webContents.executeJavaScript(
         `window.onEpReady && window.onEpReady();`,
       );
