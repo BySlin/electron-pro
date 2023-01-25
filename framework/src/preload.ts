@@ -7,8 +7,12 @@ import { contextBridge, ipcRenderer } from 'electron';
   const onEventNames = (await ipcRenderer.invoke(
     'epAppController@allIpcSendToRendererChannelName',
   )) as string[];
+
   const apiKey = 'ep';
   const api: any = {
+    epWindowName: await ipcRenderer.invoke('epWindowName'),
+    epWindowId: await ipcRenderer.invoke('epWindowId'),
+    epOpenParams: await ipcRenderer.invoke('epOpenParams'),
     versions: process.versions,
     ipcRenderer,
   };

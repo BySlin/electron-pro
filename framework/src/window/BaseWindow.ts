@@ -171,6 +171,11 @@ export class BaseWindow {
     item.on('unmaximize', () => {});
     item.on('unresponsive', () => {});
 
+    //此ipc仅响应此webContents的ipc消息
+    item.webContents.ipc.handle('epWindowName', () => getProviderName(this));
+    item.webContents.ipc.handle('epWindowId', () => this._id);
+    item.webContents.ipc.handle('epOpenParams', () => this.openParams);
+
     await this.loadUrl();
 
     this.onCreate(this._id);
@@ -187,26 +192,6 @@ export class BaseWindow {
     }
     if (this._currentWindow && this._url) {
       await this._currentWindow.loadURL(this._url);
-      await this.injectParams();
-    }
-  }
-
-  /**
-   * 注入参数
-   * @private
-   */
-  private async injectParams() {
-    if (this._currentWindow) {
-      await this._currentWindow.webContents.executeJavaScript(
-        `
-      window.epWindowName = '${getProviderName(this)}';
-      window.epWindowId = ${this._id};
-      window.epOpenParams = JSON.parse(\`${JSON.stringify(
-        this._openParams || {},
-      )}\`);
-      `,
-        true,
-      );
     }
   }
 }
