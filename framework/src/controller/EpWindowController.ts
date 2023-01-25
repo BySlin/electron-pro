@@ -1,17 +1,17 @@
 import { EpController, EpHandler } from '../decorator';
 import {
-  closeAllByWindowName,
+  closeMultiByName,
   closeWindow,
   openWindow,
   showWindow,
   hideWindow,
-  getWindowIdsByWindowName,
+  getMultiIdsByName,
 } from '../utils';
 
 @EpController()
 export class EpWindowController {
   @EpHandler()
-  async openWindow(
+  async open(
     windowName: string,
     openParams?: Record<string, any>,
   ): Promise<number> {
@@ -19,19 +19,19 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async closeWindow(id: number) {
+  async close(id: number) {
     this.checkWindowId(id);
     closeWindow(id);
   }
 
   @EpHandler()
-  async closeAllByWindowName(windowName: string): Promise<number[]> {
-    return [...closeAllByWindowName(windowName)];
+  async closeMultiByName(windowName: string): Promise<number[]> {
+    return [...closeMultiByName(windowName)];
   }
 
   @EpHandler()
-  async getWindowIdsByWindowName(windowName: string): Promise<number[]> {
-    return [...getWindowIdsByWindowName(windowName)];
+  async getMultiIdsByName(windowName: string): Promise<number[]> {
+    return [...getMultiIdsByName(windowName)];
   }
 
   @EpHandler()
@@ -45,6 +45,15 @@ export class EpWindowController {
     this.checkWindowId(id);
     hideWindow(id);
   }
+
+  @EpHandler()
+  async sendByName(windowName: string) {}
+
+  @EpHandler()
+  async sendById(id: string) {}
+
+  @EpHandler()
+  async sendMultiByName(windowName: string) {}
 
   /**
    * 校验窗口id

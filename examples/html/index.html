@@ -16,16 +16,16 @@
 <br/><br/>
 <button onclick="closeWindow()">关闭新窗口</button>
 <br/><br/>
-<button onclick="ep.epWindow.openWindow('testMultiWindow').then(id=>console.log(`新窗口id(多窗口模式):${id}`))">
+<button onclick="ep.epWindow.open('testMultiWindow').then(id=>console.log(`新窗口id(多窗口模式):${id}`))">
     打开新窗口(多窗口模式)
 </button>
 <br/><br/>
-<button onclick="ep.epWindow.closeAllByWindowName('testMultiWindow').then(ids=>console.log(`关闭的窗口id(多窗口模式):${JSON.stringify(ids)}`))">
+<button onclick="ep.epWindow.closeMultiByName('testMultiWindow').then(ids=>console.log(`关闭的窗口id(多窗口模式):${JSON.stringify(ids)}`))">
     关闭所有窗口(多窗口模式)
 </button>
 
 <br/><br/>
-<button onclick="ep.epWindow.openWindow('testMultiWindow', {a:1})">
+<button onclick="ep.epWindow.open('testMultiWindow', {a:1})">
     测试参数传递
 </button>
 </body>
@@ -51,13 +51,13 @@
   let newWindowId;
 
   function openWindow() {
-    ep.epWindow.openWindow('testWindow').then(id => {
+    ep.epWindow.open('testWindow').then(id => {
       newWindowId = id;
     });
   }
 
   function closeWindow() {
-    ep.epWindow.closeWindow(newWindowId);
+    ep.epWindow.close(newWindowId);
   }
 </script>
 </html>

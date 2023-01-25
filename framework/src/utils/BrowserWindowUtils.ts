@@ -61,28 +61,37 @@ export const openWindow = async (
   epWindowModule: typeof BaseWindow | string,
   openParams?: Record<string, any>,
 ) => {
+  const epWindow = await getWindow(epWindowModule);
+  return await epWindow.create(openParams);
+};
+
+/**
+ * 获取某个window
+ * @param epWindowModule
+ */
+export const getWindow = async (epWindowModule: typeof BaseWindow | string) => {
   const epWindow = (await getCurrentApplicationContext().getAsync(
     epWindowModule as any,
   )) as BaseWindow;
 
-  return await epWindow.create(openParams);
+  return epWindow;
 };
 
 /**
  * 关闭所有窗口
  * @param epMultiWindowModule
  */
-export const closeAllByWindowName = (
+export const closeMultiByName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
   return findMultiWindowModule(epMultiWindowModule)?.closeAll();
 };
 
 /**
- * 关闭所有窗口
+ * 获取多窗口的所有窗口id
  * @param epMultiWindowModule
  */
-export const getWindowIdsByWindowName = (
+export const getMultiIdsByName = (
   epMultiWindowModule: typeof BaseMultiWindow | string,
 ) => {
   return findMultiWindowModule(epMultiWindowModule)?.getWindowIds();
