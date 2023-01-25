@@ -60,7 +60,7 @@ export class IpcMainWorker {
             const epController = await getCurrentApplicationContext().getAsync(
               target,
             );
-            return await epController[methodName](...data);
+            return await epController[methodName](e, ...data);
           } catch (error) {
             this.logger.error(error);
             // @ts-ignore

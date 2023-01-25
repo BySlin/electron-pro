@@ -1,3 +1,4 @@
+import { BrowserWindow, IpcMainInvokeEvent } from 'electron';
 import { EpController, EpHandler } from '../decorator';
 import {
   closeMultiByName,
@@ -12,6 +13,7 @@ import {
 export class EpWindowController {
   @EpHandler()
   async open(
+    _,
     windowName: string,
     openParams?: Record<string, any>,
   ): Promise<number> {
@@ -19,41 +21,46 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async close(id: number) {
+  async close(e: IpcMainInvokeEvent) {
+    BrowserWindow.fromWebContents(e.sender)?.close();
+  }
+
+  @EpHandler()
+  async closeById(_, id: number) {
     this.checkWindowId(id);
     closeWindow(id);
   }
 
   @EpHandler()
-  async closeMultiByName(windowName: string): Promise<number[]> {
+  async closeMultiByName(_, windowName: string): Promise<number[]> {
     return [...closeMultiByName(windowName)];
   }
 
   @EpHandler()
-  async getMultiIdsByName(windowName: string): Promise<number[]> {
+  async getMultiIdsByName(_, windowName: string): Promise<number[]> {
     return [...getMultiIdsByName(windowName)];
   }
 
   @EpHandler()
-  async showWindow(id: number) {
+  async showWindow(_, id: number) {
     this.checkWindowId(id);
     showWindow(id);
   }
 
   @EpHandler()
-  async hideWindow(id: number) {
+  async hideWindow(_, id: number) {
     this.checkWindowId(id);
     hideWindow(id);
   }
 
   @EpHandler()
-  async sendByName(windowName: string) {}
+  async sendByName(_, windowName: string) {}
 
   @EpHandler()
-  async sendById(id: string) {}
+  async sendById(_, id: string) {}
 
   @EpHandler()
-  async sendMultiByName(windowName: string) {}
+  async sendMultiByName(_, windowName: string) {}
 
   /**
    * 校验窗口id
