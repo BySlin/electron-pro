@@ -10,6 +10,7 @@ import { contextBridge, ipcRenderer } from 'electron';
   const apiKey = 'ep';
   const api: any = {
     versions: process.versions,
+    ipcRenderer,
   };
   for (const eventName of eventNames) {
     const [controllerName, methodName] = eventName.split('@');
