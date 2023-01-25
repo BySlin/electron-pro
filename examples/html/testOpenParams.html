@@ -11,6 +11,8 @@
 <pre id="pre"></pre>
 </body>
 <script>
-    document.getElementById('pre').innerHTML = JSON.stringify(epOpenParams);
+  window.onload = () => {
+    document.getElementById('pre').innerHTML = JSON.stringify(ep.epOpenParams);
+  }
 </script>
 </html>
