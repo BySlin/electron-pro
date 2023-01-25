@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer } from 'electron';
+import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 
 (async () => {
   const eventNames = (await ipcRenderer.invoke(
@@ -14,10 +14,10 @@ import { contextBridge, ipcRenderer } from 'electron';
   const apiKey = 'ep';
   const api: any = {
     ...epParams,
-    onEpMessage: (listener: (...args: any[]) => void) => {
+    onEpMessage: (listener: (e: IpcRendererEvent, ...args: any[]) => void) => {
       const channel = 'epMessage';
       ipcRenderer.removeAllListeners(channel);
-      ipcRenderer.on(channel, (e, ...args: any[]) => listener(...args));
+      ipcRenderer.on(channel, listener);
     },
     versions: process.versions,
     ipcRenderer,
@@ -51,7 +51,7 @@ import { contextBridge, ipcRenderer } from 'electron';
       ipcRenderer.removeAllListeners(onEventName);
       ipcRenderer[onEventName.includes('once') ? 'once' : 'on'](
         onEventName,
-        (e, ...args: any[]) => listener(...args),
+        (e: IpcRendererEvent, ...args: any[]) => listener(e, ...args),
       );
     };
 

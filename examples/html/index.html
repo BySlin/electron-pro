@@ -39,7 +39,7 @@
   //   e.returnValue = false
   // }
   function onMainEvent(target) {
-    ep.testMainWindow.onTest((message) => {
+    ep.testMainWindow.onTest((e, message) => {
       target.innerHTML = `监听主进程返回 ${message}`;
     });
   }
