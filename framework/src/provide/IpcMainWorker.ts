@@ -30,7 +30,7 @@ export class IpcMainWorker {
   @Init()
   init() {
     this.registerIpcHandle();
-    this.registerIpcRendererSend();
+    this.registerIpcSendToRenderer();
   }
 
   /**
@@ -74,7 +74,7 @@ export class IpcMainWorker {
   /**
    * 注册ipcRenderer send 返回装饰器
    */
-  registerIpcRendererSend() {
+  registerIpcSendToRenderer() {
     // 实现方法装饰器
     this.midwayDecoratorService.registerMethodHandler(
       EP_SEND_TO_RENDERER_KEY,

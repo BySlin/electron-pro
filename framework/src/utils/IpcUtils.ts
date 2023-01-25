@@ -28,8 +28,6 @@ export const getAllIpcHandleChannel = () => {
   const epControllers = [
     ...listModule(EP_CONTROLLER_DECORATOR_KEY),
     ...listModule(EP_SERVICE_DECORATOR_KEY),
-    ...listModule(EP_WINDOW_DECORATOR_KEY),
-    ...listModule(EP_MAIN_WINDOW_DECORATOR_KEY),
   ];
 
   for (const epController of epControllers) {
