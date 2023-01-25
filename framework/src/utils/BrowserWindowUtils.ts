@@ -1,5 +1,9 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { EP_MULTI_WINDOW_DECORATOR_KEY, PRELOAD_JS_PATH } from '../constant';
+import {
+  EP_MULTI_WINDOW_DECORATOR_KEY,
+  EP_WINDOW_DECORATOR_KEY,
+  PRELOAD_JS_PATH,
+} from '../constant';
 import { BaseMultiWindow, BaseWindow } from '../window';
 import {
   getCurrentApplicationContext,
@@ -77,6 +81,27 @@ export const getWindow = async (
   )) as BaseWindow;
 
   return epWindow;
+};
+
+/**
+ * 根据id查找module
+ * @param id
+ */
+export const findWindowModuleById = async (id: number) => {
+  const epWindowModules = listModule(EP_WINDOW_DECORATOR_KEY);
+  if (epWindowModules) {
+    for (const epWindowModule of epWindowModules) {
+      const epWindow = (await getCurrentApplicationContext().getAsync(
+        epWindowModule as any,
+      )) as BaseWindow;
+
+      if (epWindow.id === id) {
+        return epWindow;
+      }
+    }
+  }
+
+  return undefined;
 };
 
 /**

@@ -3,13 +3,14 @@ import { EpController, EpHandler } from '../decorator';
 import {
   closeMultiByName,
   closeWindow,
-  openWindow,
-  showWindow,
-  hideWindow,
-  getMultiIdsByName,
-  getWindow,
   findMultiWindowModule,
   findWindowById,
+  findWindowModuleById,
+  getMultiIdsByName,
+  getWindow,
+  hideWindow,
+  openWindow,
+  showWindow,
 } from '../utils';
 import { EP_MESSAGE_EVENT_NAME } from '../constant';
 
@@ -108,29 +109,63 @@ export class EpWindowController {
   }
 
   @EpHandler()
-  async sendByName(_, windowName: string, params: any) {
+  async sendByName(e: IpcMainInvokeEvent, windowName: string, params: any) {
     const multiWindow = findMultiWindowModule(windowName);
     if (multiWindow != null) {
       throw new Error('多窗口模式不可用');
     }
 
-    (await getWindow(windowName)).currentWindow?.webContents.send(
-      EP_MESSAGE_EVENT_NAME,
-      params,
-    );
+    const browserWindow = BrowserWindow.fromWebContents(e.sender);
+    if (browserWindow) {
+      const baseWindow = await getWindow(windowName);
+      if (baseWindow) {
+        baseWindow.currentWindow?.webContents.send(
+          EP_MESSAGE_EVENT_NAME,
+          {
+            epWindowId: browserWindow.id,
+          },
+          params,
+        );
+      }
+    }
   }
 
   @EpHandler()
-  async sendById(_, id: number, params: any) {
+  async sendById(e: IpcMainInvokeEvent, id: number, params: any) {
     this.checkWindowId(id);
-    findWindowById(id)?.webContents.send(EP_MESSAGE_EVENT_NAME, params);
+    const browserWindow = BrowserWindow.fromWebContents(e.sender);
+    if (browserWindow) {
+      const baseWindow = await findWindowModuleById(id);
+      if (baseWindow) {
+        baseWindow.currentWindow?.webContents.send(
+          EP_MESSAGE_EVENT_NAME,
+          {
+            epWindowId: browserWindow.id,
+          },
+          params,
+        );
+      }
+    }
   }
 
   @EpHandler()
-  async sendMultiByName(_, windowName: string, params: any) {
-    const multiIds = getMultiIdsByName(windowName);
-    for (const id of multiIds) {
-      findWindowById(id)?.webContents.send(EP_MESSAGE_EVENT_NAME, params);
+  async sendMultiByName(
+    e: IpcMainInvokeEvent,
+    windowName: string,
+    params: any,
+  ) {
+    const browserWindow = BrowserWindow.fromWebContents(e.sender);
+    if (browserWindow) {
+      const multiIds = getMultiIdsByName(windowName);
+      for (const id of multiIds) {
+        findWindowById(id)?.webContents.send(
+          EP_MESSAGE_EVENT_NAME,
+          {
+            epWindowId: browserWindow.id,
+          },
+          params,
+        );
+      }
     }
   }
 
