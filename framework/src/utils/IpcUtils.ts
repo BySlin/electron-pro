@@ -5,7 +5,6 @@ import {
   listModule,
 } from '@midwayjs/core';
 import {
-  EP_CONTROLLER_DECORATOR_KEY,
   EP_HANDLER_DECORATOR_KEY,
   EP_MAIN_WINDOW_DECORATOR_KEY,
   EP_SERVICE_DECORATOR_KEY,
@@ -25,23 +24,20 @@ export const getAllIpcHandleChannel = () => {
     printLog: boolean;
   }[] = [];
 
-  const epControllers = [
-    ...listModule(EP_CONTROLLER_DECORATOR_KEY),
-    ...listModule(EP_SERVICE_DECORATOR_KEY),
-  ];
+  const epServices = [...(listModule(EP_SERVICE_DECORATOR_KEY) || [])];
 
-  for (const epController of epControllers) {
-    const providerName = getProviderName(epController);
+  for (const epService of epServices) {
+    const providerName = getProviderName(epService);
     const classMetadataArray = getClassMetadata(
       INJECT_CUSTOM_METHOD,
-      epController,
+      epService,
     ) as { propertyName: string; key: string; metadata: any }[];
 
     if (classMetadataArray) {
       for (const { propertyName, key, metadata } of classMetadataArray) {
         if (key === EP_HANDLER_DECORATOR_KEY) {
           result.push({
-            target: epController,
+            target: epService,
             methodName: propertyName,
             channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}`,
             ...metadata,

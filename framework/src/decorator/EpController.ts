@@ -1,11 +1,6 @@
-import {
-  Scope,
-  ScopeEnum,
-  saveClassMetadata,
-  saveModule,
-  Provide,
-} from '@midwayjs/core';
+import { saveClassMetadata, saveModule } from '@midwayjs/core';
 import { EP_CONTROLLER_DECORATOR_KEY } from '../constant';
+import { EpService } from './EpService';
 
 export function EpController(): ClassDecorator {
   return (target: any) => {
@@ -13,9 +8,7 @@ export function EpController(): ClassDecorator {
     saveModule(EP_CONTROLLER_DECORATOR_KEY, target);
     // 保存一些元数据信息，任意你希望存的东西
     saveClassMetadata(EP_CONTROLLER_DECORATOR_KEY, {}, target);
-    // 指定 IoC 容器创建实例的作用域，单例，全局唯一
-    Scope(ScopeEnum.Singleton)(target);
-    // 调用一下 Provide 装饰器，这样用户的 class 可以省略写 @Provide() 装饰器了
-    Provide()(target);
+    //继承EpService
+    EpService()(target);
   };
 }
