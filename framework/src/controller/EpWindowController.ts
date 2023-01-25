@@ -122,7 +122,7 @@ export class EpWindowController {
         baseWindow.currentWindow?.webContents.send(
           EP_MESSAGE_EVENT_NAME,
           {
-            epWindowId: browserWindow.id,
+            sendWindowId: browserWindow.id,
           },
           params,
         );
@@ -140,7 +140,7 @@ export class EpWindowController {
         baseWindow.currentWindow?.webContents.send(
           EP_MESSAGE_EVENT_NAME,
           {
-            epWindowId: browserWindow.id,
+            sendWindowId: browserWindow.id,
           },
           params,
         );
@@ -161,7 +161,7 @@ export class EpWindowController {
         findWindowById(id)?.webContents.send(
           EP_MESSAGE_EVENT_NAME,
           {
-            epWindowId: browserWindow.id,
+            sendWindowId: browserWindow.id,
           },
           params,
         );
