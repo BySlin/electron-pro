@@ -4,3 +4,4 @@
 yarn.lock
 /logs
 /dist_electron
+package-lock.json
