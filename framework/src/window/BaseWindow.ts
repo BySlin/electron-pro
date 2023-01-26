@@ -9,6 +9,7 @@ import {
 import { ILogger, Inject } from '@midwayjs/core';
 import {
   EP_ALL_SERVICE_CHANNEL_NAME_EVENT_NAME,
+  EP_CURRENT_WINDOW_CHANNEL_NAME_EVENT_NAME,
   EP_PARAMS_EVENT_NAME,
   EP_READY_EVENT_NAME,
   EP_SEND_TO_RENDERER_CHANNEL_NAME_EVENT_NAME,
@@ -221,6 +222,14 @@ export class BaseWindow {
     item.webContents.ipc.handle(EP_ALL_SERVICE_CHANNEL_NAME_EVENT_NAME, () => {
       return getAllServiceIpcHandleChannel().map((v) => v.channelName);
     });
+
+    //此ipc仅响应此webContents的ipc消息
+    item.webContents.ipc.handle(
+      EP_CURRENT_WINDOW_CHANNEL_NAME_EVENT_NAME,
+      () => {
+        return currentIpcHandleChannel.map((v) => v.channelName);
+      },
+    );
 
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.handle(

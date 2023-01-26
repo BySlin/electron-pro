@@ -5,6 +5,10 @@ import { contextBridge, ipcRenderer } from 'electron';
     'epAllServiceChannelName',
   )) as string[];
 
+  const currentWindowEventNames = (await ipcRenderer.invoke(
+    'epSendToRendererChannelName',
+  )) as string[];
+
   const onEventNames = (await ipcRenderer.invoke(
     'epSendToRendererChannelName',
   )) as string[];
@@ -21,23 +25,27 @@ import { contextBridge, ipcRenderer } from 'electron';
     },
     versions: process.versions,
     ipcRenderer,
+    currentWindow: {},
   };
 
+  //注册全局的ipc handle
   for (const eventName of eventNames) {
     const [controllerName, methodName] = eventName.split('@');
-
     if (api[controllerName] == undefined) {
       api[controllerName] = {};
     }
-
     api[controllerName][methodName] = (...args: any[]) =>
       ipcRenderer.invoke(eventName, ...args);
   }
 
-  if (api.ipcRendererEvents == undefined) {
-    api.ipcRendererEvents = {};
+  //注册当前window的ipc handle
+  for (const eventName of currentWindowEventNames) {
+    const [_, methodName] = eventName.split('@');
+    api.currentWindow[methodName] = (...args: any[]) =>
+      ipcRenderer.invoke(eventName, ...args);
   }
 
+  //注册当前window的ipcRenderer on回调事件
   for (const onEventName of onEventNames) {
     const [_, methodName] = onEventName.split('@');
 

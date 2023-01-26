@@ -14,6 +14,7 @@ type EpParams = {
 
 type Ep = EpParams & {
   [key: string]: any;
+  currentWindow: Record<string, any>;
   versions: Record<string, string>;
   ipcRenderer: import('electron').IpcRenderer;
   onEpMessage: (callback: EpMessageFunction) => void;
