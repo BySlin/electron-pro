@@ -19,7 +19,6 @@ import { BaseWindow } from '../window';
  */
 export const getWindowIpcSendToRendererChannel = (epWindow: BaseWindow) => {
   const result: {
-    target: any;
     methodName: string;
     channelName: string;
     windowPropertyName: string;
@@ -35,7 +34,6 @@ export const getWindowIpcSendToRendererChannel = (epWindow: BaseWindow) => {
     for (const { propertyName, metadata, key } of classMetadataArray) {
       if (EP_SEND_TO_RENDERER_KEY === key) {
         result.push({
-          target: epWindow,
           methodName: propertyName,
           channelName: getIpcSendToRendererChannelName(
             epWindow,
