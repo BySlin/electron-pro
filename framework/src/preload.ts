@@ -55,7 +55,7 @@ import { contextBridge, ipcRenderer } from 'electron';
     const onEventMethodName = `on${eventMethodName}`;
     const removeEventMethodName = `remove${eventMethodName}`;
 
-    api.ipcRendererEvents[onEventMethodName] = (
+    api.currentWindow[onEventMethodName] = (
       listener: (...args: any[]) => void,
     ) => {
       ipcRenderer.removeAllListeners(onEventName);
@@ -65,7 +65,7 @@ import { contextBridge, ipcRenderer } from 'electron';
       );
     };
 
-    api.ipcRendererEvents[removeEventMethodName] = () => {
+    api.currentWindow[removeEventMethodName] = () => {
       ipcRenderer.removeAllListeners(onEventName);
     };
   }
