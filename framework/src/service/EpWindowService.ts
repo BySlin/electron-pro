@@ -14,8 +14,8 @@ import {
 } from '../utils';
 import { EP_MESSAGE_EVENT_NAME } from '../constant';
 
-@EpController()
-export class EpWindowController {
+@EpController('epWindow')
+export class EpWindowService {
   /**
    * 打开窗口
    * @param _

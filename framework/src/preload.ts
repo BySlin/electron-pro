@@ -2,7 +2,7 @@ import { contextBridge, ipcRenderer } from 'electron';
 
 (async () => {
   const eventNames = (await ipcRenderer.invoke(
-    'epSendToRendererChannelName',
+    'epAllServiceChannelName',
   )) as string[];
 
   const onEventNames = (await ipcRenderer.invoke(

@@ -4,10 +4,11 @@ import {
   saveClassMetadata,
   saveModule,
   Provide,
+  ObjectIdentifier,
 } from '@midwayjs/core';
 import { EP_SERVICE_DECORATOR_KEY } from '../constant';
 
-export function EpService(): ClassDecorator {
+export function EpService(identifier?: ObjectIdentifier): ClassDecorator {
   return (target: any) => {
     // 将装饰的类，绑定到该装饰器，用于后续能获取到 class
     saveModule(EP_SERVICE_DECORATOR_KEY, target);
@@ -16,6 +17,6 @@ export function EpService(): ClassDecorator {
     // 指定 IoC 容器创建实例的作用域，，单例，全局唯一
     Scope(ScopeEnum.Singleton)(target);
     // 调用一下 Provide 装饰器，这样用户的 class 可以省略写 @Provide() 装饰器了
-    Provide()(target);
+    Provide(identifier)(target);
   };
 }

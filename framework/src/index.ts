@@ -7,7 +7,7 @@ export * from './interface';
 export * from './decorator';
 export * from './constant';
 export * from './bootstrap';
-export * from './controller';
+export * from './service';
 export * from './utils';
 export * from './provide';
 export * from './window';
