@@ -1,21 +1,28 @@
 import { BaseWindow } from './BaseWindow';
-import { closeWindow } from '../utils';
+import { closeWindow, getEpProvideName } from '../utils';
 
 export class BaseMultiWindow extends BaseWindow {
-  private static windowIds: Set<number> = new Set();
+  private static windowIds = new Map<string, Set<number>>();
 
   static getWindowIds() {
-    return BaseMultiWindow.windowIds;
+    const epProvideName = getEpProvideName(this);
+    return BaseMultiWindow.windowIds.get(epProvideName);
   }
 
   onCreate() {
     super.onCreate();
-    BaseMultiWindow.windowIds.add(this.id);
+    const epProvideName = getEpProvideName(this);
+    if (!BaseMultiWindow.windowIds.has(epProvideName)) {
+      BaseMultiWindow.windowIds.set(epProvideName, new Set<number>());
+    }
+
+    BaseMultiWindow.windowIds.get(epProvideName)?.add(this.id);
   }
 
   onClosed() {
     super.onClosed();
-    BaseMultiWindow.windowIds.delete(this.id);
+    const epProvideName = getEpProvideName(this);
+    BaseMultiWindow.windowIds.get(epProvideName)?.delete(this.id);
   }
 
   /**
@@ -23,11 +30,13 @@ export class BaseMultiWindow extends BaseWindow {
    * @private
    */
   static closeAll() {
-    if (BaseMultiWindow.windowIds.size > 0) {
-      for (const windowId of BaseMultiWindow.windowIds) {
+    const epProvideName = getEpProvideName(this);
+    const windowIds = BaseMultiWindow.windowIds.get(epProvideName);
+    if (windowIds && windowIds.size > 0) {
+      for (const windowId of windowIds) {
         closeWindow(windowId);
       }
     }
-    return BaseMultiWindow.windowIds;
+    return windowIds;
   }
 }
