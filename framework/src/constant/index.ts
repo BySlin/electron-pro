@@ -21,6 +21,11 @@ export const EP_SEND_TO_RENDERER_CHANNEL_NAME_EVENT_NAME =
   'epSendToRendererChannelName';
 
 /**
+ * 获取所有service ipc handle方法
+ */
+export const EP_ALL_SERVICE_CHANNEL_NAME_EVENT_NAME = 'epAllServiceChannelName';
+
+/**
  *设置窗口状态
  */
 export const EP_READY_EVENT_NAME = 'epReady';
