@@ -25,13 +25,12 @@ import { contextBridge, ipcRenderer } from 'electron';
 
   for (const eventName of eventNames) {
     const [controllerName, methodName] = eventName.split('@');
-    const newControllerName = controllerName.replace('Controller', '');
 
-    if (api[newControllerName] == undefined) {
-      api[newControllerName] = {};
+    if (api[controllerName] == undefined) {
+      api[controllerName] = {};
     }
 
-    api[newControllerName][methodName] = (...args: any[]) =>
+    api[controllerName][methodName] = (...args: any[]) =>
       ipcRenderer.invoke(eventName, ...args);
   }
   for (const onEventName of onEventNames) {
