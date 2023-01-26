@@ -1,6 +1,5 @@
 import {
   getClassMetadata,
-  getProviderName,
   INJECT_CUSTOM_METHOD,
   listModule,
 } from '@midwayjs/core';
@@ -13,6 +12,7 @@ import {
   IPC_EVENT_SEPARATOR,
 } from '../constant';
 import { BaseWindow } from '../window';
+import { getEpProvideName } from './ProvideUtils';
 
 /**
  * 获取所有ipcHandle channel通道名称
@@ -60,7 +60,7 @@ export const getWindowIpcHandleChannel = (epWindow: BaseWindow) => {
     printLog: boolean;
   }[] = [];
 
-  const providerName = getProviderName(epWindow);
+  const providerName = getEpProvideName(epWindow);
   const classMetadataArray = getClassMetadata(
     INJECT_CUSTOM_METHOD,
     epWindow,
@@ -100,7 +100,7 @@ export const getAllServiceIpcHandleChannel = () => {
   const epServices = [...(listModule(EP_SERVICE_DECORATOR_KEY) || [])];
 
   for (const epService of epServices) {
-    const providerName = getProviderName(epService);
+    const providerName = getEpProvideName(epService);
     const classMetadataArray = getClassMetadata(
       INJECT_CUSTOM_METHOD,
       epService,
@@ -177,7 +177,7 @@ export const getIpcSendToRendererChannelName = (
   propertyName: string,
   metadata: any,
 ) => {
-  return `${getProviderName(target)}${IPC_EVENT_SEPARATOR}${propertyName}${
+  return `${getEpProvideName(target)}${IPC_EVENT_SEPARATOR}${propertyName}${
     metadata.once ? `${IPC_EVENT_SEPARATOR}once` : ''
   }`;
 };

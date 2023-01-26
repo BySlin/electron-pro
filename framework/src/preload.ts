@@ -33,18 +33,21 @@ import { contextBridge, ipcRenderer } from 'electron';
     api[controllerName][methodName] = (...args: any[]) =>
       ipcRenderer.invoke(eventName, ...args);
   }
+
+  if (api.ipcRendererEvents == undefined) {
+    api.ipcRendererEvents = {};
+  }
+
   for (const onEventName of onEventNames) {
-    const [windowName, methodName] = onEventName.split('@');
-    if (api[windowName] == undefined) {
-      api[windowName] = {};
-    }
+    const [_, methodName] = onEventName.split('@');
+
     const eventMethodName = `${methodName
       .substring(0, 1)
       .toUpperCase()}${methodName.substring(1)}`;
     const onEventMethodName = `on${eventMethodName}`;
     const removeEventMethodName = `remove${eventMethodName}`;
 
-    api[windowName][onEventMethodName] = (
+    api.ipcRendererEvents[onEventMethodName] = (
       listener: (...args: any[]) => void,
     ) => {
       ipcRenderer.removeAllListeners(onEventName);
@@ -54,7 +57,7 @@ import { contextBridge, ipcRenderer } from 'electron';
       );
     };
 
-    api[windowName][removeEventMethodName] = () => {
+    api.ipcRendererEvents[removeEventMethodName] = () => {
       ipcRenderer.removeAllListeners(onEventName);
     };
   }

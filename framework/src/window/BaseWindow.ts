@@ -2,10 +2,11 @@ import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import {
   createWindow,
   getAllServiceIpcHandleChannel,
+  getEpProvideName,
   getWindowIpcHandleChannel,
   getWindowIpcSendToRendererChannel,
 } from '../utils';
-import { getProviderName, ILogger, Inject } from '@midwayjs/core';
+import { ILogger, Inject } from '@midwayjs/core';
 import {
   EP_ALL_SERVICE_CHANNEL_NAME_EVENT_NAME,
   EP_PARAMS_EVENT_NAME,
@@ -234,7 +235,7 @@ export class BaseWindow {
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.handle(EP_PARAMS_EVENT_NAME, () => {
       return {
-        epWindowName: getProviderName(this),
+        epWindowName: getEpProvideName(this),
         epWindowId: this._id,
         epOpenParams: this.openParams,
       };

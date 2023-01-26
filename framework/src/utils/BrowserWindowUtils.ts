@@ -5,11 +5,8 @@ import {
   PRELOAD_JS_PATH,
 } from '../constant';
 import { BaseMultiWindow, BaseWindow } from '../window';
-import {
-  getCurrentApplicationContext,
-  getProviderName,
-  listModule,
-} from '@midwayjs/core';
+import { getCurrentApplicationContext, listModule } from '@midwayjs/core';
+import { getEpProvideName } from './ProvideUtils';
 
 /**
  * 创建window
@@ -48,7 +45,7 @@ export const findMultiWindowModule = (
     EP_MULTI_WINDOW_DECORATOR_KEY,
     (module) => {
       return typeof epMultiWindowModule === 'string'
-        ? getProviderName(module) === epMultiWindowModule
+        ? getEpProvideName(module) === epMultiWindowModule
         : module === epMultiWindowModule;
     },
   ) as (typeof BaseMultiWindow)[];
