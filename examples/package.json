@@ -18,12 +18,12 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "electron-pro": "0.0.21"
+    "electron-pro": "0.0.22"
   },
   "devDependencies": {
     "@umijs/utils": "^4.0.47",
     "cross-env": "^7.0.3",
-    "electron": "^22.0.3",
+    "electron": "^22.1.0",
     "electron-builder": "^23.6.0",
     "father": "^4.1.3",
     "yargs": "^17.6.2"

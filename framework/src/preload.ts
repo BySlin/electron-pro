@@ -17,7 +17,6 @@ import { contextBridge, ipcRenderer } from 'electron';
 
   const apiKey = 'ep';
   const api: Ep = {
-    ...epParams,
     onEpMessage: (listener: (...args: any[]) => void) => {
       const channel = 'epMessage';
       ipcRenderer.removeAllListeners(channel);
@@ -25,7 +24,9 @@ import { contextBridge, ipcRenderer } from 'electron';
     },
     versions: process.versions,
     ipcRenderer,
-    currentWindow: {},
+    currentWindow: {
+      ...epParams,
+    },
   };
 
   //注册全局的ipc handle

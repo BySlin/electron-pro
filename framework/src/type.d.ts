@@ -12,9 +12,11 @@ type EpParams = {
   epOpenParams: Record<string, any>;
 };
 
-type Ep = EpParams & {
+type Ep = {
   [key: string]: any;
-  currentWindow: Record<string, any>;
+  currentWindow: EpParams & {
+    [key: string]: any;
+  };
   versions: Record<string, string>;
   ipcRenderer: import('electron').IpcRenderer;
   onEpMessage: (callback: EpMessageFunction) => void;
