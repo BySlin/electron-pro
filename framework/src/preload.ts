@@ -9,10 +9,10 @@ import { contextBridge, ipcRenderer } from 'electron';
     'epAppController@getAllIpcSendToRendererChannelName',
   )) as string[];
 
-  const epParams = await ipcRenderer.invoke('epParams');
+  const epParams = (await ipcRenderer.invoke('epParams')) as EpParams;
 
   const apiKey = 'ep';
-  const api: any = {
+  const api: Ep = {
     ...epParams,
     onEpMessage: (listener: (...args: any[]) => void) => {
       const channel = 'epMessage';

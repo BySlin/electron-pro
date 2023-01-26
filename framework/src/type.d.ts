@@ -6,15 +6,21 @@ type EpMessageFunction = (
   ...args: any[]
 ) => void;
 
+type EpParams = {
+  epWindowName: string;
+  epWindowId: number;
+  epOpenParams: Record<string, any>;
+};
+
+type Ep = EpParams & {
+  [key: string]: any;
+  versions: Record<string, string>;
+  ipcRenderer: import('electron').IpcRenderer;
+  onEpMessage: (callback: EpMessageFunction) => void;
+};
+
 interface Window {
-  ep: {
-    epWindowName: string;
-    epWindowId: number;
-    epOpenParams: Record<string, any>;
-    versions: Record<string, string>;
-    ipcRenderer: import('electron').IpcRenderer;
-    onEpMessage: (callback: EpMessageFunction) => void;
-  };
+  ep: Ep;
   /**
    * ep加载完成
    */
