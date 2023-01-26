@@ -1,7 +1,15 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { createWindow, getWindowIpcHandleChannel } from '../utils';
+import {
+  createWindow,
+  getWindowIpcHandleChannel,
+  getWindowIpcSendToRendererChannel,
+} from '../utils';
 import { getProviderName, ILogger, Inject } from '@midwayjs/core';
-import { EP_PARAMS_EVENT_NAME, EP_READY_EVENT_NAME } from '../constant';
+import {
+  EP_PARAMS_EVENT_NAME,
+  EP_READY_EVENT_NAME,
+  EP_SEND_TO_RENDERER_CHANNEL_NAME_EVENT_NAME,
+} from '../constant';
 
 export class BaseWindow {
   @Inject()
@@ -184,6 +192,7 @@ export class BaseWindow {
       once,
       printLog,
     } of currentIpcHandleChannel) {
+      //此ipc仅响应此webContents的ipc消息
       item.webContents.ipc[once ? 'handleOnce' : 'handle'](
         channelName,
         async (e, ...data) => {
@@ -204,6 +213,16 @@ export class BaseWindow {
         },
       );
     }
+
+    //此ipc仅响应此webContents的ipc消息
+    item.webContents.ipc.handle(
+      EP_SEND_TO_RENDERER_CHANNEL_NAME_EVENT_NAME,
+      () => {
+        return getWindowIpcSendToRendererChannel(this).map(
+          (v) => v.channelName,
+        );
+      },
+    );
 
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.handle(EP_PARAMS_EVENT_NAME, () => {

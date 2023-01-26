@@ -17,7 +17,44 @@ import { BaseWindow } from '../window';
 /**
  * 获取所有ipcHandle channel通道名称
  */
-export const getWindowIpcHandleChannel = (window: BaseWindow) => {
+export const getWindowIpcSendToRendererChannel = (epWindow: BaseWindow) => {
+  const result: {
+    target: any;
+    methodName: string;
+    channelName: string;
+    windowPropertyName: string;
+    once: boolean;
+  }[] = [];
+
+  const classMetadataArray = getClassMetadata(
+    INJECT_CUSTOM_METHOD,
+    epWindow,
+  ) as { propertyName: string; metadata: any; key: string }[];
+
+  if (classMetadataArray) {
+    for (const { propertyName, metadata, key } of classMetadataArray) {
+      if (EP_SEND_TO_RENDERER_KEY === key) {
+        result.push({
+          target: epWindow,
+          methodName: propertyName,
+          channelName: getIpcSendToRendererChannelName(
+            epWindow,
+            propertyName,
+            metadata,
+          ),
+          ...metadata,
+        });
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+ * 获取window ipcHandle channel通道名称
+ */
+export const getWindowIpcHandleChannel = (epWindow: BaseWindow) => {
   const result: {
     methodName: string;
     channelName: string;
@@ -25,8 +62,11 @@ export const getWindowIpcHandleChannel = (window: BaseWindow) => {
     printLog: boolean;
   }[] = [];
 
-  const providerName = getProviderName(window);
-  const classMetadataArray = getClassMetadata(INJECT_CUSTOM_METHOD, window) as {
+  const providerName = getProviderName(epWindow);
+  const classMetadataArray = getClassMetadata(
+    INJECT_CUSTOM_METHOD,
+    epWindow,
+  ) as {
     propertyName: string;
     key: string;
     metadata: any;
