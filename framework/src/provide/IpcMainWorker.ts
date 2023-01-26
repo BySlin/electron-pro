@@ -11,7 +11,7 @@ import {
   ScopeEnum,
 } from '@midwayjs/core';
 import {
-  getAllIpcHandleChannel,
+  getAllServiceIpcHandleChannel,
   getIpcSendToRendererChannelName,
 } from '../utils';
 import { ipcMain } from 'electron';
@@ -29,15 +29,15 @@ export class IpcMainWorker {
 
   @Init()
   init() {
-    this.registerIpcHandle();
+    this.registerServiceIpcHandle();
     this.registerIpcSendToRenderer();
   }
 
   /**
    * 注册ipcHandle
    */
-  registerIpcHandle() {
-    const allIpcHandle = getAllIpcHandleChannel();
+  registerServiceIpcHandle() {
+    const allIpcHandle = getAllServiceIpcHandleChannel();
 
     for (const {
       channelName,

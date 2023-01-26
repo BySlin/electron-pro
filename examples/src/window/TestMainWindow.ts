@@ -1,4 +1,9 @@
-import { BaseWindow, EpMainWindow, EpSendToRenderer } from "electron-pro";
+import {
+  BaseWindow,
+  EpHandler,
+  EpMainWindow,
+  EpSendToRenderer,
+} from "electron-pro";
 import { Autoload, Init, Inject } from "@midwayjs/core";
 import { TestService } from "../services/TestService";
 
@@ -21,8 +26,19 @@ export class TestMainWindow extends BaseWindow {
     });
   }
 
+  /**
+   * 给renderer发送数据
+   */
   @EpSendToRenderer()
   async test() {
+    return this.testService.test();
+  }
+
+  /**
+   * 仅接受此窗口的事件
+   */
+  @EpHandler()
+  async epTest() {
     return this.testService.test();
   }
 }

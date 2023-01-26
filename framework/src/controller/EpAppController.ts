@@ -1,18 +1,18 @@
 import { EpController, EpHandler } from '../decorator';
 import {
-  getAllIpcHandleChannel,
-  allIpcSendToRendererChannelName,
+  getAllServiceIpcHandleChannel,
+  getAllIpcSendToRendererChannel,
 } from '../utils';
 
 @EpController()
 export class EpAppController {
   @EpHandler()
-  async allIpcHandleChannelName() {
-    return getAllIpcHandleChannel().map((v) => v.channelName);
+  async getAllServiceIpcHandleChannelName() {
+    return getAllServiceIpcHandleChannel().map((v) => v.channelName);
   }
 
   @EpHandler()
-  async allIpcSendToRendererChannelName() {
-    return allIpcSendToRendererChannelName().map((v) => v.channelName);
+  async getAllIpcSendToRendererChannelName() {
+    return getAllIpcSendToRendererChannel().map((v) => v.channelName);
   }
 }

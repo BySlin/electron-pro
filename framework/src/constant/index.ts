@@ -10,11 +10,6 @@ export const isDevelopment = process.env.NODE_ENV === 'development';
 export const IPC_EVENT_SEPARATOR = '@';
 
 /**
- * 获取所有ipcEvent事件
- */
-export const GET_IPC_ALL_EVENT_NAME = 'epAppController@allIpcHandleChannelName';
-
-/**
  * 获取窗口参数
  */
 export const EP_PARAMS_EVENT_NAME = 'epParams';

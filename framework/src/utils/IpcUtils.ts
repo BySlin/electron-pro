@@ -7,15 +7,50 @@ import {
 import {
   EP_HANDLER_DECORATOR_KEY,
   EP_MAIN_WINDOW_DECORATOR_KEY,
+  EP_SEND_TO_RENDERER_KEY,
   EP_SERVICE_DECORATOR_KEY,
   EP_WINDOW_DECORATOR_KEY,
   IPC_EVENT_SEPARATOR,
 } from '../constant';
+import { BaseWindow } from '../window';
 
 /**
  * 获取所有ipcHandle channel通道名称
  */
-export const getAllIpcHandleChannel = () => {
+export const getWindowIpcHandleChannel = (window: BaseWindow) => {
+  const result: {
+    methodName: string;
+    channelName: string;
+    once: boolean;
+    printLog: boolean;
+  }[] = [];
+
+  const providerName = getProviderName(window);
+  const classMetadataArray = getClassMetadata(INJECT_CUSTOM_METHOD, window) as {
+    propertyName: string;
+    key: string;
+    metadata: any;
+  }[];
+
+  if (classMetadataArray) {
+    for (const { propertyName, key, metadata } of classMetadataArray) {
+      if (key === EP_HANDLER_DECORATOR_KEY) {
+        result.push({
+          methodName: propertyName,
+          channelName: `${providerName}${IPC_EVENT_SEPARATOR}${propertyName}`,
+          ...metadata,
+        });
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+ * 获取所有ipcHandle channel通道名称
+ */
+export const getAllServiceIpcHandleChannel = () => {
   const result: {
     target: any;
     methodName: string;
@@ -53,7 +88,7 @@ export const getAllIpcHandleChannel = () => {
 /**
  * 获取所有ipcHandle channel通道名称
  */
-export const allIpcSendToRendererChannelName = () => {
+export const getAllIpcSendToRendererChannel = () => {
   const result: {
     target: any;
     methodName: string;
@@ -71,20 +106,22 @@ export const allIpcSendToRendererChannelName = () => {
     const classMetadataArray = getClassMetadata(
       INJECT_CUSTOM_METHOD,
       epWindow,
-    ) as { propertyName: string; metadata: any }[];
+    ) as { propertyName: string; metadata: any; key: string }[];
 
     if (classMetadataArray) {
-      for (const { propertyName, metadata } of classMetadataArray) {
-        result.push({
-          target: epWindow,
-          methodName: propertyName,
-          channelName: getIpcSendToRendererChannelName(
-            epWindow,
-            propertyName,
-            metadata,
-          ),
-          ...metadata,
-        });
+      for (const { propertyName, metadata, key } of classMetadataArray) {
+        if (EP_SEND_TO_RENDERER_KEY === key) {
+          result.push({
+            target: epWindow,
+            methodName: propertyName,
+            channelName: getIpcSendToRendererChannelName(
+              epWindow,
+              propertyName,
+              metadata,
+            ),
+            ...metadata,
+          });
+        }
       }
     }
   }

@@ -1,9 +1,12 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { createWindow } from '../utils';
-import { getProviderName } from '@midwayjs/core';
+import { createWindow, getWindowIpcHandleChannel } from '../utils';
+import { getProviderName, ILogger, Inject } from '@midwayjs/core';
 import { EP_PARAMS_EVENT_NAME, EP_READY_EVENT_NAME } from '../constant';
 
 export class BaseWindow {
+  @Inject()
+  logger: ILogger;
+
   /**
    * Electron窗口
    * @private
@@ -171,6 +174,36 @@ export class BaseWindow {
     // item.on('show', () => {});
     // item.on('unmaximize', () => {});
     // item.on('unresponsive', () => {});
+
+    const currentIpcHandleChannel = getWindowIpcHandleChannel(this);
+
+    //注册此窗口的ipc handle
+    for (const {
+      channelName,
+      methodName,
+      once,
+      printLog,
+    } of currentIpcHandleChannel) {
+      item.webContents.ipc[once ? 'handleOnce' : 'handle'](
+        channelName,
+        async (e, ...data) => {
+          try {
+            if (printLog) {
+              this.logger.info(
+                `触发${channelName}${
+                  data?.length > 0 ? `，参数：${JSON.stringify(data)}` : ''
+                }`,
+              );
+            }
+            return await this[methodName](e, ...data);
+          } catch (error) {
+            this.logger.error(error);
+            // @ts-ignore
+            return { error: error.message };
+          }
+        },
+      );
+    }
 
     //此ipc仅响应此webContents的ipc消息
     item.webContents.ipc.handle(EP_PARAMS_EVENT_NAME, () => {
