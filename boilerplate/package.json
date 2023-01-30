@@ -1,0 +1,31 @@
+{
+  "name": "create-electron-pro",
+  "version": "0.1.3",
+  "description": "Creator for electron-pro boilerplate",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "create-father": "bin/create-electron-pro.js"
+  },
+  "files": [
+    "dist",
+    "template"
+  ],
+  "scripts": {
+    "build": "pnpm tsc",
+    "dev": "pnpm tsc --watch"
+  },
+  "dependencies": {
+    "@umijs/utils": "^4.0.47"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "authors": [
+    "2292735470@qq.com"
+  ],
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  }
+}
