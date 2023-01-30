@@ -1,12 +1,12 @@
 {
   "name": "create-electron-pro",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Creator for electron-pro boilerplate",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "create-father": "bin/create-electron-pro.js"
+    "create-electron-pro": "bin/create-electron-pro.js"
   },
   "files": [
     "dist",
