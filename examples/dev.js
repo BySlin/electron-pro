@@ -3,6 +3,8 @@ process.env.NODE_ENV = "development";
 const { chokidar } = require("@umijs/utils");
 const { spawn } = require("child_process");
 const path = require("path");
+const argv = require("yargs-parser")(["dev", ...process.argv.slice(2)]);
+const { run: runBuild } = require("father/dist/cli/cli");
 
 const TIMEOUT = 2000;
 
@@ -121,4 +123,4 @@ function filterText(s) {
   return "  " + lines.join(`\n  `) + "\n";
 }
 
-runDev();
+runBuild({ args: argv }).then(runDev).catch(console.error);

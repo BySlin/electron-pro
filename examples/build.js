@@ -2,6 +2,8 @@ const { fsExtra, lodash } = require("@umijs/utils");
 const path = require("path");
 const yargs = require("yargs");
 const buildOptions = require("./buildOptions");
+const argv = require("yargs-parser")(["build", ...process.argv.slice(2)]);
+const { run: runBuild } = require("father/dist/cli/cli");
 
 /**
  * 打包
@@ -111,4 +113,4 @@ function buildDist() {
     });
 }
 
-buildDist();
+runBuild({ args: argv }).then(buildDist).catch(console.error);
