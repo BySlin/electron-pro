@@ -7,7 +7,13 @@ import * as path from 'path';
 /**
  * 程序入口
  */
-export const runApp = async (baseDir?: string) => {
+export const runApp = async ({
+  devBaseDir,
+  prodBaseDir,
+}: {
+  devBaseDir?: string;
+  prodBaseDir?: string;
+} = {}) => {
   //注册自定义协议
   protocol.registerSchemesAsPrivileged([
     {
@@ -27,9 +33,9 @@ export const runApp = async (baseDir?: string) => {
   const appDir = isDevelopment ? process.cwd() : process.resourcesPath;
   return await Bootstrap.configure({
     appDir: appDir,
-    baseDir:
-      baseDir ?? isDevelopment
-        ? path.join(appDir, 'dist')
-        : path.join(appDir, __dirname.includes('.asar') ? 'app.asar' : 'app'),
+    baseDir: isDevelopment
+      ? devBaseDir ?? path.join(appDir, 'dist')
+      : prodBaseDir ??
+        path.join(appDir, __dirname.includes('.asar') ? 'app.asar' : 'app'),
   }).run();
 };
