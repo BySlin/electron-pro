@@ -22,7 +22,7 @@ export class TestMainWindow extends BaseWindow {
 
   onInit() {
     this.initParams({
-      url: "app://./html/index.html",
+      url: "ep://./html/index.html",
     });
   }
 

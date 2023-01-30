@@ -6,7 +6,7 @@ import { Autoload } from "@midwayjs/core";
 export class TestWindow extends BaseWindow {
   onInit() {
     this.initParams({
-      url: "app://./html/test.html",
+      url: "ep://./html/test.html",
     });
   }
 }

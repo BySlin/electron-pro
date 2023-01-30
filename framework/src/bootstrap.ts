@@ -1,5 +1,5 @@
 import { Bootstrap } from '@midwayjs/bootstrap';
-import { app, protocol } from 'electron';
+import { app, Privileges, protocol } from 'electron';
 import { createProtocol } from './createProtocol';
 import { isDevelopment } from './constant';
 import * as path from 'path';
@@ -7,28 +7,33 @@ import * as path from 'path';
 /**
  * 程序入口
  */
-export const runApp = async ({
-  devBaseDir,
-  prodBaseDir,
-}: {
+export const runApp = async (options?: {
   devBaseDir?: string;
   prodBaseDir?: string;
-} = {}) => {
+  privileges?: Privileges;
+}) => {
+  options = {
+    privileges: {
+      secure: true,
+      standard: true,
+      supportFetchAPI: true,
+    },
+    ...options,
+  };
+
+  const { privileges, devBaseDir, prodBaseDir } = options;
+
   //注册自定义协议
   protocol.registerSchemesAsPrivileged([
     {
-      scheme: 'app',
-      privileges: {
-        secure: true,
-        standard: true,
-        supportFetchAPI: true,
-      },
+      scheme: 'ep',
+      privileges,
     },
   ]);
   //等待Electron加载完成
   await app.whenReady();
   //创建自定义协议
-  createProtocol('app');
+  createProtocol('ep');
 
   const appDir = isDevelopment ? process.cwd() : process.resourcesPath;
   return await Bootstrap.configure({
