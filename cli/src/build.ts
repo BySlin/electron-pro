@@ -9,7 +9,11 @@ import { IElectronProConfig } from "./types";
 export function runBuild(config: IElectronProConfig) {
   const externals = ["electron-pro"];
 
-  const absOutputDir = path.join(process.cwd(), "dist_electron");
+  const absOutputDir = path.join(
+    process.cwd(),
+    config.electronPro?.output ?? "dist_electron"
+  );
+
   const buildPkg = require(path.join(process.cwd(), "package.json"));
   buildPkg.main = "index.js";
 
@@ -75,13 +79,24 @@ export function runBuild(config: IElectronProConfig) {
     JSON.stringify(buildPkg, null, 2)
   );
 
-  fsExtra.copySync(path.join(process.cwd(), "dist"), dest, {
-    overwrite: true,
-  });
+  fsExtra.copySync(
+    path.join(process.cwd(), config.cjs?.output ?? "dist"),
+    dest,
+    {
+      overwrite: true,
+    }
+  );
 
-  fsExtra.copySync(path.join(process.cwd(), "html"), path.join(dest, "html"), {
-    overwrite: true,
-  });
+  const htmlDir = path.join(
+    process.cwd(),
+    config.electronPro?.htmlDir ?? "html"
+  );
+
+  if (fsExtra.pathExistsSync(htmlDir)) {
+    fsExtra.copySync(htmlDir, path.join(dest, "html"), {
+      overwrite: true,
+    });
+  }
 
   const defaultBuildConfig = {
     directories: {

@@ -1,6 +1,6 @@
 {
   "name": "electron-pro-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "electron-pro-cli",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
