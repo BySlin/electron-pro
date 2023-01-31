@@ -1,6 +1,6 @@
 {
   "name": "create-electron-pro",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Creator for electron-pro boilerplate",
   "license": "MIT",
   "main": "dist/index.js",

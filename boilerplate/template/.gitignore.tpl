@@ -1,6 +1,9 @@
 /node_modules
 /dist
+/dist_electron
 .DS_Store
 yarn.lock
 package-lock.json
 pnpm-lock.yaml
+/logs
+/win-unpacked
