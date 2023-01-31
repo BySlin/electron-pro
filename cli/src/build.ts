@@ -1,27 +1,12 @@
-import process from "process";
 import { fsExtra, lodash } from "@umijs/utils";
 import * as path from "path";
 import yargs from "yargs";
-import { IOpts } from "./interface";
-
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = "production";
-}
-
-let epConfig: any;
-
-try {
-  epConfig = require(path.join(process.cwd(), "epConfig.js"));
-} catch {
-  epConfig = {};
-}
-
-const { run } = require("father/dist/cli/cli");
+import { IElectronProConfig } from "./types";
 
 /**
  * 打包
  */
-function buildDist() {
+export function runBuild(config: IElectronProConfig) {
   const externals = ["electron-pro"];
 
   const absOutputDir = path.join(process.cwd(), "dist_electron");
@@ -116,7 +101,10 @@ function buildDist() {
   require("electron-builder")
     .build(
       lodash.merge({
-        config: lodash.merge(defaultBuildConfig, epConfig.buildOptions ?? {}),
+        config: lodash.merge(
+          defaultBuildConfig,
+          config.electronPro?.buildOptions ?? {}
+        ),
         ...builderArgs,
       })
     )
@@ -125,7 +113,3 @@ function buildDist() {
       process.exit();
     });
 }
-
-export const build = async (_opts?: IOpts) => {
-  run(_opts).then(buildDist).catch(console.error);
-};

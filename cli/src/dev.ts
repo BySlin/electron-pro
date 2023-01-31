@@ -1,23 +1,9 @@
-import { IOpts } from "./interface";
 import { chokidar } from "@umijs/utils";
 import { ChildProcessWithoutNullStreams, spawn } from "child_process";
 import * as path from "path";
-import * as process from "process";
+import { IElectronProConfig } from "./types";
 
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = "development";
-}
-
-const { run } = require("father/dist/cli/cli");
 const TIMEOUT = 2000;
-
-let epConfig: any;
-
-try {
-  epConfig = require(path.join(process.cwd(), "epConfig.js"));
-} catch {
-  epConfig = {};
-}
 
 /**
  * 防抖动，避免方法重复执行
@@ -37,7 +23,7 @@ function debounce(f: () => void, ms: number) {
 /**
  * 以开发模式运行
  */
-const runDev = () => {
+export const runDev = (config: IElectronProConfig) => {
   const electronPath = require("electron");
   let spawnProcess: ChildProcessWithoutNullStreams | null = null;
 
@@ -73,7 +59,7 @@ const runDev = () => {
   }, TIMEOUT);
 
   const watcher = chokidar.watch(
-    [`${path.join(process.cwd(), epConfig.outputDir ?? "dist")}/**`],
+    [`${path.join(process.cwd(), config.cjs?.output ?? "dist")}/**`],
     {
       ignoreInitial: true,
     }
@@ -130,7 +116,3 @@ function filterText(s: string) {
   }
   return "  " + lines.join(`\n  `) + "\n";
 }
-
-export const dev = async (_opts?: IOpts) => {
-  run(_opts).then(runDev).catch(console.error);
-};
